@@ -1,0 +1,86 @@
+---
+import Page from '../layouts/Page.astro';
+import Card from '../components/Card.astro';
+---
+
+<Page title="Home" description="Ron Dimon — Strategist, author, educator, and builder based in New Mexico.">
+
+  <!-- Hero -->
+  <section class="relative overflow-hidden">
+    <div class="container py-24 md:py-32">
+      <div class="max-w-3xl animate-in">
+        <p class="text-sm font-medium text-accent uppercase tracking-wider mb-4">
+          Welcome
+        </p>
+        <h1 class="text-5xl md:text-6xl lg:text-7xl font-heading font-bold text-text-primary leading-[1.1]">
+          Ron Dimon
+        </h1>
+        <p class="mt-6 text-xl md:text-2xl text-text-secondary leading-relaxed max-w-2xl">
+          Strategist, author, educator, and builder. Helping organizations and people make better decisions with better information.
+        </p>
+        <div class="mt-10 flex flex-wrap gap-4">
+          <a href="/about" class="inline-flex items-center px-6 py-3 bg-text-primary text-surface text-sm font-medium rounded-lg hover:bg-accent transition-colors">
+            About me
+          </a>
+          <a href="/work" class="inline-flex items-center px-6 py-3 border border-border text-text-primary text-sm font-medium rounded-lg hover:border-accent hover:text-accent transition-colors">
+            See my work
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- What I Do -->
+  <section class="border-t border-border-light">
+    <div class="container py-20 md:py-24">
+      <p class="text-sm font-medium text-accent uppercase tracking-wider mb-4">What I Do</p>
+      <h2 class="text-3xl md:text-4xl font-heading font-semibold text-text-primary mb-12">
+        A few things I'm working on
+      </h2>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <Card
+          title="Spark Labs"
+          tag="Education"
+          description="Modular, hands-on workshops for founders, consultants, creatives, and business leaders. 45+ modules across strategy, execution, sales, thinking, and technology."
+          href="https://sparklabs.studio"
+        />
+        <Card
+          title="Creative Santa Fe"
+          tag="Community"
+          description="Supporting the creative economy in Santa Fe through business planning, programs, and board leadership."
+          href="/work#creative-santa-fe"
+        />
+        <Card
+          title="Writing & Speaking"
+          tag="Ideas"
+          description="Author of Enterprise Performance Management Done Right. Conference speaker on strategy, data, value selling, and the future of work."
+          href="/books"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="border-t border-border-light bg-surface-alt">
+    <div class="container py-20 md:py-24">
+      <div class="max-w-3xl mx-auto text-center">
+        <p class="text-sm font-medium text-accent uppercase tracking-wider mb-4">Stay Connected</p>
+        <h2 class="text-3xl md:text-4xl font-heading font-semibold text-text-primary">
+          Let's talk
+        </h2>
+        <p class="mt-4 text-lg text-text-secondary">
+          Whether you're building a business, running workshops, planning a conference, or just want to connect — I'd love to hear from you.
+        </p>
+        <div class="mt-8 flex flex-wrap justify-center gap-4">
+          <a href="/contact" class="inline-flex items-center px-6 py-3 bg-accent text-white text-sm font-medium rounded-lg hover:bg-accent-hover transition-colors">
+            Get in touch
+          </a>
+          <a href="https://www.linkedin.com/in/rondimon/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-6 py-3 border border-border text-text-primary text-sm font-medium rounded-lg hover:border-accent hover:text-accent transition-colors">
+            Connect on LinkedIn
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</Page>

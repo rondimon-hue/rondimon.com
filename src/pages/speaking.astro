@@ -1,0 +1,107 @@
+---
+import Page from '../layouts/Page.astro';
+---
+
+<Page title="Speaking" description="Ron Dimon speaking engagements — conferences, workshops, and keynotes on strategy, EPM, value selling, and business education.">
+
+  <section class="container py-20 md:py-28">
+    <div class="max-w-3xl animate-in">
+      <p class="text-sm font-medium text-accent uppercase tracking-wider mb-4">Speaking</p>
+      <h1 class="text-4xl md:text-5xl font-heading font-bold text-text-primary">
+        On stage and at the whiteboard
+      </h1>
+      <p class="mt-6 text-xl text-text-secondary">
+        I speak at conferences, lead workshops, and facilitate strategic planning sessions for organizations of all sizes. I like interactive formats — the audience should leave with something they can use Monday morning.
+      </p>
+    </div>
+
+    <!-- Topics -->
+    <div class="mt-16">
+      <h2 class="text-sm font-medium text-text-muted uppercase tracking-wider mb-8">Topics I speak on</h2>
+      <div class="grid md:grid-cols-2 gap-6">
+
+        <div class="bg-surface rounded-lg border border-border p-6">
+          <span class="inline-block text-xs font-medium text-accent uppercase tracking-wider mb-2">Strategy</span>
+          <h3 class="font-heading text-lg font-semibold text-text-primary">The Management Operating System</h3>
+          <p class="mt-2 text-sm text-text-secondary">Why most organizations fail at execution — and how to build a closed-loop system that connects strategy to operations to results. Based on the framework from my book.</p>
+        </div>
+
+        <div class="bg-surface rounded-lg border border-border p-6">
+          <span class="inline-block text-xs font-medium text-accent uppercase tracking-wider mb-2">Sales</span>
+          <h3 class="font-heading text-lg font-semibold text-text-primary">Value Selling: From Features to Outcomes</h3>
+          <p class="mt-2 text-sm text-text-secondary">How to stop selling what your product does and start selling what your customer achieves. A framework for articulating business value, building ROI stories, and closing executive-level deals.</p>
+        </div>
+
+        <div class="bg-surface rounded-lg border border-border p-6">
+          <span class="inline-block text-xs font-medium text-accent uppercase tracking-wider mb-2">Finance</span>
+          <h3 class="font-heading text-lg font-semibold text-text-primary">EPM / BPM / CPM / Planning — What's in a Name?</h3>
+          <p class="mt-2 text-sm text-text-secondary">Cutting through the alphabet soup. What Enterprise Performance Management actually is, why it matters more than ever, and how to implement it as a process — not just a software purchase.</p>
+        </div>
+
+        <div class="bg-surface rounded-lg border border-border p-6">
+          <span class="inline-block text-xs font-medium text-accent uppercase tracking-wider mb-2">Resilience</span>
+          <h3 class="font-heading text-lg font-semibold text-text-primary">Scenario Planning for Competitive Advantage</h3>
+          <p class="mt-2 text-sm text-text-secondary">How to prepare for uncertainty without drowning in analysis paralysis. Building an organization's "instruction book" for handling major disruptions — before they arrive.</p>
+        </div>
+
+        <div class="bg-surface rounded-lg border border-border p-6">
+          <span class="inline-block text-xs font-medium text-accent uppercase tracking-wider mb-2">Data</span>
+          <h3 class="font-heading text-lg font-semibold text-text-primary">Turning Data into Decisions</h3>
+          <p class="mt-2 text-sm text-text-secondary">Most organizations have more data than they know what to do with — and worse information than they realize. How to close the gap between what you measure and what you actually need to know.</p>
+        </div>
+
+        <div class="bg-surface rounded-lg border border-border p-6">
+          <span class="inline-block text-xs font-medium text-accent uppercase tracking-wider mb-2">Technology</span>
+          <h3 class="font-heading text-lg font-semibold text-text-primary">AI for Business Leaders: Beyond the Hype</h3>
+          <p class="mt-2 text-sm text-text-secondary">A pragmatist's guide to AI in the enterprise. What it's actually good at, where it falls short, and how to build an AI strategy that serves your business instead of the other way around.</p>
+        </div>
+
+        <div class="bg-surface rounded-lg border border-border p-6">
+          <span class="inline-block text-xs font-medium text-accent uppercase tracking-wider mb-2">Education</span>
+          <h3 class="font-heading text-lg font-semibold text-text-primary">Workshop-Based Learning: Why Lectures Fail</h3>
+          <p class="mt-2 text-sm text-text-secondary">Adults don't learn by sitting quietly and taking notes. How to design hands-on, peer-driven learning experiences that actually change behavior — drawn from building 45+ Spark Labs modules.</p>
+        </div>
+
+        <div class="bg-surface rounded-lg border border-border p-6">
+          <span class="inline-block text-xs font-medium text-accent uppercase tracking-wider mb-2">Leadership</span>
+          <h3 class="font-heading text-lg font-semibold text-text-primary">The KPI Trap: Measuring What Matters</h3>
+          <p class="mt-2 text-sm text-text-secondary">How to select KPIs that drive behavior instead of just filling dashboards. Why most organizations measure the wrong things — and a practical method for getting it right.</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Past events -->
+    <div class="mt-20">
+      <h2 class="text-sm font-medium text-text-muted uppercase tracking-wider mb-8">Select past events</h2>
+      <div class="space-y-0 max-w-3xl">
+        {[
+          { event: 'ODTUG Kscope', topic: 'SG&A Expense Performance Management', location: 'Seattle' },
+          { event: 'OAUG Collaborate', topic: 'How to Select the Right KPIs', location: 'Las Vegas' },
+          { event: 'Business Analytics Symposium', topic: 'EPM Done Right', location: 'Dubuque, IA' },
+          { event: 'OAUG eLearning Webcast', topic: 'Measuring What Matters', location: 'Online' },
+          { event: 'Ohio State University', topic: 'EPM Lecture Series', location: 'Columbus, OH' },
+          { event: 'Toronto Book Launch', topic: 'Enterprise Performance Management Done Right', location: 'Toronto' },
+        ].map(item => (
+          <div class="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-6 py-4 border-b border-border-light">
+            <span class="text-sm font-medium text-text-primary sm:w-52 shrink-0">{item.event}</span>
+            <span class="text-sm text-text-secondary flex-1">{item.topic}</span>
+            <span class="text-xs text-text-muted whitespace-nowrap">{item.location}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="mt-20 bg-surface-alt rounded-xl border border-border p-8 md:p-12 max-w-3xl">
+      <h2 class="text-2xl font-heading font-semibold text-text-primary">Interested in having me speak?</h2>
+      <p class="mt-3 text-text-secondary">
+        I'm available for keynotes, panel discussions, half-day workshops, and corporate events. All talks can be customized to your audience and industry. Let's talk about what would be most valuable for your group.
+      </p>
+      <a href="/contact" class="inline-flex items-center mt-6 px-6 py-3 bg-accent text-white text-sm font-medium rounded-lg hover:bg-accent-hover transition-colors">
+        Get in touch
+      </a>
+    </div>
+  </section>
+
+</Page>

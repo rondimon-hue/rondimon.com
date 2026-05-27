@@ -1,0 +1,110 @@
+---
+import Page from '../layouts/Page.astro';
+
+const cities = [
+  {
+    name: 'Santa Fe',
+    description: 'Home base. High desert light, adobe walls, and sunsets that refuse to be photographed faithfully.',
+    images: [] as string[],
+  },
+  {
+    name: 'Toronto',
+    description: 'Where I built a career and a life. A city of neighborhoods, lakefronts, and constant reinvention.',
+    images: [] as string[],
+  },
+  {
+    name: 'London',
+    description: 'Old stone and modern glass. A walking city that rewards curiosity at every turn.',
+    images: [] as string[],
+  },
+  {
+    name: 'New York City',
+    description: 'Where it all started. The city that teaches you to move fast, look up, and never stop building.',
+    images: [] as string[],
+  },
+  {
+    name: 'San Francisco',
+    description: 'Fog, hills, and the strange beauty of a city that lives at the edge of the continent.',
+    images: [] as string[],
+  },
+  {
+    name: 'Chicago',
+    description: 'Architecture capital. Bold, honest, and spectacularly beautiful from the river.',
+    images: [] as string[],
+  },
+  {
+    name: 'Edinburgh',
+    description: 'A city carved from volcanic rock. Medieval streets and a skyline that earns the word dramatic.',
+    images: [] as string[],
+  },
+];
+---
+
+<Page title="Photography & Travel" description="Ron Dimon's photography from Toronto, London, NYC, Santa Fe, San Francisco, Chicago, Edinburgh, and beyond.">
+
+  <section class="container py-20 md:py-28">
+    <div class="max-w-3xl animate-in">
+      <p class="text-sm font-medium text-accent uppercase tracking-wider mb-4">Photography & Travel</p>
+      <h1 class="text-4xl md:text-5xl font-heading font-bold text-text-primary">
+        Places and perspectives
+      </h1>
+      <p class="mt-6 text-xl text-text-secondary leading-relaxed">
+        I photograph the places I go — mostly architecture, landscapes, and the quiet details that make a city feel like itself. Here's a visual journal, organized by the cities that have shaped me.
+      </p>
+    </div>
+
+    <!-- City jump nav -->
+    <div class="mt-12 flex flex-wrap gap-2">
+      {cities.map(city => (
+        <a
+          href={`#${city.name.toLowerCase().replace(/\s+/g, '-')}`}
+          class="px-4 py-2 text-sm font-medium text-text-secondary bg-surface rounded-full border border-border hover:border-accent hover:text-accent transition-colors"
+        >
+          {city.name}
+        </a>
+      ))}
+    </div>
+
+    <!-- City sections -->
+    {cities.map((city, i) => (
+      <div
+        id={city.name.toLowerCase().replace(/\s+/g, '-')}
+        class:list={['scroll-mt-24', i === 0 ? 'mt-16' : 'mt-24 pt-12 border-t border-border-light']}
+      >
+        <h2 class="text-2xl md:text-3xl font-heading font-semibold text-text-primary">
+          {city.name}
+        </h2>
+        <p class="mt-3 text-text-secondary max-w-2xl">
+          {city.description}
+        </p>
+
+        {city.images.length > 0 ? (
+          <div class="mt-8 grid grid-cols-2 md:grid-cols-3 gap-4">
+            {city.images.map((img, j) => (
+              <div class="image-frame aspect-[4/3]">
+                <img
+                  src={img}
+                  alt={`${city.name} photograph ${j + 1}`}
+                  class="w-full h-full object-cover"
+                  loading="lazy"
+                />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div class="mt-8 bg-surface-alt rounded-lg border border-border p-12 text-center">
+            <p class="text-text-muted italic">Photos coming soon</p>
+          </div>
+        )}
+      </div>
+    ))}
+
+    <!-- Note -->
+    <div class="mt-20 bg-surface-alt rounded-xl border border-border p-8 max-w-3xl">
+      <p class="text-text-secondary text-sm">
+        This gallery is a work in progress. I'm gradually curating and adding photographs from years of travel. Check back, or <a href="/contact" class="text-accent hover:text-accent-hover underline">get in touch</a> if you'd like to use any of these images.
+      </p>
+    </div>
+  </section>
+
+</Page>

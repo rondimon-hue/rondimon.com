@@ -1,0 +1,73 @@
+---
+import Page from '../layouts/Page.astro';
+---
+
+<Page title="About" description="Ron Dimon's background — 30+ years in strategy, finance systems, enterprise performance management, and education.">
+
+  <section class="container py-20 md:py-28">
+    <div class="max-w-3xl animate-in">
+      <p class="text-sm font-medium text-accent uppercase tracking-wider mb-4">About</p>
+      <h1 class="text-4xl md:text-5xl font-heading font-bold text-text-primary">
+        Hi, I'm Ron.
+      </h1>
+    </div>
+
+    <div class="mt-16 grid lg:grid-cols-3 gap-12 lg:gap-16">
+      <!-- Photo column -->
+      <div class="lg:col-span-1">
+        <div class="image-frame sticky top-24">
+          <img
+            src="/images/ron-dimon-headshot.jpg"
+            alt="Ron Dimon"
+            class="w-full aspect-[3/4] object-cover"
+            loading="lazy"
+          />
+        </div>
+      </div>
+
+      <!-- Bio column -->
+      <div class="lg:col-span-2">
+        <p class="text-xl text-text-secondary leading-relaxed">
+          For over thirty years, I've been at the intersection of strategy, technology, and decision-making — helping organizations turn data into action and ideas into results.
+        </p>
+
+        <h3 class="font-heading text-xl font-semibold text-text-primary mt-10">The short version</h3>
+        <p class="mt-3 text-text-secondary leading-relaxed">
+          I started as a 19-year-old programmer at Deloitte, spent nine years at Hyperion Solutions (later acquired by Oracle) helping build what we now call Enterprise Performance Management, and went on to advise and lead finance transformation initiatives across industries.
+        </p>
+        <p class="mt-3 text-text-secondary leading-relaxed">
+          Along the way, I wrote a book (<em>Enterprise Performance Management Done Right</em>, published by Wiley), spoke at conferences around the world, and developed a deep passion for teaching people how to think strategically and operate effectively.
+        </p>
+
+        <h3 class="font-heading text-xl font-semibold text-text-primary mt-10">What I'm doing now</h3>
+        <p class="mt-3 text-text-secondary leading-relaxed">
+          Today I run <a href="https://sparklabs.studio" class="text-accent hover:text-accent-hover underline decoration-accent/30">Spark Labs</a> — a modular workshop program for founders, consultants, creatives, and business leaders who learn by doing. I'm working with <a href="https://unm.edu" class="text-accent hover:text-accent-hover underline decoration-accent/30">UNM's Center for Responsible Entrepreneurship</a>, helping build the next generation of business thinkers. And I serve on the board of <a href="/work#creative-santa-fe" class="text-accent hover:text-accent-hover underline decoration-accent/30">Creative Santa Fe</a>, supporting the creative economy in northern New Mexico.
+        </p>
+        <p class="mt-3 text-text-secondary leading-relaxed">
+          I'm based in New Mexico, where I split my time between building businesses, traveling, taking photographs, and exploring the high desert.
+        </p>
+
+        <h3 class="font-heading text-xl font-semibold text-text-primary mt-10">A few things you might not know</h3>
+        <ul class="mt-3 text-text-secondary space-y-2 leading-relaxed">
+          <li>I've lived and worked in New York, Toronto, and New Mexico</li>
+          <li>I'm a lifelong learner and voracious reader</li>
+          <li>I believe the best strategy is one that people actually understand and use</li>
+          <li>I take a lot of photographs — mostly landscapes and architecture</li>
+        </ul>
+
+        <!-- Sub-page links -->
+        <div class="mt-12 grid sm:grid-cols-2 gap-4">
+          <a href="/about/teachers" class="group block bg-surface rounded-lg border border-border p-5 hover:border-accent/30 hover:shadow-md transition-all">
+            <h4 class="font-heading font-semibold text-text-primary group-hover:text-accent transition-colors">My Teachers</h4>
+            <p class="mt-1 text-sm text-text-secondary">The people and ideas that shaped how I think.</p>
+          </a>
+          <a href="/about/archive" class="group block bg-surface rounded-lg border border-border p-5 hover:border-accent/30 hover:shadow-md transition-all">
+            <h4 class="font-heading font-semibold text-text-primary group-hover:text-accent transition-colors">Archive</h4>
+            <p class="mt-1 text-sm text-text-secondary">Blog posts and articles from 2013–2019.</p>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</Page>

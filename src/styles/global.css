@@ -1,0 +1,78 @@
+@import "tailwindcss";
+
+@theme {
+  /* Light & professional palette */
+  --color-background: #FAFAF9;
+  --color-surface: #FFFFFF;
+  --color-surface-alt: #F5F5F4;
+  --color-border: #E7E5E4;
+  --color-border-light: #F0EEEC;
+
+  --color-text-primary: #1C1917;
+  --color-text-secondary: #57534E;
+  --color-text-muted: #A8A29E;
+
+  --color-accent: #2563EB;
+  --color-accent-hover: #1D4ED8;
+  --color-accent-light: #EFF6FF;
+
+  --color-warm: #92400E;
+  --color-warm-light: #FEF3C7;
+
+  /* Typography */
+  --font-heading: 'Playfair Display', Georgia, serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+
+  /* Spacing */
+  --section-padding: 6rem;
+  --content-width: 72rem;
+  --narrow-width: 48rem;
+}
+
+/* Base styles */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-text-primary);
+  background-color: var(--color-background);
+  line-height: 1.7;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+/* Utilities */
+.container {
+  max-width: var(--content-width);
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+
+.container-narrow {
+  max-width: var(--narrow-width);
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+
+/* Subtle page transitions */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-in {
+  animation: fadeIn 0.5s ease-out both;
+}
+
+/* Image treatments */
+.image-frame {
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.04);
+}

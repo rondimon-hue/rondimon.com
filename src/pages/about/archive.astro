@@ -1,0 +1,103 @@
+---
+import Page from '../../layouts/Page.astro';
+
+// Archive of blog posts from the original rondimon.com WordPress site
+const posts = [
+  {
+    date: 'January 2019',
+    title: 'Getting Better at Getting Ready: Scenario Planning for Competitive Advantage',
+    slug: '2019/01/15/253',
+  },
+  {
+    date: 'February 2016',
+    title: 'Getting Started in Business Analytics & Data Science',
+    slug: '2016/02/02/getting-started-in-business-analytics-data-science',
+  },
+  {
+    date: 'January 2016',
+    title: 'Now Available: Intro to EPM for Finance Professionals Course',
+    slug: '2016/01/28/now-available-intro-to-epm-for-finance-professionals-course',
+  },
+  {
+    date: 'December 2015',
+    title: 'The Enterprise Performance Management Wheel of Fortune',
+    slug: '2015/12/23/the-enterprise-performance-management-wheel-of-fortune',
+  },
+  {
+    date: 'July 2015',
+    title: 'Enterprise Planning & Forecasting Flow — with Oracle Tools',
+    slug: '2015/07/27/enterprise-planning-forecasting-flow-with-oracle-tools',
+  },
+  {
+    date: 'July 2015',
+    title: 'Enterprise Planning & Forecasting Flow',
+    slug: '2015/07/17/enterprise-planning-forecasting-flow',
+  },
+  {
+    date: 'January 2015',
+    title: 'Klondike15 — A New Hyperion User Conference',
+    slug: '2015/01/14/klondike15-a-new-hyperion-user-conference',
+  },
+  {
+    date: 'September 2014',
+    title: '8 Report Types for Better Information Delivery',
+    slug: '2014/09/11/8-report-types-for-better-information-delivery',
+  },
+  {
+    date: 'September 2014',
+    title: '8 Ingredients to Turn Data into Useful Information',
+    slug: '2014/09/04/8-ingredients-to-turn-data-into-useful-information',
+  },
+  {
+    date: 'August 2014',
+    title: 'A Management Operating System',
+    slug: '2014/08/28/a-management-operating-system',
+  },
+  {
+    date: 'March 2013',
+    title: 'The Management Operating System',
+    slug: '2013/03/21/the-management-operating-system',
+  },
+];
+---
+
+<Page title="Archive" description="Blog posts and articles from the original rondimon.com, published 2013–2019.">
+
+  <section class="container py-20 md:py-28">
+    <div class="max-w-3xl animate-in">
+      <a href="/about" class="inline-flex items-center text-sm text-text-muted hover:text-accent transition-colors mb-8">
+        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+        About
+      </a>
+      <p class="text-sm font-medium text-accent uppercase tracking-wider mb-4">Archive</p>
+      <h1 class="text-4xl md:text-5xl font-heading font-bold text-text-primary">
+        From the blog, 2013–2019
+      </h1>
+      <p class="mt-6 text-lg text-text-secondary leading-relaxed">
+        These posts are from the original rondimon.com WordPress site, covering enterprise performance management, planning, analytics, and strategy. Preserved here for reference.
+      </p>
+    </div>
+
+    <div class="mt-16 max-w-3xl">
+      <div class="space-y-1">
+        {posts.map(post => (
+          <div class="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-6 py-4 border-b border-border-light">
+            <span class="text-sm text-text-muted sm:w-36 shrink-0">{post.date}</span>
+            <h3 class="text-text-primary font-medium hover:text-accent transition-colors">
+              {post.title}
+            </h3>
+          </div>
+        ))}
+      </div>
+
+      <div class="mt-12 bg-surface-alt rounded-xl border border-border p-6">
+        <p class="text-sm text-text-secondary">
+          These posts were originally published on WordPress. The full archive including images is preserved offline. If you're looking for a specific article or topic, <a href="/contact" class="text-accent hover:text-accent-hover underline">get in touch</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+</Page>
