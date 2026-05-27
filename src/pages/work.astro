@@ -227,6 +227,60 @@ import Page from '../layouts/Page.astro';
       </div>
     </div>
 
+    <!-- Clients -->
+    <div class="mt-24 pt-12 border-t border-border-light">
+      <h2 class="text-sm font-medium text-text-muted uppercase tracking-wider mb-10 text-center">Organizations I've worked with</h2>
+      <div class="relative overflow-hidden" id="client-scroll">
+        <div class="flex animate-scroll gap-12 items-center">
+          {[
+            'Oracle', 'Microsoft', 'Google', 'Salesforce', 'Anaplan', 'Deloitte',
+            'Spaulding Ridge', 'Stratuum', 'Infosys', 'PwC', 'Cisco', 'Akamai',
+            'Citrix', 'SAS', 'Cargill', 'ADM', 'Herman Miller', 'Dyson',
+            'Coca-Cola', 'Goodyear', 'Kraft', 'GE Healthcare', 'AbbVie',
+            'Hyatt', 'Ryder', 'Bank of America', 'NY Life', 'Manulife', 'AIG',
+            'Citizens Financial', 'GE', 'NRG Energy', 'US Navy', 'US DoD',
+            'US State Department', 'UVA', 'UVM', 'UNM', 'McMaster',
+            'Creative Santa Fe', 'BBBS',
+          ].map(client => (
+            <span class="whitespace-nowrap text-sm font-medium text-text-muted/60 hover:text-text-secondary transition-colors shrink-0">
+              {client}
+            </span>
+          ))}
+          {/* Duplicate for seamless loop */}
+          {[
+            'Oracle', 'Microsoft', 'Google', 'Salesforce', 'Anaplan', 'Deloitte',
+            'Spaulding Ridge', 'Stratuum', 'Infosys', 'PwC', 'Cisco', 'Akamai',
+            'Citrix', 'SAS', 'Cargill', 'ADM', 'Herman Miller', 'Dyson',
+            'Coca-Cola', 'Goodyear', 'Kraft', 'GE Healthcare', 'AbbVie',
+            'Hyatt', 'Ryder', 'Bank of America', 'NY Life', 'Manulife', 'AIG',
+            'Citizens Financial', 'GE', 'NRG Energy', 'US Navy', 'US DoD',
+            'US State Department', 'UVA', 'UVM', 'UNM', 'McMaster',
+            'Creative Santa Fe', 'BBBS',
+          ].map(client => (
+            <span class="whitespace-nowrap text-sm font-medium text-text-muted/60 hover:text-text-secondary transition-colors shrink-0" aria-hidden="true">
+              {client}
+            </span>
+          ))}
+        </div>
+        {/* Fade edges */}
+        <div class="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-background to-transparent pointer-events-none" />
+        <div class="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-background to-transparent pointer-events-none" />
+      </div>
+    </div>
+
+    <style>
+      @keyframes scroll {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+      }
+      .animate-scroll {
+        animation: scroll 60s linear infinite;
+      }
+      .animate-scroll:hover {
+        animation-play-state: paused;
+      }
+    </style>
+
     <!-- Expertise -->
     <div class="mt-24 pt-12 border-t border-border-light">
       <h2 class="text-sm font-medium text-text-muted uppercase tracking-wider mb-8">Areas of expertise</h2>
