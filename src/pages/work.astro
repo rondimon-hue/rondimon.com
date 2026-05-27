@@ -181,12 +181,19 @@ import Page from '../layouts/Page.astro';
           </div>
         </div>
 
-        <!-- Video placeholder -->
         <div>
           <h3 class="text-sm font-medium text-text-muted uppercase tracking-wider mb-4">Videos</h3>
           <div class="space-y-4">
-            <div class="bg-surface-alt rounded-lg border border-border aspect-video flex items-center justify-center">
-              <p class="text-sm text-text-muted italic">Creative Santa Fe video coming soon</p>
+            <div class="rounded-lg overflow-hidden border border-border aspect-video">
+              <iframe
+                src="https://www.youtube.com/embed/EEajYKD4-Ws"
+                title="Creative Santa Fe"
+                class="w-full h-full"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+                loading="lazy"
+              ></iframe>
             </div>
           </div>
         </div>
