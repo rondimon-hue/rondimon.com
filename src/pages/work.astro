@@ -92,7 +92,7 @@ import Page from '../layouts/Page.astro';
         MRWD LLC is my operating company — the umbrella for the ventures, advisory work, and education programs I run today.
       </p>
 
-      <div class="grid md:grid-cols-3 gap-6">
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
         <!-- Spark Labs -->
         <a href="https://sparklabs.studio" target="_blank" rel="noopener noreferrer" class="group block bg-surface rounded-lg border border-border p-6 hover:border-accent/30 hover:shadow-md transition-all">
           <span class="inline-block text-xs font-medium text-accent uppercase tracking-wider mb-2">Education</span>
@@ -109,13 +109,34 @@ import Page from '../layouts/Page.astro';
         </a>
 
         <!-- UNM CRE -->
-        <div class="bg-surface rounded-lg border border-border p-6">
+        <a href="https://business.unm.edu/center-for-responsible-entrepreneurship/index.html" target="_blank" rel="noopener noreferrer" class="group block bg-surface rounded-lg border border-border p-6 hover:border-accent/30 hover:shadow-md transition-all">
           <span class="inline-block text-xs font-medium text-warm uppercase tracking-wider mb-2">Academic</span>
-          <h3 class="text-lg font-heading font-semibold text-text-primary">UNM Center for Responsible Entrepreneurship</h3>
+          <h3 class="text-lg font-heading font-semibold text-text-primary group-hover:text-accent transition-colors">UNM Center for Responsible Entrepreneurship</h3>
           <p class="mt-2 text-sm text-text-secondary leading-relaxed">
             Working with the University of New Mexico to develop curriculum and programming that bridges academic entrepreneurship with real-world practice.
           </p>
-        </div>
+          <span class="inline-flex items-center mt-4 text-sm font-medium text-accent">
+            business.unm.edu
+            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+          </span>
+        </a>
+
+        <!-- Beyond Profit -->
+        <a href="https://creativesantafe.org/initiative/beyond-profit-series/" target="_blank" rel="noopener noreferrer" class="group block bg-surface rounded-lg border border-border p-6 hover:border-accent/30 hover:shadow-md transition-all">
+          <span class="inline-block text-xs font-medium text-accent uppercase tracking-wider mb-2">Community</span>
+          <h3 class="text-lg font-heading font-semibold text-text-primary group-hover:text-accent transition-colors">Beyond Profit Series</h3>
+          <p class="mt-2 text-sm text-text-secondary leading-relaxed">
+            A learning series with Creative Santa Fe and UNM Anderson exploring business as a force for positive change — responsible enterprise, sustainability, and New Mexico's emerging economy.
+          </p>
+          <span class="inline-flex items-center mt-4 text-sm font-medium text-accent">
+            creativesantafe.org
+            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+          </span>
+        </a>
 
         <!-- Santa Fe Facilitator -->
         <div class="bg-surface rounded-lg border border-border p-6">
