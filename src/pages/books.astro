@@ -2,7 +2,7 @@
 import Page from '../layouts/Page.astro';
 ---
 
-<Page title="Books" description="Enterprise Performance Management Done Right by Ron Dimon, published by Wiley.">
+<Page title="Books" description="Books by Ron Dimon — Enterprise Performance Management Done Right, Connected Planning, and SG&A Expense Performance Management.">
 
   <section class="container py-20 md:py-28">
     <div class="max-w-3xl animate-in">
@@ -12,8 +12,55 @@ import Page from '../layouts/Page.astro';
       </h1>
     </div>
 
-    <!-- Main book -->
-    <div class="mt-16 grid md:grid-cols-5 gap-12 items-start">
+    <!-- Book 1: Connected Planning -->
+    <div id="connected-planning" class="mt-16 grid md:grid-cols-5 gap-12 items-start scroll-mt-24">
+      <div class="md:col-span-2">
+        <div class="image-frame bg-surface">
+          <img
+            src="/images/connected-planning-cover.jpg"
+            alt="Connected Planning book cover"
+            class="w-full"
+            loading="lazy"
+          />
+        </div>
+      </div>
+
+      <div class="md:col-span-3">
+        <span class="inline-block text-xs font-medium text-accent uppercase tracking-wider mb-3">Published by Wiley</span>
+        <h2 class="text-3xl font-heading font-bold text-text-primary">
+          Connected Planning
+        </h2>
+        <p class="mt-2 text-text-muted text-sm">
+          A Playbook for Agile Decision Making &bull; Second Edition
+        </p>
+
+        <div class="mt-6 space-y-4 text-text-secondary leading-relaxed">
+          <p>
+            The evolution of the EPM framework for the modern era. Connected Planning is about breaking down the silos between financial planning, operational planning, and strategic planning — and building an agile, integrated system that lets organizations make better decisions faster.
+          </p>
+          <p>
+            The second edition reflects how planning has changed in the age of cloud platforms, real-time data, and AI. It's a practical playbook for CFOs, FP&A leaders, and anyone responsible for connecting strategy to execution across the enterprise.
+          </p>
+        </div>
+
+        <div class="mt-8">
+          <a
+            href="https://www.amazon.com/dp/1119485800"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center px-6 py-3 bg-text-primary text-surface text-sm font-medium rounded-lg hover:bg-accent transition-colors"
+          >
+            View on Amazon
+            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Book 2: EPM Done Right -->
+    <div id="epm-done-right" class="mt-24 pt-12 border-t border-border-light grid md:grid-cols-5 gap-12 items-start scroll-mt-24">
       <div class="md:col-span-2">
         <div class="image-frame bg-surface">
           <img
@@ -36,7 +83,7 @@ import Page from '../layouts/Page.astro';
 
         <div class="mt-6 space-y-4 text-text-secondary leading-relaxed">
           <p>
-            This book is the practitioner's guide to building a real, working performance management system — not just buying software and hoping for the best. It covers the full cycle: from gathering and understanding data, through strategic planning and tactical execution, to commitment and accountability.
+            The practitioner's guide to building a real, working performance management system — not just buying software and hoping for the best. It covers the full cycle: from gathering and understanding data, through strategic planning and tactical execution, to commitment and accountability.
           </p>
           <p>
             Written for CFOs, CIOs, FP&A leaders, and anyone who needs to connect strategy to execution with better information. The framework in this book has been tested across dozens of organizations worldwide.
@@ -79,6 +126,50 @@ import Page from '../layouts/Page.astro';
               </div>
             ))}
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Book 3: SG&A Booklet -->
+    <div id="sga" class="mt-24 pt-12 border-t border-border-light grid md:grid-cols-5 gap-12 items-start scroll-mt-24">
+      <div class="md:col-span-2">
+        <div class="image-frame bg-surface">
+          <img
+            src="/images/sga-booklet-cover.jpg"
+            alt="SG&A Expense Performance Management booklet cover"
+            class="w-full"
+            loading="lazy"
+          />
+        </div>
+      </div>
+
+      <div class="md:col-span-3">
+        <span class="inline-block text-xs font-medium text-warm uppercase tracking-wider mb-3">Booklet</span>
+        <h2 class="text-3xl font-heading font-bold text-text-primary">
+          Selling, General, and Administrative (SG&A) Expense Performance Management
+        </h2>
+
+        <div class="mt-6 space-y-4 text-text-secondary leading-relaxed">
+          <p>
+            A focused guide on managing one of the most overlooked areas of enterprise spending. SG&A expenses often represent 20–30% of revenue, yet most organizations lack the frameworks and discipline to manage them as rigorously as they manage cost of goods sold or capital expenditures.
+          </p>
+          <p>
+            This booklet lays out a practical approach to understanding, measuring, and optimizing SG&A — turning a cost center into a source of competitive advantage.
+          </p>
+        </div>
+
+        <div class="mt-8">
+          <a
+            href="https://www.amazon.com/dp/B016VGC9IW"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center px-6 py-3 bg-text-primary text-surface text-sm font-medium rounded-lg hover:bg-accent transition-colors"
+          >
+            View on Amazon
+            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+          </a>
         </div>
       </div>
     </div>
