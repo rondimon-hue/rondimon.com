@@ -70,6 +70,64 @@ h1, h2, h3, h4, h5, h6 {
   animation: fadeIn 0.5s ease-out both;
 }
 
+/* Archive blog post prose */
+.prose-archive p {
+  color: var(--color-text-secondary);
+  line-height: 1.8;
+  margin-bottom: 1.25rem;
+}
+
+.prose-archive h2, .prose-archive h3, .prose-archive h4 {
+  color: var(--color-text-primary);
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.prose-archive img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+  margin: 1.5rem 0;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.prose-archive a {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--color-accent) 30%, transparent);
+}
+
+.prose-archive a:hover {
+  color: var(--color-accent-hover);
+}
+
+.prose-archive ul, .prose-archive ol {
+  color: var(--color-text-secondary);
+  margin: 1rem 0;
+  padding-left: 1.5rem;
+}
+
+.prose-archive li {
+  margin-bottom: 0.5rem;
+}
+
+.prose-archive blockquote {
+  border-left: 3px solid var(--color-border);
+  padding-left: 1rem;
+  margin: 1.5rem 0;
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+.prose-archive strong, .prose-archive b {
+  color: var(--color-text-primary);
+  font-weight: 600;
+}
+
+.prose-archive em {
+  font-style: italic;
+}
+
 /* Image treatments */
 .image-frame {
   border-radius: 0.5rem;
