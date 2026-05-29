@@ -1,8 +1,14 @@
 ---
 import Page from '../../../layouts/Page.astro';
+
+const title = `Enterprise Planning & Forecasting Flow - with Oracle Tools`;
+const dateStr = "July 27, 2015";
+const content = `<p>I was asked to elaborate on <a href="http://rondimon.com/2015/07/17/enterprise-planning-forecasting-flow/">my last post</a> to include which Oracle technologies address which part of the enterprise planning ecosystem, so here you are!  Please note, there are many ways to implement planning using Oracle tools, these are some of the most widely used.</p>
+
+<p><a href="https://rondimon.com/wp-content/uploads/2015/07/enterprise-planning-flow-with-tools.png"><img class="aligncenter size-large wp-image-195" src="/images/archive/enterprise-planning-flow-with-tools.png" alt="enterprise planning flow with tools" width="660" height="384" /></a></p>`;
 ---
 
-<Page title="Enterprise Planning &amp; Forecasting Flow - with Oracle Tools" description="Archived blog post from rondimon.com — July 27, 2015">
+<Page title={title} description={`Archived blog post from rondimon.com — ${dateStr}`}>
 
   <section class="container py-20 md:py-28">
     <div class="max-w-3xl animate-in">
@@ -12,17 +18,13 @@ import Page from '../../../layouts/Page.astro';
         </svg>
         Archive
       </a>
-      <p class="text-sm text-text-muted mb-4">July 27, 2015</p>
+      <p class="text-sm text-text-muted mb-4">{dateStr}</p>
       <h1 class="text-3xl md:text-4xl font-heading font-bold text-text-primary">
-        Enterprise Planning &amp;amp; Forecasting Flow - with Oracle Tools
+        {title}
       </h1>
     </div>
 
-    <div class="mt-12 max-w-3xl prose-archive">
-      <p>I was asked to elaborate on <a href="http://rondimon.com/2015/07/17/enterprise-planning-forecasting-flow/">my last post</a> to include which Oracle technologies address which part of the enterprise planning ecosystem, so here you are!  Please note, there are many ways to implement planning using Oracle tools, these are some of the most widely used.</p>
-
-<p><a href="https://rondimon.com/wp-content/uploads/2015/07/enterprise-planning-flow-with-tools.png"><img class="aligncenter size-large wp-image-195" src="/images/archive/enterprise-planning-flow.png" alt="enterprise planning flow with tools" width="660" height="384" /></a></p>
-    </div>
+    <div class="mt-12 max-w-3xl prose-archive" set:html={content} />
   </section>
 
 </Page>

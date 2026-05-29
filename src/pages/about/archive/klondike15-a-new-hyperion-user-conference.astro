@@ -1,8 +1,14 @@
 ---
 import Page from '../../../layouts/Page.astro';
+
+const title = `Klondike15 - a new Hyperion user conference`;
+const dateStr = "January 14, 2015";
+const content = `<p><a href="https://rondimon.com/wp-content/uploads/2015/01/klondike15.png"><img class="alignright size-medium wp-image-188" src="/images/archive/klondike15.png" alt="klondike15" width="300" height="216" /></a>For anyone in the Ohio/Michigan Lake Erie area, there's a new Hyperion User Conference this February called Klondike.</p>
+
+<p>Check out the agenda and register here: <a href="http://www.klondike15.com/">klondike15.com</a></p>`;
 ---
 
-<Page title="Klondike15 - a new Hyperion user conference" description="Archived blog post from rondimon.com — January 14, 2015">
+<Page title={title} description={`Archived blog post from rondimon.com — ${dateStr}`}>
 
   <section class="container py-20 md:py-28">
     <div class="max-w-3xl animate-in">
@@ -12,17 +18,13 @@ import Page from '../../../layouts/Page.astro';
         </svg>
         Archive
       </a>
-      <p class="text-sm text-text-muted mb-4">January 14, 2015</p>
+      <p class="text-sm text-text-muted mb-4">{dateStr}</p>
       <h1 class="text-3xl md:text-4xl font-heading font-bold text-text-primary">
-        Klondike15 - a new Hyperion user conference
+        {title}
       </h1>
     </div>
 
-    <div class="mt-12 max-w-3xl prose-archive">
-      <p><a href="https://rondimon.com/wp-content/uploads/2015/01/klondike15.png"><img class="alignright size-medium wp-image-188" src="/images/archive/klondike15.png" alt="klondike15" width="300" height="216" /></a>For anyone in the Ohio/Michigan Lake Erie area, there's a new Hyperion User Conference this February called Klondike.</p>
-
-<p>Check out the agenda and register here: <a href="http://www.klondike15.com/">klondike15.com</a></p>
-    </div>
+    <div class="mt-12 max-w-3xl prose-archive" set:html={content} />
   </section>
 
 </Page>

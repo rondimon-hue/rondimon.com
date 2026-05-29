@@ -1,8 +1,29 @@
 ---
 import Page from '../../../layouts/Page.astro';
+
+const title = `8 Ingredients to Turn Data into Useful Information`;
+const dateStr = "September 4, 2014";
+const content = `<img class="wp-image-183 size-medium" src="/images/archive/9-3-2014-blog-image.png" alt="9-3-2014 blog image" width="300" height="226" /> Data Consumption Is Undergoing a Major Shift
+
+<p>The most common process in the management cycle is Gather. Organizations spend an incredible amount of time gathering data and trying to turn it into meaningful reports, dashboards, scorecards, and spreadsheets. In other words, turning numbers into knowledge.</p>
+
+<p>The purpose of all this activity is to find out where you are performing well and where you need to make some changes. However, with the plethora of data we're getting, and with the speed at which change happens and transactions occur, it's getting harder to find out exactly where you stand. How, when, where, and why we consume data is undergoing a major shift.</p>
+
+<p>To turn raw data into useful information that you interact with, you need at least the following ingredients:<br>
+<ul><br>
+	<li>A purpose or business question to answer (e.g., “What are our sales by region?” or “Who are our top customers?”)</li><br>
+	<li>A point of view for the consumer of the information (board, corporate, strategic business unit, line of business, division, team, territory, external)</li><br>
+	<li>Built-in relationships— hierarchies, dimensions including time periods, apples-to-apples like currency translations, and context— year-to-date, actual vs. plan, etc.</li><br>
+	<li>The right level of detail (according to business questions and consumer)</li><br>
+	<li>The right metrics— whether it's a financial account like revenue, or an operational driver like headcount or a key performance indicator (KPI) or a ratio like productivity, it has to fit the business question</li><br>
+	<li>Timelines— the information has to be delivered be delivered and consumed in time to do something about it</li><br>
+	<li>Some comparative information— a variance to the plan or to a prior period or a benchmark</li><br>
+	<li>The right way to deliver the information to the consumer (the right tool and platform)</li><br>
+</ul><br>
+You can learn more about EPM and how it can help your organization build a common business process to execute its strategy in my book <a href="http://www.amazon.com/Enterprise-Performance-Management-Done-Right-ebook/dp/B00BR02GR2/ref=la_B00BUD4SH2_1_1?s=books&ie=UTF8&qid=1407938503&sr=1-1">Enterprise Performance Management Done Right: An Operating System for Your Organization (Wiley CIO)</a></p>`;
 ---
 
-<Page title="8 Ingredients to Turn Data into Useful Information" description="Archived blog post from rondimon.com — September 4, 2014">
+<Page title={title} description={`Archived blog post from rondimon.com — ${dateStr}`}>
 
   <section class="container py-20 md:py-28">
     <div class="max-w-3xl animate-in">
@@ -12,32 +33,13 @@ import Page from '../../../layouts/Page.astro';
         </svg>
         Archive
       </a>
-      <p class="text-sm text-text-muted mb-4">September 4, 2014</p>
+      <p class="text-sm text-text-muted mb-4">{dateStr}</p>
       <h1 class="text-3xl md:text-4xl font-heading font-bold text-text-primary">
-        8 Ingredients to Turn Data into Useful Information
+        {title}
       </h1>
     </div>
 
-    <div class="mt-12 max-w-3xl prose-archive">
-      <img class="wp-image-183 size-medium" src="/images/archive/9-3-2014-blog-image.png" alt="9-3-2014 blog image" width="300" height="226" /> Data Consumption Is Undergoing a Major Shift
-
-<p>The most common process in the management cycle is Gather. Organizations spend an incredible amount of time gathering data and trying to turn it into meaningful reports, dashboards, scorecards, and spreadsheets. In other words, turning numbers into knowledge.</p>
-
-<p>The purpose of all this activity is to find out where you are performing well and where you need to make some changes. However, with the plethora of data we're getting, and with the speed at which change happens and transactions occur, it's getting harder to find out exactly where you stand. How, when, where, and why we consume data is undergoing a major shift.</p>
-
-<p>To turn raw data into useful information that you interact with, you need at least the following ingredients:<br />
-<ul><br />
-	<li>A purpose or business question to answer (e.g., “What are our sales by region?” or “Who are our top customers?”)</li><br />
-	<li>A point of view for the consumer of the information (board, corporate, strategic business unit, line of business, division, team, territory, external)</li><br />
-	<li>Built-in relationships— hierarchies, dimensions including time periods, apples-to-apples like currency translations, and context— year-to-date, actual vs. plan, etc.</li><br />
-	<li>The right level of detail (according to business questions and consumer)</li><br />
-	<li>The right metrics— whether it's a financial account like revenue, or an operational driver like headcount or a key performance indicator (KPI) or a ratio like productivity, it has to fit the business question</li><br />
-	<li>Timelines— the information has to be delivered be delivered and consumed in time to do something about it</li><br />
-	<li>Some comparative information— a variance to the plan or to a prior period or a benchmark</li><br />
-	<li>The right way to deliver the information to the consumer (the right tool and platform)</li><br />
-</ul><br />
-You can learn more about EPM and how it can help your organization build a common business process to execute its strategy in my book <a href="http://www.amazon.com/Enterprise-Performance-Management-Done-Right-ebook/dp/B00BR02GR2/ref=la_B00BUD4SH2_1_1?s=books&ie=UTF8&qid=1407938503&sr=1-1">Enterprise Performance Management Done Right: An Operating System for Your Organization (Wiley CIO)</a></p>
-    </div>
+    <div class="mt-12 max-w-3xl prose-archive" set:html={content} />
   </section>
 
 </Page>

@@ -1,8 +1,38 @@
 ---
 import Page from '../../../layouts/Page.astro';
+
+const title = `Answering Business Questions`;
+const dateStr = "April 11, 2013";
+const content = `<p><a href="http://rondimon.com/wp-content/uploads/2013/04/chain.png"><img class="size-medium wp-image-78  " alt="Photo © Ruth Dimon, 2013" src="/images/archive/chain.png" width="300" height="223" /></a> Photo © Ruth Dimon, 2013</p>
+
+<p>Businesses have a ton of information.  The usual starting place for trying to understand all that information is a desire to answer a business question.<br>
+There are, at least, four foundational questions:<br>
+<ol><br>
+	<li>Where are we right now compared to where we said we would be?</li><br>
+	<li>Why did we get what we got? What happened to give us those results?</li><br>
+	<li>What do we want to happen? What is possible in our industry, in this economy? And what’s next?</li><br>
+	<li>How will we get it done?Who will do what, and by when?</li><br>
+</ol><br>
+These questions help us align our strategy, objectives, and initiatives with our intended results. They help challenge our objectives and help generate and reveal our assumptions, constraints, and value drivers. The answers to these questions should validate our financial and operational targets.<br>
+Some typical business questions include:<br>
+<ul><br>
+	<li>‘‘Who are my top 20 customers and what are they buying this quarter?’’</li><br>
+	<li>‘‘Are my sales people on track to meet quota?’’</li><br>
+	<li>‘‘Why is it taking so long to fill open headcount?’’</li><br>
+	<li>‘‘Which marketing campaigns are generating the most leads?’’</li><br>
+	<li>‘‘What’s the conversion ratio (from lead to sale) compared to last year?’’</li><br>
+	<li>‘‘What’s the current customer attrition rate, and top reasons for leaving?’’</li><br>
+	<li>‘‘Are products being delivered on time? Do we have the right balance of inventory levels?’’</li><br>
+	<li>‘‘What percentage of sales is coming from new products? Is this a good measure of innovation?’’</li><br>
+	<li>‘‘What’s our forecast accuracy, and when will it surpass the threshold of reliability?’’</li><br>
+	<li>‘‘How are raw material prices trending by region?’’</li><br>
+</ul><br>
+There are an infinite number of questions. Some are the same week over week, month over month, and some are needed only for a specific area of concern until a problem is solved.  Business questions help break silos—to answer most of them, you’ll have to incorporate both financial and operational data and information from a variety of business functions like Sales, Marketing, Operations, HR, Finance, and so on. The questions are generally forward looking, yet they need information from the past (although ‘‘past performance is not a guarantee of future results.’’) Managers generally need some analytics in order to know what to ask (or the right questions to ask). The answers to business questions should ultimately drive actions that deliver results.</p>
+
+<p>So what's the process you use to answer business questions?</p>`;
 ---
 
-<Page title="Answering Business Questions" description="Archived blog post from rondimon.com — April 11, 2013">
+<Page title={title} description={`Archived blog post from rondimon.com — ${dateStr}`}>
 
   <section class="container py-20 md:py-28">
     <div class="max-w-3xl animate-in">
@@ -12,41 +42,13 @@ import Page from '../../../layouts/Page.astro';
         </svg>
         Archive
       </a>
-      <p class="text-sm text-text-muted mb-4">April 11, 2013</p>
+      <p class="text-sm text-text-muted mb-4">{dateStr}</p>
       <h1 class="text-3xl md:text-4xl font-heading font-bold text-text-primary">
-        Answering Business Questions
+        {title}
       </h1>
     </div>
 
-    <div class="mt-12 max-w-3xl prose-archive">
-      <p><a href="http://rondimon.com/wp-content/uploads/2013/04/chain.png"><img class="size-medium wp-image-78  " alt="Photo © Ruth Dimon, 2013" src="/images/archive/chain.png" width="300" height="223" /></a> Photo © Ruth Dimon, 2013</p>
-
-<p>Businesses have a ton of information.  The usual starting place for trying to understand all that information is a desire to answer a business question.<br />
-There are, at least, four foundational questions:<br />
-<ol><br />
-	<li>Where are we right now compared to where we said we would be?</li><br />
-	<li>Why did we get what we got? What happened to give us those results?</li><br />
-	<li>What do we want to happen? What is possible in our industry, in this economy? And what’s next?</li><br />
-	<li>How will we get it done?Who will do what, and by when?</li><br />
-</ol><br />
-These questions help us align our strategy, objectives, and initiatives with our intended results. They help challenge our objectives and help generate and reveal our assumptions, constraints, and value drivers. The answers to these questions should <!--more-->validate our financial and operational targets.<br />
-Some typical business questions include:<br />
-<ul><br />
-	<li>‘‘Who are my top 20 customers and what are they buying this quarter?’’</li><br />
-	<li>‘‘Are my sales people on track to meet quota?’’</li><br />
-	<li>‘‘Why is it taking so long to fill open headcount?’’</li><br />
-	<li>‘‘Which marketing campaigns are generating the most leads?’’</li><br />
-	<li>‘‘What’s the conversion ratio (from lead to sale) compared to last year?’’</li><br />
-	<li>‘‘What’s the current customer attrition rate, and top reasons for leaving?’’</li><br />
-	<li>‘‘Are products being delivered on time? Do we have the right balance of inventory levels?’’</li><br />
-	<li>‘‘What percentage of sales is coming from new products? Is this a good measure of innovation?’’</li><br />
-	<li>‘‘What’s our forecast accuracy, and when will it surpass the threshold of reliability?’’</li><br />
-	<li>‘‘How are raw material prices trending by region?’’</li><br />
-</ul><br />
-There are an infinite number of questions. Some are the same week over week, month over month, and some are needed only for a specific area of concern until a problem is solved.  Business questions help break silos—to answer most of them, you’ll have to incorporate both financial and operational data and information from a variety of business functions like Sales, Marketing, Operations, HR, Finance, and so on. The questions are generally forward looking, yet they need information from the past (although ‘‘past performance is not a guarantee of future results.’’) Managers generally need some analytics in order to know what to ask (or the right questions to ask). The answers to business questions should ultimately drive actions that deliver results.</p>
-
-<p>So what's the process you use to answer business questions?</p>
-    </div>
+    <div class="mt-12 max-w-3xl prose-archive" set:html={content} />
   </section>
 
 </Page>

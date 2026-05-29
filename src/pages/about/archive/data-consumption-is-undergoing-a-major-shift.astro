@@ -1,8 +1,65 @@
 ---
 import Page from '../../../layouts/Page.astro';
+
+const title = `Data Consumption is undergoing a major shift`;
+const dateStr = "May 14, 2013";
+const content = `<blockquote>A good decision is based on knowledge and not on numbers.<a href="http://rondimon.com/wp-content/uploads/2013/05/moma.png"><img class="alignright  wp-image-123" alt="" src="/images/archive/moma.png" width="261" height="196" /></a>
+—PLATO</blockquote>
+As EPM practitioners, our job is to help deliver better insights to the business, and the starting place is delivering useful information: on time, at the right level of detail, to the people who can use it to make a decision that helps improve short and long-term results.
+
+<p>With the plethora of data we’re getting, and with the speed at which change happens and transactions occur, it’s getting harder to find out exactly where you stand. How, when, where, and why we consume data is undergoing a major shift:<br>
+<table border="1" cellspacing="0" cellpadding="0"><br>
+<tbody><br>
+<tr><br>
+<td valign="top" width="140"><br>
+<p align="center"><b>From</b></p><br>
+</td><br>
+<td valign="top" width="189"><br>
+<p align="center"><b>To</b></p><br>
+</td><br>
+</tr><br>
+<tr><br>
+<td valign="top" width="140">Static</td><br>
+<td valign="top" width="189">Dynamic</td><br>
+</tr><br>
+<tr><br>
+<td valign="top" width="140">A big binder or a large PDF file</td><br>
+<td valign="top" width="189">When and where you need it (online, interactive, mobile)</td><br>
+</tr><br>
+<tr><br>
+<td valign="top" width="140">Financial</td><br>
+<td valign="top" width="189">Financial, operational, strategic</td><br>
+</tr><br>
+<tr><br>
+<td valign="top" width="140">Lagging indicators</td><br>
+<td valign="top" width="189">Leading indicators</td><br>
+</tr><br>
+<tr><br>
+<td valign="top" width="140">Stale data</td><br>
+<td valign="top" width="189">Real-time information</td><br>
+</tr><br>
+<tr><br>
+<td valign="top" width="140">Fixed</td><br>
+<td style="text-align:left;" valign="top" width="189">Variable based on my role and my point of view</td><br>
+</tr><br>
+<tr><br>
+<td valign="top" width="140">Passive</td><br>
+<td valign="top" width="189">Actionable, guided</td><br>
+</tr><br>
+<tr><br>
+<td valign="top" width="140">Grids of numbers</td><br>
+<td valign="top" width="189">Graphical visualization</td><br>
+</tr><br>
+<tr><br>
+<td valign="top" width="140">Pull (I have to go get it)</td><br>
+<td valign="top" width="189">Push (it comes to me)</td><br>
+</tr><br>
+</tbody><br>
+</table><br>
+How does your enterprise performance road-map address this shift in how data is consumed?  Do you have the right processes, governance, and tools in place to keep up with the new demand?</p>`;
 ---
 
-<Page title="Data Consumption is undergoing a major shift" description="Archived blog post from rondimon.com — May 14, 2013">
+<Page title={title} description={`Archived blog post from rondimon.com — ${dateStr}`}>
 
   <section class="container py-20 md:py-28">
     <div class="max-w-3xl animate-in">
@@ -12,68 +69,13 @@ import Page from '../../../layouts/Page.astro';
         </svg>
         Archive
       </a>
-      <p class="text-sm text-text-muted mb-4">May 14, 2013</p>
+      <p class="text-sm text-text-muted mb-4">{dateStr}</p>
       <h1 class="text-3xl md:text-4xl font-heading font-bold text-text-primary">
-        Data Consumption is undergoing a major shift
+        {title}
       </h1>
     </div>
 
-    <div class="mt-12 max-w-3xl prose-archive">
-      <blockquote>A good decision is based on knowledge and not on numbers.<a href="http://rondimon.com/wp-content/uploads/2013/05/moma.png"><img class="alignright  wp-image-123" alt="" src="/images/archive/moma.png" width="261" height="196" /></a>
-—PLATO</blockquote>
-As EPM practitioners, our job is to help deliver better insights to the business, and the starting place is delivering useful information: on time, at the right level of detail, to the people who can use it to make a decision that helps improve short and long-term results.
-
-<p>With the plethora of data we’re getting, and with the speed at which change happens and transactions occur, it’s getting harder to find out exactly where you stand. How, when, where, and why we consume data is undergoing a major shift:<!--more--><br />
-<table border="1" cellspacing="0" cellpadding="0"><br />
-<tbody><br />
-<tr><br />
-<td valign="top" width="140"><br />
-<p align="center"><b>From</b></p><br />
-</td><br />
-<td valign="top" width="189"><br />
-<p align="center"><b>To</b></p><br />
-</td><br />
-</tr><br />
-<tr><br />
-<td valign="top" width="140">Static</td><br />
-<td valign="top" width="189">Dynamic</td><br />
-</tr><br />
-<tr><br />
-<td valign="top" width="140">A big binder or a large PDF file</td><br />
-<td valign="top" width="189">When and where you need it (online, interactive, mobile)</td><br />
-</tr><br />
-<tr><br />
-<td valign="top" width="140">Financial</td><br />
-<td valign="top" width="189">Financial, operational, strategic</td><br />
-</tr><br />
-<tr><br />
-<td valign="top" width="140">Lagging indicators</td><br />
-<td valign="top" width="189">Leading indicators</td><br />
-</tr><br />
-<tr><br />
-<td valign="top" width="140">Stale data</td><br />
-<td valign="top" width="189">Real-time information</td><br />
-</tr><br />
-<tr><br />
-<td valign="top" width="140">Fixed</td><br />
-<td style="text-align:left;" valign="top" width="189">Variable based on my role and my point of view</td><br />
-</tr><br />
-<tr><br />
-<td valign="top" width="140">Passive</td><br />
-<td valign="top" width="189">Actionable, guided</td><br />
-</tr><br />
-<tr><br />
-<td valign="top" width="140">Grids of numbers</td><br />
-<td valign="top" width="189">Graphical visualization</td><br />
-</tr><br />
-<tr><br />
-<td valign="top" width="140">Pull (I have to go get it)</td><br />
-<td valign="top" width="189">Push (it comes to me)</td><br />
-</tr><br />
-</tbody><br />
-</table><br />
-How does your enterprise performance road-map address this shift in how data is consumed?  Do you have the right processes, governance, and tools in place to keep up with the new demand?</p>
-    </div>
+    <div class="mt-12 max-w-3xl prose-archive" set:html={content} />
   </section>
 
 </Page>

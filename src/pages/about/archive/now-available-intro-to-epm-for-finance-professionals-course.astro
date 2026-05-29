@@ -1,25 +1,9 @@
 ---
 import Page from '../../../layouts/Page.astro';
----
 
-<Page title="Now available: Intro to EPM for Finance Professionals course" description="Archived blog post from rondimon.com — January 28, 2016">
-
-  <section class="container py-20 md:py-28">
-    <div class="max-w-3xl animate-in">
-      <a href="/about/archive" class="inline-flex items-center text-sm text-text-muted hover:text-accent transition-colors mb-8">
-        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-        </svg>
-        Archive
-      </a>
-      <p class="text-sm text-text-muted mb-4">January 28, 2016</p>
-      <h1 class="text-3xl md:text-4xl font-heading font-bold text-text-primary">
-        Now available: Intro to EPM for Finance Professionals course
-      </h1>
-    </div>
-
-    <div class="mt-12 max-w-3xl prose-archive">
-      <p>I'm happy to announce that my intro to EPM course is available via <a href="http://www.proformative.com/myacademy/dash">Proformative</a>.</p>
+const title = `Now available: Intro to EPM for Finance Professionals course`;
+const dateStr = "January 28, 2016";
+const content = `<p>I'm happy to announce that my intro to EPM course is available via <a href="http://www.proformative.com/myacademy/dash">Proformative</a>.</p>
 
 <p>Click <a href="http://bit.ly/1PFYH62">this link</a> to receive a 10% discount when you sign up - you also get access to hundreds of courses on all things Finance from Cashflow to Treasury, FP&A, SOX, and more.</p>
 
@@ -29,8 +13,26 @@ import Page from '../../../layouts/Page.astro';
 
 <p>This is a good refresher of the main concepts I cover in<a href="http://goo.gl/o4yIX"> my book</a>.</p>
 
-<p>Hope you enjoy the course and all that Proformative has to offer.</p>
+<p>Hope you enjoy the course and all that Proformative has to offer.</p>`;
+---
+
+<Page title={title} description={`Archived blog post from rondimon.com — ${dateStr}`}>
+
+  <section class="container py-20 md:py-28">
+    <div class="max-w-3xl animate-in">
+      <a href="/about/archive" class="inline-flex items-center text-sm text-text-muted hover:text-accent transition-colors mb-8">
+        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+        Archive
+      </a>
+      <p class="text-sm text-text-muted mb-4">{dateStr}</p>
+      <h1 class="text-3xl md:text-4xl font-heading font-bold text-text-primary">
+        {title}
+      </h1>
     </div>
+
+    <div class="mt-12 max-w-3xl prose-archive" set:html={content} />
   </section>
 
 </Page>

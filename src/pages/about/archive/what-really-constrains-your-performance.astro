@@ -1,29 +1,13 @@
 ---
 import Page from '../../../layouts/Page.astro';
----
 
-<Page title="What really constrains your performance?" description="Archived blog post from rondimon.com — March 28, 2013">
-
-  <section class="container py-20 md:py-28">
-    <div class="max-w-3xl animate-in">
-      <a href="/about/archive" class="inline-flex items-center text-sm text-text-muted hover:text-accent transition-colors mb-8">
-        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-        </svg>
-        Archive
-      </a>
-      <p class="text-sm text-text-muted mb-4">March 28, 2013</p>
-      <h1 class="text-3xl md:text-4xl font-heading font-bold text-text-primary">
-        What really constrains your performance?
-      </h1>
-    </div>
-
-    <div class="mt-12 max-w-3xl prose-archive">
-      <p>Financial and operational planning processes, typically go like this: set targets, apportion the targets to different parts of the business, and then each part of the business further assigns a portion of the target down through their ranks.  Targets are usually set at the top (the board and the senior leadership team) and are usually derived using prior year performance plus a growth factor that's been vetted by economic, market, and competitive models.  The apportionment can be done by geography (since North America delivered 60% of last year's results, they get 60% of the targets this year), by product line (the WidgetMaster 5000 accounted for half of our sales, so it gets half of the goal for this year), by headcount, or some combination thereof.</p>
+const title = `What really constrains your performance?`;
+const dateStr = "March 28, 2013";
+const content = `<p>Financial and operational planning processes, typically go like this: set targets, apportion the targets to different parts of the business, and then each part of the business further assigns a portion of the target down through their ranks.  Targets are usually set at the top (the board and the senior leadership team) and are usually derived using prior year performance plus a growth factor that's been vetted by economic, market, and competitive models.  The apportionment can be done by geography (since North America delivered 60% of last year's results, they get 60% of the targets this year), by product line (the WidgetMaster 5000 accounted for half of our sales, so it gets half of the goal for this year), by headcount, or some combination thereof.</p>
 
 <p>The "ranks" receive their granular targets and sometimes get to negotiate their allotment and sometimes they don't.  In a 'top down' plan, the likelihood of negotiating is low.  Some plans are created from the bottom up: each of the "ranks" looks at their patch and assess what they thing is possible and then all those assessments are consolidated (by geography, or product line, or combination) until you get the top-of-the-house target.  At that point, senior management pulls out the economic, market, and competitive models and compares it to the consolidated plan and then challenges the ranks to stretch what they think is possible and commit to a higher number than they came up with.</p>
 
-<p>Enlightened organizations <!--more-->blend the two approaches and do a plan in both directions: top down and bottom up.  Then planning managers try to understand the gap where they meet.  Why do the top-level models think one things possible and the ranks think something different is possible?  Usually the answer is that the models used to set the targets don't have as much "intel" as an organization's feet on the street.</p>
+<p>Enlightened organizations blend the two approaches and do a plan in both directions: top down and bottom up.  Then planning managers try to understand the gap where they meet.  Why do the top-level models think one things possible and the ranks think something different is possible?  Usually the answer is that the models used to set the targets don't have as much "intel" as an organization's feet on the street.</p>
 
 <p>What if you could make your models smarter?  What if you could capture what the field knows and use that information to set smarter targets or even to take different actions to reach to things that can potentially constrain your business?  Let's take a look at a few of those constraints and see what how we can use what we know about them to out-perform our targets.</p>
 
@@ -49,8 +33,26 @@ import Page from '../../../layouts/Page.astro';
 
 <p>Let's say you are able to capture quantitative information about many of those constraints from the front-lines.  Let's focus on sales conversion processes as an example.  What if you collect or measure how long each sales take to get through each one of your sales funnel stages?  After a bit of analysis, you find out that this is a constraint in meeting your sales targets - deals over a certain dollar value take twice as long and cost twice as much to process than smaller deals.  Now if you model this against your current sales forecast you can see the total potential cost and delay and its impact on making your numbers.  You have a decision to make: do nothing, it is the way it is, and keep this information going in your models so you manage expectations; improve the process (add more people, prioritize at the deal desk and legal teams differently); or fix the root-cause (understand why it's taking longer and re-visit policies).</p>
 
-<p>What would you do?</p>
+<p>What would you do?</p>`;
+---
+
+<Page title={title} description={`Archived blog post from rondimon.com — ${dateStr}`}>
+
+  <section class="container py-20 md:py-28">
+    <div class="max-w-3xl animate-in">
+      <a href="/about/archive" class="inline-flex items-center text-sm text-text-muted hover:text-accent transition-colors mb-8">
+        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+        Archive
+      </a>
+      <p class="text-sm text-text-muted mb-4">{dateStr}</p>
+      <h1 class="text-3xl md:text-4xl font-heading font-bold text-text-primary">
+        {title}
+      </h1>
     </div>
+
+    <div class="mt-12 max-w-3xl prose-archive" set:html={content} />
   </section>
 
 </Page>

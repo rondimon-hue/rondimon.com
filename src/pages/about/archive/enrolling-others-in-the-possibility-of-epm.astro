@@ -1,8 +1,12 @@
 ---
 import Page from '../../../layouts/Page.astro';
+
+const title = `Enrolling others in the possibility of EPM`;
+const dateStr = "April 2, 2013";
+const content = `<p>I just blogged a bit more about the purpose of my book over <a href="http://www.checkpointllc.com/content/epm-done-right">here</a> at the CheckPoint Consulting blog - check it out!</p>`;
 ---
 
-<Page title="Enrolling others in the possibility of EPM" description="Archived blog post from rondimon.com — April 2, 2013">
+<Page title={title} description={`Archived blog post from rondimon.com — ${dateStr}`}>
 
   <section class="container py-20 md:py-28">
     <div class="max-w-3xl animate-in">
@@ -12,15 +16,13 @@ import Page from '../../../layouts/Page.astro';
         </svg>
         Archive
       </a>
-      <p class="text-sm text-text-muted mb-4">April 2, 2013</p>
+      <p class="text-sm text-text-muted mb-4">{dateStr}</p>
       <h1 class="text-3xl md:text-4xl font-heading font-bold text-text-primary">
-        Enrolling others in the possibility of EPM
+        {title}
       </h1>
     </div>
 
-    <div class="mt-12 max-w-3xl prose-archive">
-      <p>I just blogged a bit more about the purpose of my book over <a href="http://www.checkpointllc.com/content/epm-done-right">here</a> at the CheckPoint Consulting blog - check it out!</p>
-    </div>
+    <div class="mt-12 max-w-3xl prose-archive" set:html={content} />
   </section>
 
 </Page>

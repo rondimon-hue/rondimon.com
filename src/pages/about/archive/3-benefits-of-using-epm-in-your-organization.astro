@@ -1,8 +1,28 @@
 ---
 import Page from '../../../layouts/Page.astro';
+
+const title = `3 Benefits of Using EPM in Your Organization`;
+const dateStr = "August 21, 2014";
+const content = `<p>EPM was designed to fill the strategy to execution gap. It's the new approach to management that makes strategy everyone's job, that gives them the tools and processes to execute based on focus, alignment, and accountability. Let’s discuss three of the five benefits of EPM that I share in my book <a href="http://www.amazon.com/Enterprise-Performance-Management-Done-Right-ebook/dp/B00BR02GR2/ref=la_B00BUD4SH2_1_1?s=books&ie=UTF8&qid=1407938503&sr=1-1">Enterprise Performance Management Done Right: An Operating System for Your Organization (Wiley CIO)</a>:<br>
+<ol><br>
+	<li><strong><strong>Management Efficiency</strong></strong></p>
+
+<p><a href="https://rondimon.com/wp-content/uploads/2014/08/blog-8-20-14.png"><img class="wp-image-164 size-medium" src="/images/archive/blog-8-20-14.png" alt="Enterprise Performance Management. Difference between "Run the Business" and "Manage the Businesss"" width="300" height="128" /></a> Differences between “Run the Business” and “Manage the Business”</li><br>
+</ol><br>
+EPM enables standard management processes that every company must do well: Budgeting, planning and forecasting Financial consolidation and statutory reporting Management reporting and business intelligence Profitability analysis, and Other financial and operational modeling, planning, analysis, and reporting EPM leverages the investment you have already made in Enterprise Resource Management, Customer Relationship Management, Supply Chain Management, Sales Force Automation, and other transactional systems.<br>
+<ol start="2"><br>
+	<li><strong>Executing Strategy</strong></li><br>
+</ol><br>
+EPM can help close the loop between what you want to happen in the business (and how), and what actually happened (and why): Records and documents business model assumptions, constraints, and drivers Connects those models into your annual operating plans, budgets, and forecasts Monitors and alerts exceptional variances from actual to plan Helps you understand the root causes of variance and plug that corporate knowledge Ties it all together with a common business language and common master data to improve visibility, focus, and alignment Giving more stakeholder alignment .<br>
+<ol start="3"><br>
+	<li><strong>Improving Performance</strong></li><br>
+</ol><br>
+EPM can have a material impact on the top and bottom line, on the balance sheet, and on overall return on capital: It can improve visibility into the key drivers of value in the business. It can show the cause and effect relationship of operational metrics on financial performance. It helps you focus on the right things in the business. It can bring agility to business models and organizational structures. Giving better business decisions that are based on more timely information</p>
+
+<p>You can learn more about EPM and how it can help your organization build a common business process to execute it’s strategy in my book <a href="http://www.amazon.com/Enterprise-Performance-Management-Done-Right-ebook/dp/B00BR02GR2/ref=la_B00BUD4SH2_1_1?s=books&ie=UTF8&qid=1407938503&sr=1-1">Enterprise Performance Management Done Right: An Operating System for Your Organization (Wiley CIO)</a></p>`;
 ---
 
-<Page title="3 Benefits of Using EPM in Your Organization" description="Archived blog post from rondimon.com — August 21, 2014">
+<Page title={title} description={`Archived blog post from rondimon.com — ${dateStr}`}>
 
   <section class="container py-20 md:py-28">
     <div class="max-w-3xl animate-in">
@@ -12,31 +32,13 @@ import Page from '../../../layouts/Page.astro';
         </svg>
         Archive
       </a>
-      <p class="text-sm text-text-muted mb-4">August 21, 2014</p>
+      <p class="text-sm text-text-muted mb-4">{dateStr}</p>
       <h1 class="text-3xl md:text-4xl font-heading font-bold text-text-primary">
-        3 Benefits of Using EPM in Your Organization
+        {title}
       </h1>
     </div>
 
-    <div class="mt-12 max-w-3xl prose-archive">
-      <p>EPM was designed to fill the strategy to execution gap. It's the new approach to management that makes strategy everyone's job, that gives them the tools and processes to execute based on focus, alignment, and accountability. Let’s discuss three of the five benefits of EPM that I share in my book <a href="http://www.amazon.com/Enterprise-Performance-Management-Done-Right-ebook/dp/B00BR02GR2/ref=la_B00BUD4SH2_1_1?s=books&ie=UTF8&qid=1407938503&sr=1-1">Enterprise Performance Management Done Right: An Operating System for Your Organization (Wiley CIO)</a>:<br />
-<ol><br />
-	<li><strong><strong>Management Efficiency</strong></strong></p>
-
-<p><a href="https://rondimon.com/wp-content/uploads/2014/08/blog-8-20-14.png"><img class="wp-image-164 size-medium" src="/images/archive/blog-8-20-14.png" alt="Enterprise Performance Management. Difference between "Run the Business" and "Manage the Businesss"" width="300" height="128" /></a> Differences between “Run the Business” and “Manage the Business”</li><br />
-</ol><br />
-EPM enables standard management processes that every company must do well: Budgeting, planning and forecasting Financial consolidation and statutory reporting Management reporting and business intelligence Profitability analysis, and Other financial and operational modeling, planning, analysis, and reporting EPM leverages the investment you have already made in Enterprise Resource Management, Customer Relationship Management, Supply Chain Management, Sales Force Automation, and other transactional systems.<br />
-<ol start="2"><br />
-	<li><strong>Executing Strategy</strong></li><br />
-</ol><br />
-EPM can help close the loop between what you want to happen in the business (and how), and what actually happened (and why): Records and documents business model assumptions, constraints, and drivers Connects those models into your annual operating plans, budgets, and forecasts Monitors and alerts exceptional variances from actual to plan Helps you understand the root causes of variance and plug that corporate knowledge Ties it all together with a common business language and common master data to improve visibility, focus, and alignment Giving more stakeholder alignment .<br />
-<ol start="3"><br />
-	<li><strong>Improving Performance</strong></li><br />
-</ol><br />
-EPM can have a material impact on the top and bottom line, on the balance sheet, and on overall return on capital: It can improve visibility into the key drivers of value in the business. It can show the cause and effect relationship of operational metrics on financial performance. It helps you focus on the right things in the business. It can bring agility to business models and organizational structures. Giving better business decisions that are based on more timely information</p>
-
-<p>You can learn more about EPM and how it can help your organization build a common business process to execute it’s strategy in my book <a href="http://www.amazon.com/Enterprise-Performance-Management-Done-Right-ebook/dp/B00BR02GR2/ref=la_B00BUD4SH2_1_1?s=books&ie=UTF8&qid=1407938503&sr=1-1">Enterprise Performance Management Done Right: An Operating System for Your Organization (Wiley CIO)</a></p>
-    </div>
+    <div class="mt-12 max-w-3xl prose-archive" set:html={content} />
   </section>
 
 </Page>

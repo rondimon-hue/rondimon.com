@@ -1,8 +1,22 @@
 ---
 import Page from '../../../layouts/Page.astro';
+
+const title = `Top 7 Signs Your Organization Needs Enterprise Performance Management`;
+const dateStr = "August 14, 2014";
+const content = `<p>In working with my clients across a wide spectrum of business sizes, industries, and geographies, when it comes to EPM, there are some “buckets” of pain I have found common to them all. Here <a href="http://www.amazon.com/gp/product/1118370759/ref=as_li_ss_tl?ie=UTF8&camp=1789&creative=390957&creativeASIN=1118370759&linkCode=as2&tag=thebusifoun-20%22%3EEnterprise%20Performance%20Management%20Done%20Right:%20An%20Operating%20System%20for%20Your%20Organization%20(Wiley%20CIO)%3C/a%3E%3Cimg%20src=%22http://www.assoc-amazon.com/e/ir?t=thebusifoun-20&l=as2&o=1&a=1118370759%22%20width=%221%22%20height=%221%22%20border=%220%22%20alt=%22%22%20style=%22border:none%20!important;%20margin:0px%20!important;%22"><img class="alignright wp-image-151 size-medium" src="/images/archive/blog-8-14-14.png" alt="Enterprise Performance Management" width="300" height="228" /></a>are 7 reasons your organization needs EPM:<br>
+<ol><br>
+	<li>More time is spent on assembling the numbers than on analyzing them— all this manual effort makes us inefficient and not very scalable.</li><br>
+	<li>People show up to meetings with “their” numbers, and we don't know how they got those numbers—there is not a lot of confidence.</li><br>
+	<li>Some people aren't getting the reports or analyses we're sending out— it either gets lost in their email or the right people aren't on the distribution list (or they're ignoring it).</li><br>
+	<li>There is little alignment across functions (Sales, Marketing, Development, HR).</li><br>
+	<li>People aren't following the prescribed processes, especially for submitting their plans and forecasts—they make different assumptions and interpret what we want differently.</li><br>
+	<li>The right people don't have access</li><br>
+	<li>Sometimes the data is just plain wrong— it doesn't include the latest numbers or it's an old version, or it's missing parts.</li><br>
+</ol><br>
+You can learn more about EPM and how it can help your organization build a common business process to execute its strategy in my book <a href="http://www.amazon.com/Enterprise-Performance-Management-Done-Right-ebook/dp/B00BR02GR2/ref=la_B00BUD4SH2_1_1?s=books&ie=UTF8&qid=1407938503&sr=1-1">Enterprise Performance Management Done Right: An Operating System for Your Organization (Wiley CIO)</a></p>`;
 ---
 
-<Page title="Top 7 Signs Your Organization Needs Enterprise Performance Management" description="Archived blog post from rondimon.com — August 14, 2014">
+<Page title={title} description={`Archived blog post from rondimon.com — ${dateStr}`}>
 
   <section class="container py-20 md:py-28">
     <div class="max-w-3xl animate-in">
@@ -12,25 +26,13 @@ import Page from '../../../layouts/Page.astro';
         </svg>
         Archive
       </a>
-      <p class="text-sm text-text-muted mb-4">August 14, 2014</p>
+      <p class="text-sm text-text-muted mb-4">{dateStr}</p>
       <h1 class="text-3xl md:text-4xl font-heading font-bold text-text-primary">
-        Top 7 Signs Your Organization Needs Enterprise Performance Management
+        {title}
       </h1>
     </div>
 
-    <div class="mt-12 max-w-3xl prose-archive">
-      <p>In working with my clients across a wide spectrum of business sizes, industries, and geographies, when it comes to EPM, there are some “buckets” of pain I have found common to them all. Here <a href="http://www.amazon.com/gp/product/1118370759/ref=as_li_ss_tl?ie=UTF8&camp=1789&creative=390957&creativeASIN=1118370759&linkCode=as2&tag=thebusifoun-20%22%3EEnterprise%20Performance%20Management%20Done%20Right:%20An%20Operating%20System%20for%20Your%20Organization%20(Wiley%20CIO)%3C/a%3E%3Cimg%20src=%22http://www.assoc-amazon.com/e/ir?t=thebusifoun-20&l=as2&o=1&a=1118370759%22%20width=%221%22%20height=%221%22%20border=%220%22%20alt=%22%22%20style=%22border:none%20!important;%20margin:0px%20!important;%22"><img class="alignright wp-image-151 size-medium" src="/images/archive/blog-8-14-14.png" alt="Enterprise Performance Management" width="300" height="228" /></a>are 7 reasons your organization needs EPM:<br />
-<ol><br />
-	<li>More time is spent on assembling the numbers than on analyzing them— all this manual effort makes us inefficient and not very scalable.</li><br />
-	<li>People show up to meetings with “their” numbers, and we don't know how they got those numbers—there is not a lot of confidence.</li><br />
-	<li>Some people aren't getting the reports or analyses we're sending out— it either gets lost in their email or the right people aren't on the distribution list (or they're ignoring it).</li><br />
-	<li>There is little alignment across functions (Sales, Marketing, Development, HR).</li><br />
-	<li>People aren't following the prescribed processes, especially for submitting their plans and forecasts—they make different assumptions and interpret what we want differently.</li><br />
-	<li>The right people don't have access</li><br />
-	<li>Sometimes the data is just plain wrong— it doesn't include the latest numbers or it's an old version, or it's missing parts.</li><br />
-</ol><br />
-You can learn more about EPM and how it can help your organization build a common business process to execute its strategy in my book <a href="http://www.amazon.com/Enterprise-Performance-Management-Done-Right-ebook/dp/B00BR02GR2/ref=la_B00BUD4SH2_1_1?s=books&ie=UTF8&qid=1407938503&sr=1-1">Enterprise Performance Management Done Right: An Operating System for Your Organization (Wiley CIO)</a></p>
-    </div>
+    <div class="mt-12 max-w-3xl prose-archive" set:html={content} />
   </section>
 
 </Page>

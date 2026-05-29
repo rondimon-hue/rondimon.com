@@ -1,8 +1,15 @@
 ---
 import Page from '../../../layouts/Page.astro';
+
+const title = `Getting Better at Getting Ready: Scenario Planning for Competitive Advantage`;
+const dateStr = "January 15, 2019";
+const content = `<h1>Getting Better at Getting Ready: Scenario Planning for Competitive Advantage</h1>
+What if you had, ready at hand, an instruction book that told you exactly what to do in the event of any kind of emergency? You would feel more prepared to handle whatever challenge comes at you, wouldn’t you? Maybe you’d feel more confident knowing you always had a "plan B." That’s what Scenario Planning is: an organization’s instruction book on how to handle major challenges. It’s the process of anticipating change before it happens and building an action plan for when it does. Read more <a href="https://community.anaplan.com/t5/Blog/Getting-Better-at-Getting-Ready-Scenario-Planning-for/ba-p/40043" target="_blank" rel="nofollow noopener">here</a>.
+
+<img class=" size-full wp-image-254 aligncenter" src="/images/archive/ca95f065-6cb6-4f54-853b-c2318735f81d.png" alt="CA95F065-6CB6-4F54-853B-C2318735F81D.png" width="500" height="300" />`;
 ---
 
-<Page title="Getting Better at Getting Ready: Scenario Planning for Competitive Advantage" description="Archived blog post from rondimon.com — January 15, 2019">
+<Page title={title} description={`Archived blog post from rondimon.com — ${dateStr}`}>
 
   <section class="container py-20 md:py-28">
     <div class="max-w-3xl animate-in">
@@ -12,18 +19,13 @@ import Page from '../../../layouts/Page.astro';
         </svg>
         Archive
       </a>
-      <p class="text-sm text-text-muted mb-4">January 15, 2019</p>
+      <p class="text-sm text-text-muted mb-4">{dateStr}</p>
       <h1 class="text-3xl md:text-4xl font-heading font-bold text-text-primary">
-        Getting Better at Getting Ready: Scenario Planning for Competitive Advantage
+        {title}
       </h1>
     </div>
 
-    <div class="mt-12 max-w-3xl prose-archive">
-      <h1>Getting Better at Getting Ready: Scenario Planning for Competitive Advantage</h1>
-What if you had, ready at hand, an instruction book that told you exactly what to do in the event of any kind of emergency? You would feel more prepared to handle whatever challenge comes at you, wouldn’t you? Maybe you’d feel more confident knowing you always had a "plan B." That’s what Scenario Planning is: an organization’s instruction book on how to handle major challenges. It’s the process of anticipating change before it happens and building an action plan for when it does. Read more <a href="https://community.anaplan.com/t5/Blog/Getting-Better-at-Getting-Ready-Scenario-Planning-for/ba-p/40043" target="_blank" rel="nofollow noopener">here</a>.
-
-<img class=" size-full wp-image-254 aligncenter" src="/images/archive/ca95f065-6cb6-4f54-853b-c2318735f81d.png" alt="CA95F065-6CB6-4F54-853B-C2318735F81D.png" width="500" height="300" />
-    </div>
+    <div class="mt-12 max-w-3xl prose-archive" set:html={content} />
   </section>
 
 </Page>

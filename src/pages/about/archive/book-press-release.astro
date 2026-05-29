@@ -1,8 +1,14 @@
 ---
 import Page from '../../../layouts/Page.astro';
+
+const title = `Book Press Release`;
+const dateStr = "April 1, 2013";
+const content = `<p>Here's the CheckPoint Consulting <a href="http://www.prlog.org/12109381-checkpoint-consulting-gives-execs-profitable-revenue-growth-roadmap-with-new-book-epm-done-right.html">press release</a> about my book.<a href="http://rondimon.com/wp-content/uploads/2013/04/un-grand-coup.png"><img class="alignright size-medium wp-image-58" alt="un grand coup" src="/images/archive/un-grand-coup.png" width="300" height="287" /></a></p>
+
+<p>And I noticed <a href="http://goo.gl/o4yIX">amazon.com</a> said they only had 2 copies left in stock (more on the way).  That's encouraging!  Unless they only ordered 10 to begin with :-)</p>`;
 ---
 
-<Page title="Book Press Release" description="Archived blog post from rondimon.com — April 1, 2013">
+<Page title={title} description={`Archived blog post from rondimon.com — ${dateStr}`}>
 
   <section class="container py-20 md:py-28">
     <div class="max-w-3xl animate-in">
@@ -12,17 +18,13 @@ import Page from '../../../layouts/Page.astro';
         </svg>
         Archive
       </a>
-      <p class="text-sm text-text-muted mb-4">April 1, 2013</p>
+      <p class="text-sm text-text-muted mb-4">{dateStr}</p>
       <h1 class="text-3xl md:text-4xl font-heading font-bold text-text-primary">
-        Book Press Release
+        {title}
       </h1>
     </div>
 
-    <div class="mt-12 max-w-3xl prose-archive">
-      <p>Here's the CheckPoint Consulting <a href="http://www.prlog.org/12109381-checkpoint-consulting-gives-execs-profitable-revenue-growth-roadmap-with-new-book-epm-done-right.html">press release</a> about my book.<a href="http://rondimon.com/wp-content/uploads/2013/04/un-grand-coup.png"><img class="alignright size-medium wp-image-58" alt="un grand coup" src="/images/archive/un-grand-coup.png" width="300" height="287" /></a></p>
-
-<p>And I noticed <a href="http://goo.gl/o4yIX">amazon.com</a> said they only had 2 copies left in stock (more on the way).  That's encouraging!  Unless they only ordered 10 to begin with :-)</p>
-    </div>
+    <div class="mt-12 max-w-3xl prose-archive" set:html={content} />
   </section>
 
 </Page>

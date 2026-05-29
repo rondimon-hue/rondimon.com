@@ -1,8 +1,35 @@
 ---
 import Page from '../../../layouts/Page.astro';
+
+const title = `The Management Operating System`;
+const dateStr = "March 21, 2013";
+const content = `<p><a href="http://rondimon.com/wp-content/uploads/2013/03/cycle1.png"><img class="alignright size-medium wp-image-42" alt="The management cycle" src="/images/archive/cycle1.png" width="300" height="197" /></a></p>
+
+<p>Enterprise Performance Management needs a closed-loop process to be truly effective.  And this process should:<br>
+<ul><br>
+	<li>Bridge the gap between strategy and execution</li><br>
+	<li>Support anyone in the enterprise in making better, faster, fact-based decisions</li><br>
+	<li>Transform all of that data you have into usable insights that will cause more effective actions to take place</li><br>
+	<li>Help align the enterprise on a common set of objectives, and have everyone focused on the right things</li><br>
+</ul><br>
+Each part of this closed-loop process should feed off of the other parts of the process.  For example, performance targets (vetted and agreed on in scenarios and what-if models) should feed the planning process, and actual results should be compared to the commitments made (by business unit, by product line, by sales team) in that same planning process.</p>
+
+<p>In <a href="http://goo.gl/o4yIX">EPM Done Right</a>, I use the management cycle pictured here to describe the overall process and the various parts that make it up.  It starts with Strategy and strategic objectives, and includes:<br>
+<ul><br>
+	<li>DEBATE: enabled by scenarios, what-if models, and strategic plans - this is where targets come from</li><br>
+	<li>COMMIT: enabled by budgets, plans and forecasts - which document who is on the hook for what, by when</li><br>
+</ul><br>
+Then you go off and run your business: get customers, ship products, hire people, and so on.  The cycle continues with:<br>
+<ul><br>
+	<li>GATHER: where you collect your massive amounts of data and turn it into useable information</li><br>
+	<li>UNDERSTAND: analyzing your results and compare them to history, predictions, trends, and so on until you get to the root cause of your performance (both positive and negative)</li><br>
+</ul><br>
+And the cycle continues as you compare your performance to your strategy and adjust accordingly.</p>
+
+<p>Every organization does these parts in one fashion or another - some effectively and some not so much.  It's when you bring these parts together using common data, common metadata, common transformations, and so on, and connect them to one-another, then you create the backbone of EPM to help you improve performance every step of the way.</p>`;
 ---
 
-<Page title="The Management Operating System" description="Archived blog post from rondimon.com — March 21, 2013">
+<Page title={title} description={`Archived blog post from rondimon.com — ${dateStr}`}>
 
   <section class="container py-20 md:py-28">
     <div class="max-w-3xl animate-in">
@@ -12,38 +39,13 @@ import Page from '../../../layouts/Page.astro';
         </svg>
         Archive
       </a>
-      <p class="text-sm text-text-muted mb-4">March 21, 2013</p>
+      <p class="text-sm text-text-muted mb-4">{dateStr}</p>
       <h1 class="text-3xl md:text-4xl font-heading font-bold text-text-primary">
-        The Management Operating System
+        {title}
       </h1>
     </div>
 
-    <div class="mt-12 max-w-3xl prose-archive">
-      <p><a href="http://rondimon.com/wp-content/uploads/2013/03/cycle1.png"><img class="alignright size-medium wp-image-42" alt="The management cycle" src="/images/archive/cycle1.png" width="300" height="197" /></a></p>
-
-<p>Enterprise Performance Management needs a closed-loop process to be truly effective.  And this process should:<br />
-<ul><br />
-	<li>Bridge the gap between strategy and execution</li><br />
-	<li>Support anyone in the enterprise in making better, faster, fact-based decisions</li><br />
-	<li>Transform all of that data you have into usable insights that will cause more effective actions to take place</li><br />
-	<li>Help align the enterprise on a common set of objectives, and have everyone focused on the right things</li><br />
-</ul><br />
-Each part of this closed-loop process should feed off of the other parts of the process.  For example, performance targets (vetted and agreed on in scenarios and what-if models) should feed the planning process, and actual results should be compared to the commitments made (by business unit, by product line, by sales team) in that same planning process.</p>
-
-<p>In <a href="http://goo.gl/o4yIX">EPM Done Right</a>, I use the management cycle pictured here to <!--more-->describe the overall process and the various parts that make it up.  It starts with Strategy and strategic objectives, and includes:<br />
-<ul><br />
-	<li>DEBATE: enabled by scenarios, what-if models, and strategic plans - this is where targets come from</li><br />
-	<li>COMMIT: enabled by budgets, plans and forecasts - which document who is on the hook for what, by when</li><br />
-</ul><br />
-Then you go off and run your business: get customers, ship products, hire people, and so on.  The cycle continues with:<br />
-<ul><br />
-	<li>GATHER: where you collect your massive amounts of data and turn it into useable information</li><br />
-	<li>UNDERSTAND: analyzing your results and compare them to history, predictions, trends, and so on until you get to the root cause of your performance (both positive and negative)</li><br />
-</ul><br />
-And the cycle continues as you compare your performance to your strategy and adjust accordingly.</p>
-
-<p>Every organization does these parts in one fashion or another - some effectively and some not so much.  It's when you bring these parts together using common data, common metadata, common transformations, and so on, and connect them to one-another, then you create the backbone of EPM to help you improve performance every step of the way.</p>
-    </div>
+    <div class="mt-12 max-w-3xl prose-archive" set:html={content} />
   </section>
 
 </Page>

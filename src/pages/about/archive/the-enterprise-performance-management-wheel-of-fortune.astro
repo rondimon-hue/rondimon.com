@@ -1,8 +1,28 @@
 ---
 import Page from '../../../layouts/Page.astro';
+
+const title = `The Enterprise Performance Management Wheel of Fortune`;
+const dateStr = "December 23, 2015";
+const content = `<p>I'm extremely proud to announce I'll be presenting at ODTUG's Kscope16 in Chicago in July of 2016.  For details on the event, <a href="http://kscope16.com">click here</a>.</p>
+
+<p>One of my presentations is something new this year: the EPM Wheel of Fortune.</p>
+
+<img class="alignnone size-full wp-image-207" src="/images/archive/wheel.jpg" alt="wheel" width="600" height="728" />
+
+<p>Here's how it works:<br>
+<ul><br>
+	<li>An audience member volunteers to spin the wheel (yes, it's literally a wheel that spins), and it will land on a key driver of value in many organizations;</li><br>
+	<li>Then, together with the audience, we agree on the definition of the driver and we decompose it into some of its component parts;</li><br>
+	<li>We take the driver and it's components and we walk it through the EPM process (see <a href="http://rondimon.com/2013/03/21/the-management-operating-system/">here</a> for more details);</li><br>
+	<li>When the walk-through is done, we'll have a good set of initiatives that can give new insights and accountability on the main value driver - and use them for competitive advantage.</li><br>
+	<li>Then we do it all over again, using a new spin and a new value-driver.</li><br>
+</ul><br>
+By the end of this session, participants will see a simple process for uncovering new initiatives that use the power of EPM to make a difference in the business.</p>
+
+<p>Hopefully I'll see you at Kscope16 in Chicago and we'll have some fun and learn something new together.</p>`;
 ---
 
-<Page title="The Enterprise Performance Management Wheel of Fortune" description="Archived blog post from rondimon.com — December 23, 2015">
+<Page title={title} description={`Archived blog post from rondimon.com — ${dateStr}`}>
 
   <section class="container py-20 md:py-28">
     <div class="max-w-3xl animate-in">
@@ -12,31 +32,13 @@ import Page from '../../../layouts/Page.astro';
         </svg>
         Archive
       </a>
-      <p class="text-sm text-text-muted mb-4">December 23, 2015</p>
+      <p class="text-sm text-text-muted mb-4">{dateStr}</p>
       <h1 class="text-3xl md:text-4xl font-heading font-bold text-text-primary">
-        The Enterprise Performance Management Wheel of Fortune
+        {title}
       </h1>
     </div>
 
-    <div class="mt-12 max-w-3xl prose-archive">
-      <p>I'm extremely proud to announce I'll be presenting at ODTUG's Kscope16 in Chicago in July of 2016.  For details on the event, <a href="http://kscope16.com">click here</a>.</p>
-
-<p>One of my presentations is something new this year: the EPM Wheel of Fortune.</p>
-
-<img class="alignnone size-full wp-image-207" src="/images/archive/wheel.jpg" alt="wheel" width="600" height="728" />
-
-<p>Here's how it works:<br />
-<ul><br />
-	<li>An audience member volunteers to spin the wheel (yes, it's literally a wheel that spins), and it will land on a key driver of value in many organizations;</li><br />
-	<li>Then, together with the audience, we agree on the definition of the driver and we decompose it into some of its component parts;</li><br />
-	<li>We take the driver and it's components and we walk it through the EPM process (see <a href="http://rondimon.com/2013/03/21/the-management-operating-system/">here</a> for more details);</li><br />
-	<li>When the walk-through is done, we'll have a good set of initiatives that can give new insights and accountability on the main value driver - and use them for competitive advantage.</li><br />
-	<li>Then we do it all over again, using a new spin and a new value-driver.</li><br />
-</ul><br />
-By the end of this session, participants will see a simple process for uncovering new initiatives that use the power of EPM to make a difference in the business.</p>
-
-<p>Hopefully I'll see you at Kscope16 in Chicago and we'll have some fun and learn something new together.</p>
-    </div>
+    <div class="mt-12 max-w-3xl prose-archive" set:html={content} />
   </section>
 
 </Page>

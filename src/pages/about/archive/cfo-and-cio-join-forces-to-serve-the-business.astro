@@ -1,8 +1,36 @@
 ---
 import Page from '../../../layouts/Page.astro';
+
+const title = `CFO and CIO join forces to serve "The Business"`;
+const dateStr = "April 25, 2013";
+const content = `<blockquote><strong>Organizations that have implemented Performance Management more broadly are nearly four times more likely to be among the most competitive organizations in their industry.</strong></blockquote>
+<p style="text-align:right;">—Brian McDonough, Research Manager, Analytics and Data Warehousing Software, IDC, Financial Performance and Strategy Management Survey of Buyer Priorities for 2011, Doc #226261, Dec. 2010</p>
+<p style="text-align:left;">Harvard Business Review advocates that business and IT shouldn’t just be aligned, they should be ‘‘forged together.’’  (David M. Upton and Bradley R. Staats, ‘‘Radically Simple IT,’’ Harvard Business Review, March 2008.)  One way HBR says you can do this is by having the CIO report directly to the CEO or COO, not the CFO. While I have seen this reporting structure in many of our client organizations, it does not automatically mean that IT and the business are forged together, or even aligned for that matter. Certainly the business analyst (BA) role has done much for crossing the chasm, in both directions, for IT and the business. And where I see the most successful financial systems implementations are where there the finance/information systems (IS) role acts as the BA. But this is still not a guarantee for a meeting of the minds between business and IT.</p>
+
+<p><a href="http://rondimon.com/wp-content/uploads/2013/04/2-way-arrows.png"><img class=" wp-image-97" alt="2 way arrows" src="/images/archive/2-way-arrows.png" width="270" height="208" /></a> Photo © Ruth Dimon, 2013<br>
+<p style="text-align:left;">I propose five ‘‘better’’ practices for closer IT/business alignment based on my client engagements over the last 30 years:</p><br>
+1. <strong>Start with corporate strategy and objectives.</strong> It sounds all well and good, but many IT organizations miss this. We must directly correlate any and all IT initiatives with the <a title="Closing the Strategy-Execution gap" href="http://rondimon.com/2013/04/22/closing-the-strategy-execution-gap/">overall corporate strategy</a>. IT should be able to show a ‘‘drill path’’ from strategy, through objectives, into initiatives and on to metrics and data. If you show multiple correlations from many systems to many strategic objectives, you are more aligned.</p>
+
+<p>2. <strong>Take a holistic view</strong>. Usually, one part of the business, a function such as Marketing, Operations, or HR, comes to IT with a business problem to solve. For example, Sales would ask, ‘‘We need more visibility into customer profitability to find out if any customers are costing us money.’’ It is IT’s job to take the enterprise-wide view of this problem.Who else needs to see this information (Customer Support, Product Development, Marketing)? How will this information be made ‘‘actionable’’ so we can watch trends over time, adjust for seasonality, compare with forecasts, and eventually fire our unprofitable customers? When Sales approaches IT, IT takes the request as an enterprise request, not a Sales request.</p>
+
+<p>3. <strong>Emphasize the requirements gap</strong>. IT organizations usually do a very good job of gathering user requirements, data models, source system availability, and so on. These are bottom-up requirements. Many times I see a lack of insight into top-down requirements: What are the line-of-business owners and functional executives looking for? Business/IT alignment happens when the BA looks into the gap between bottom up and top-down. I worked on a large enterprise-wide financial system implementation for a Fortune 500 holding company—it was grueling, but in the end it worked according to spec and added tremendous value to the company (it had a net positive impact on earnings per share ). When we went to the CFO to tell him we were in production, he wanted to know where his spend-analysis was. This was never in the spec. Big gap, low alignment, no expectations management.</p>
+
+<p>4. <strong>Have a long-term roadmap into which short-term initiatives fit.</strong> Designing, building, and rolling out systems (and processes for that matter), without a long-term IT roadmap is a recipe for more information silos, more redundant systems, more extract, transform, load (ETL) complexity, and so on. The roadmap should make some simple distinctions, such as the layers of information-value in the organization, for example (top-down):<br>
+<ul><br>
+	<li>Knowledge</li><br>
+	<li>Actionable information</li><br>
+	<li>Value-added information (and business rules)</li><br>
+	<li>Consolidated, summarized, hierarchical master data</li><br>
+	<li>Transformed data</li><br>
+	<li>Operational data (or data warehouse)</li><br>
+	<li>Transactional data</li><br>
+</ul><br>
+<p style="text-align:left;">5. <strong>Accountability</strong>. The final ‘‘better’’ practice has to do with accountability. This is the idea of making sure all levels and all functions of the business are working on their part of executing the corporate strategy. How do I know, as an accounts receivable (A/R) clerk for example, how what I am doing impacts profitable revenue growth? IT systems should be tailored for the appropriate intersection of layer and function (tactical finance in this case) in an organization and should come with visibility and insight into my contribution. Without that (and a public measurement system), there will be low or no enterprise accountability.</p><br>
+So how do you prioritize your IT portfolio of initiatives in this economy?  And how involved is Finance?<br>
+For more, please read my book "<a title="Enterprise Performance Management “Done Right”" href="http://rondimon.com/2013/03/20/enterprise-performance-management-done-right/">Enterprise Performance Management Done Right.</a>"</p>`;
 ---
 
-<Page title="CFO and CIO join forces to serve \"The Business\"" description="Archived blog post from rondimon.com — April 25, 2013">
+<Page title={title} description={`Archived blog post from rondimon.com — ${dateStr}`}>
 
   <section class="container py-20 md:py-28">
     <div class="max-w-3xl animate-in">
@@ -12,39 +40,13 @@ import Page from '../../../layouts/Page.astro';
         </svg>
         Archive
       </a>
-      <p class="text-sm text-text-muted mb-4">April 25, 2013</p>
+      <p class="text-sm text-text-muted mb-4">{dateStr}</p>
       <h1 class="text-3xl md:text-4xl font-heading font-bold text-text-primary">
-        CFO and CIO join forces to serve &quot;The Business&quot;
+        {title}
       </h1>
     </div>
 
-    <div class="mt-12 max-w-3xl prose-archive">
-      <blockquote><strong>Organizations that have implemented Performance Management more broadly are nearly four times more likely to be among the most competitive organizations in their industry.</strong></blockquote>
-<p style="text-align:right;">—Brian McDonough, Research Manager, Analytics and Data Warehousing Software, IDC, Financial Performance and Strategy Management Survey of Buyer Priorities for 2011, Doc #226261, Dec. 2010</p>
-<p style="text-align:left;">Harvard Business Review advocates that business and IT shouldn’t just be aligned, they should be ‘‘forged together.’’  (David M. Upton and Bradley R. Staats, ‘‘Radically Simple IT,’’ Harvard Business Review, March 2008.)  One way HBR says you can do this is by having the CIO report directly to the CEO or COO, not the CFO. While I have seen this reporting structure in many of our client organizations, it does not automatically mean that IT and the business are forged together, or even aligned for that matter. Certainly the business analyst (BA) role has done much for crossing the chasm, in both directions, for IT and the business. And where I see the most successful financial systems implementations are where there the finance/information systems (IS) role acts as the BA. But this is still not a guarantee for a meeting of the minds between business and IT.</p>
-
-<p><a href="http://rondimon.com/wp-content/uploads/2013/04/2-way-arrows.png"><img class=" wp-image-97" alt="2 way arrows" src="/images/archive/2-way-arrows.png" width="270" height="208" /></a> Photo © Ruth Dimon, 2013<br />
-<p style="text-align:left;">I propose five ‘‘better’’ practices for closer IT/business alignment based on my client engagements over the last 30 years:<!--more--></p><br />
-1. <strong>Start with corporate strategy and objectives.</strong> It sounds all well and good, but many IT organizations miss this. We must directly correlate any and all IT initiatives with the <a title="Closing the Strategy-Execution gap" href="http://rondimon.com/2013/04/22/closing-the-strategy-execution-gap/">overall corporate strategy</a>. IT should be able to show a ‘‘drill path’’ from strategy, through objectives, into initiatives and on to metrics and data. If you show multiple correlations from many systems to many strategic objectives, you are more aligned.</p>
-
-<p>2. <strong>Take a holistic view</strong>. Usually, one part of the business, a function such as Marketing, Operations, or HR, comes to IT with a business problem to solve. For example, Sales would ask, ‘‘We need more visibility into customer profitability to find out if any customers are costing us money.’’ It is IT’s job to take the enterprise-wide view of this problem.Who else needs to see this information (Customer Support, Product Development, Marketing)? How will this information be made ‘‘actionable’’ so we can watch trends over time, adjust for seasonality, compare with forecasts, and eventually fire our unprofitable customers? When Sales approaches IT, IT takes the request as an enterprise request, not a Sales request.</p>
-
-<p>3. <strong>Emphasize the requirements gap</strong>. IT organizations usually do a very good job of gathering user requirements, data models, source system availability, and so on. These are bottom-up requirements. Many times I see a lack of insight into top-down requirements: What are the line-of-business owners and functional executives looking for? Business/IT alignment happens when the BA looks into the gap between bottom up and top-down. I worked on a large enterprise-wide financial system implementation for a Fortune 500 holding company—it was grueling, but in the end it worked according to spec and added tremendous value to the company (it had a net positive impact on earnings per share ). When we went to the CFO to tell him we were in production, he wanted to know where his spend-analysis was. This was never in the spec. Big gap, low alignment, no expectations management.</p>
-
-<p>4. <strong>Have a long-term roadmap into which short-term initiatives fit.</strong> Designing, building, and rolling out systems (and processes for that matter), without a long-term IT roadmap is a recipe for more information silos, more redundant systems, more extract, transform, load (ETL) complexity, and so on. The roadmap should make some simple distinctions, such as the layers of information-value in the organization, for example (top-down):<br />
-<ul><br />
-	<li>Knowledge</li><br />
-	<li>Actionable information</li><br />
-	<li>Value-added information (and business rules)</li><br />
-	<li>Consolidated, summarized, hierarchical master data</li><br />
-	<li>Transformed data</li><br />
-	<li>Operational data (or data warehouse)</li><br />
-	<li>Transactional data</li><br />
-</ul><br />
-<p style="text-align:left;">5. <strong>Accountability</strong>. The final ‘‘better’’ practice has to do with accountability. This is the idea of making sure all levels and all functions of the business are working on their part of executing the corporate strategy. How do I know, as an accounts receivable (A/R) clerk for example, how what I am doing impacts profitable revenue growth? IT systems should be tailored for the appropriate intersection of layer and function (tactical finance in this case) in an organization and should come with visibility and insight into my contribution. Without that (and a public measurement system), there will be low or no enterprise accountability.</p><br />
-So how do you prioritize your IT portfolio of initiatives in this economy?  And how involved is Finance?<br />
-For more, please read my book "<a title="Enterprise Performance Management “Done Right”" href="http://rondimon.com/2013/03/20/enterprise-performance-management-done-right/">Enterprise Performance Management Done Right.</a>"</p>
-    </div>
+    <div class="mt-12 max-w-3xl prose-archive" set:html={content} />
   </section>
 
 </Page>

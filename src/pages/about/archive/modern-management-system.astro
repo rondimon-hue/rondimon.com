@@ -1,8 +1,14 @@
 ---
 import Page from '../../../layouts/Page.astro';
+
+const title = `Modern Management System`;
+const dateStr = "February 27, 2014";
+const content = `<p>A modern management system that promotes fact-based decision making, accountability, transparency, and turns your data into a competitive advantage is supported by the four cornerstones of Enterprise Performance Management - brought together by a robust governance framework, process and set of tools.  This is EPM:</p>
+
+<p><a href="http://rondimon.com/wp-content/uploads/2014/02/epm.png"><img class="aligncenter size-medium wp-image-145" alt="epm" src="/images/archive/epm.png" width="300" height="220" /></a></p>`;
 ---
 
-<Page title="Modern Management System" description="Archived blog post from rondimon.com — February 27, 2014">
+<Page title={title} description={`Archived blog post from rondimon.com — ${dateStr}`}>
 
   <section class="container py-20 md:py-28">
     <div class="max-w-3xl animate-in">
@@ -12,17 +18,13 @@ import Page from '../../../layouts/Page.astro';
         </svg>
         Archive
       </a>
-      <p class="text-sm text-text-muted mb-4">February 27, 2014</p>
+      <p class="text-sm text-text-muted mb-4">{dateStr}</p>
       <h1 class="text-3xl md:text-4xl font-heading font-bold text-text-primary">
-        Modern Management System
+        {title}
       </h1>
     </div>
 
-    <div class="mt-12 max-w-3xl prose-archive">
-      <p>A modern management system that promotes fact-based decision making, accountability, transparency, and turns your data into a competitive advantage is supported by the four cornerstones of Enterprise Performance Management - brought together by a robust governance framework, process and set of tools.  This is EPM:</p>
-
-<p><a href="http://rondimon.com/wp-content/uploads/2014/02/epm.png"><img class="aligncenter size-medium wp-image-145" alt="epm" src="/images/archive/epm.png" width="300" height="220" /></a></p>
-    </div>
+    <div class="mt-12 max-w-3xl prose-archive" set:html={content} />
   </section>
 
 </Page>
