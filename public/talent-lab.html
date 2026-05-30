@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Talent Lab — EIT Journey & Organization</title>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,700;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --cream:    #fffff8;
+  --ink:      #111111;
+  --ink-mid:  #444444;
+  --ink-lite: #888888;
+  --rule:     #ccccbb;
+  --emp:      #7a4f2f;
+  --startup:  #2d5f6e;
+  --org:      #4a4a2a;
+  --mentor-bg:#f4eeef;
+  --mentor:   #7a3a5a;
+  --comm-bg:  #eef2f5;
+  --community:#2a4a5a;
+  --flywheel: #6a5a2a;
+  --highlight:#f0ece0;
+  --doe:      #3a5a3a;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: 'EB Garamond', Georgia, 'Times New Roman', serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* ── HEADER ── */
+header {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 2.5rem 2rem 1.25rem;
+  border-bottom: 1px solid var(--rule);
+}
+header h1 { font-size: 1.9rem; font-weight: 400; letter-spacing: 0.02em; }
+header .subtitle { font-size: 1rem; color: var(--ink-mid); font-style: italic; margin-top: 0.2rem; }
+header .epigraph {
+  margin-top: 0.9rem;
+  font-size: 0.88rem;
+  color: var(--ink-lite);
+  max-width: 640px;
+  font-style: italic;
+  border-left: 2px solid var(--rule);
+  padding-left: 1rem;
+  line-height: 1.6;
+}
+.hint {
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--ink-lite);
+  font-style: italic;
+  padding: 0.6rem 0 0;
+}
+
+/* ── OUTER WRAPPER: 3 columns — Mentor | Diagram+Notes | Community ── */
+.outer {
+  max-width: 1300px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  min-height: 960px;
+}
+
+/* ── PILLAR COLUMNS ── */
+.pillar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 0;
+  position: relative;
+}
+.pillar-mentor { background: var(--mentor-bg); }
+.pillar-community { background: var(--comm-bg); }
+
+.pillar-label {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-size: 0.85rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 500;
+  margin-top: 1rem;
+}
+.pillar-mentor .pillar-label {
+  color: var(--mentor);
+  transform: rotate(180deg);
+}
+.pillar-community .pillar-label { color: var(--community); }
+
+.pillar-sub {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-size: 0.72rem;
+  font-style: italic;
+  color: var(--ink-lite);
+  margin-top: 1rem;
+  letter-spacing: 0.06em;
+  line-height: 1.4;
+}
+.pillar-mentor .pillar-sub { transform: rotate(180deg); }
+
+/* ── INNER: 3 columns — flow | community pillar | sidenotes ── */
+.inner {
+  display: grid;
+  grid-template-columns: 1fr 44px 210px;
+  gap: 0;
+  padding: 2rem 0 3rem;
+}
+
+.diagram { padding: 0 1.5rem 0 0.5rem; }
+
+svg#flow {
+  width: 100%;
+  display: block;
+  overflow: visible;
+}
+
+/* ── SVG ELEMENTS ── */
+.stage-group { cursor: pointer; }
+.stage-rect {
+  fill: var(--cream);
+  stroke: var(--ink);
+  stroke-width: 0.9;
+  transition: fill 0.18s;
+}
+.stage-group:hover .stage-rect,
+.stage-rect.active { fill: var(--highlight); }
+
+.stage-label {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 13px;
+  fill: var(--ink);
+  text-anchor: middle;
+  dominant-baseline: middle;
+  pointer-events: none;
+}
+.stage-label.small {
+  font-size: 10.5px;
+  fill: var(--ink-mid);
+  font-style: italic;
+}
+.stage-label.eit {
+  font-size: 10px;
+  fill: var(--ink-lite);
+}
+
+.connector {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 0.85;
+  marker-end: url(#arr);
+}
+.connector.emp   { stroke: var(--emp);      stroke-dasharray: 5 2.5; marker-end: url(#arr-emp); }
+.connector.start { stroke: var(--startup);  stroke-dasharray: 5 2.5; marker-end: url(#arr-su); }
+.connector.fly   { stroke: var(--flywheel); stroke-dasharray: 3 3;   marker-end: url(#arr-fly); stroke-width:1.1; }
+.connector.dash  { stroke-dasharray: 3 2; }
+
+.fork-label {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 11.5px;
+  fill: var(--ink-mid);
+  font-style: italic;
+  text-anchor: middle;
+}
+.path-tag-emp    { font-family: 'EB Garamond',Georgia,serif; font-size:10px; fill:var(--emp);     font-style:italic; text-anchor:middle; }
+.path-tag-start  { font-family: 'EB Garamond',Georgia,serif; font-size:10px; fill:var(--startup); font-style:italic; text-anchor:middle; }
+.annotation      { font-family: 'EB Garamond',Georgia,serif; font-size:9.5px; fill:var(--flywheel); font-style:italic; }
+.dur-tag         { font-family: 'EB Garamond',Georgia,serif; font-size:9px; fill:var(--ink-lite); font-style:italic; }
+.org-tag         { font-family: 'EB Garamond',Georgia,serif; font-size:8.5px; fill:var(--org); text-transform:uppercase; letter-spacing:0.07em; }
+
+/* Org brackets */
+.org-bracket { stroke: var(--org); stroke-width: 0.8; fill: none; }
+
+/* ── SIDENOTES ── */
+.sidenotes {
+  padding: 0 1.5rem 0 0.5rem;
+  padding-top: 0;
+}
+.sidenote {
+  font-size: 0.78rem;
+  color: var(--ink-mid);
+  line-height: 1.5;
+  margin-bottom: 1rem;
+  padding-left: 0.6rem;
+  border-left: 1px solid var(--rule);
+}
+.sidenote.emp-note { border-left-color: var(--emp); color: var(--emp); }
+.sidenote.su-note  { border-left-color: var(--startup); color: var(--startup); }
+.sidenote.fly-note { border-left-color: var(--flywheel); color: var(--flywheel); }
+.sidenote b { font-weight: 500; }
+
+/* ── DETAIL PANEL ── */
+#detail-panel {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  width: 310px;
+  background: var(--cream);
+  border: 1px solid var(--rule);
+  padding: 1.1rem 1.3rem;
+  box-shadow: 0 2px 18px rgba(0,0,0,0.09);
+  font-size: 0.855rem;
+  line-height: 1.55;
+  display: none;
+  z-index: 200;
+}
+#detail-panel.visible { display: block; }
+#detail-panel h3 { font-size: 1rem; font-weight: 500; margin-bottom: 0.4rem; border-bottom: 1px solid var(--rule); padding-bottom: 0.35rem; }
+.dp-org { font-size: 0.72rem; color: var(--org); text-transform: uppercase; letter-spacing: 0.08em; display: block; margin-bottom: 0.35rem; }
+#detail-panel p { margin-top: 0.35rem; color: var(--ink-mid); }
+#detail-panel ul { margin: 0.35rem 0 0 1rem; color: var(--ink-mid); }
+#detail-panel ul li { margin-top: 0.12rem; }
+.pledge-note { margin-top: 0.65rem !important; font-style: italic; font-size: 0.78rem !important; color: var(--flywheel) !important; border-top: 1px solid var(--rule); padding-top: 0.45rem; }
+.close-btn { position: absolute; top: 0.6rem; right: 0.9rem; background: none; border: none; font-family: inherit; font-size: 1.1rem; cursor: pointer; color: var(--ink-lite); }
+.close-btn:hover { color: var(--ink); }
+
+/* ── LEGEND ── */
+.legend {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 1.25rem 2rem 2.5rem;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  gap: 1.75rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.li { display: flex; align-items: center; gap: 0.45rem; font-size: 0.78rem; color: var(--ink-mid); }
+.sw { width: 26px; height: 0; flex-shrink: 0; }
+.sw.solid  { border-top: 1.5px solid var(--ink); }
+.sw.emp    { border-top: 2px dashed var(--emp); }
+.sw.su     { border-top: 2px dashed var(--startup); }
+.sw.fly    { border-top: 2px dotted var(--flywheel); }
+.sw.mentor { border-top: 5px solid var(--mentor); opacity: 0.35; }
+.sw.comm   { border-top: 5px solid var(--community); opacity: 0.35; }
+
+.footer-note {
+  max-width: 1300px;
+  margin: 0 auto 2.5rem;
+  padding: 0 2rem;
+  font-size: 0.8rem;
+  font-style: italic;
+  color: var(--ink-lite);
+  border-left: 2px solid var(--rule);
+  padding-left: 1rem;
+  margin-left: calc((100% - 1300px)/2 + 2rem);
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Talent Lab &mdash; Entrepreneur-in-Training Journey</h1>
+  <div class="subtitle">From candidate intake to gainful employment or funded venture &mdash; New Mexico &amp; El Paso</div>
+  <div class="epigraph">
+    &ldquo;Underserved New Mexicans building ventures and staying in New Mexico instead of exporting their talent elsewhere. The pilot worked. Now it&rsquo;s time to form an organization, raise some money, and scale the impact.&rdquo;<br>
+    <span style="display:block;margin-top:0.3rem;font-style:normal;font-size:0.82rem;color:var(--ink-lite)">— Ward Hendon, Talent Lab founding dinner, Santa Fe, May 2026</span>
+  </div>
+</header>
+
+<p class="hint">Mentorship and Community run alongside the full journey</p>
+
+<div class="outer">
+
+  <!-- ══ LEFT PILLAR: MENTORSHIP ══ -->
+  <div class="pillar pillar-mentor">
+    <div class="pillar-label">Mentorship</div>
+    <div class="pillar-sub">Assigned at intake · Weekly touchpoints · Runs the full journey</div>
+  </div>
+
+  <!-- ══ CENTER: diagram + sidenotes ══ -->
+  <div class="inner">
+
+    <div class="diagram">
+      <svg id="flow" viewBox="0 0 460 1010" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arr"     markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3z" fill="var(--ink)"/></marker>
+          <marker id="arr-emp" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3z" fill="var(--emp)"/></marker>
+          <marker id="arr-su"  markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3z" fill="var(--startup)"/></marker>
+          <marker id="arr-fly" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3z" fill="var(--flywheel)"/></marker>
+        </defs>
+
+        <!-- ═══ INTAKE SOURCES ═══ -->
+        <g class="stage-group" data-stage="tribes" onclick="showDetail('tribes')">
+          <rect class="stage-rect" x="22" y="20" width="88" height="26" rx="1.5"/>
+          <text class="stage-label small" x="66" y="33">Tribes / Pueblos</text>
+        </g>
+        <g class="stage-group" data-stage="unis" onclick="showDetail('unis')">
+          <rect class="stage-rect" x="122" y="20" width="88" height="26" rx="1.5"/>
+          <text class="stage-label small" x="166" y="33">Universities</text>
+        </g>
+        <g class="stage-group" data-stage="doe" onclick="showDetail('doe')">
+          <rect class="stage-rect" x="222" y="20" width="88" height="26" rx="1.5"/>
+          <text class="stage-label small" x="266" y="33" fill="var(--doe)">DOE Labs</text>
+        </g>
+        <g class="stage-group" data-stage="incubators" onclick="showDetail('incubators')">
+          <rect class="stage-rect" x="322" y="20" width="88" height="26" rx="1.5"/>
+          <text class="stage-label small" x="366" y="33">Incubators</text>
+        </g>
+
+        <!-- funnel arrows -->
+        <line class="connector" x1="66"  y1="46" x2="196" y2="96" marker-end="url(#arr)"/>
+        <line class="connector" x1="166" y1="46" x2="226" y2="96" marker-end="url(#arr)"/>
+        <line class="connector" x1="266" y1="46" x2="256" y2="96" marker-end="url(#arr)"/>
+        <line class="connector" x1="366" y1="46" x2="296" y2="96" marker-end="url(#arr)"/>
+
+        <!-- ═══ INTAKE ═══ -->
+        <g class="stage-group" data-stage="intake" onclick="showDetail('intake')">
+          <rect class="stage-rect" x="160" y="96" width="172" height="44" rx="1.5"/>
+          <text class="stage-label" x="246" y="112">Intake</text>
+          <text class="stage-label small" x="246" y="128">EIT Selection · Mentor Assigned</text>
+        </g>
+
+        <line class="connector" x1="246" y1="140" x2="246" y2="168" marker-end="url(#arr)"/>
+
+        <!-- ═══ D. SCHOOL FOUNDATION ═══ -->
+        <g class="stage-group" data-stage="dschool" onclick="showDetail('dschool')">
+          <rect class="stage-rect" x="148" y="168" width="196" height="48" rx="1.5"/>
+          <text class="stage-label" x="246" y="187">D. School Foundation</text>
+          <text class="stage-label small" x="246" y="204">Design thinking bootcamp · Jon Wettersten</text>
+        </g>
+        <text class="dur-tag" x="352" y="183" text-anchor="start">1 week</text>
+        <text class="dur-tag" x="352" y="194" text-anchor="start">Santa Fe / ABQ</text>
+
+        <!-- 3 arrows from D. School to each track -->
+        <line class="connector" x1="220" y1="226" x2="145" y2="250" marker-end="url(#arr)"/>
+        <line class="connector" x1="246" y1="226" x2="246" y2="250" marker-end="url(#arr)"/>
+        <line class="connector" x1="272" y1="226" x2="348" y2="250" marker-end="url(#arr)"/>
+
+        <!-- ═══ LEARNING / DOING (22–26 wks) ═══ -->
+        <text class="fork-label" x="246" y="244">Learning / Doing &nbsp;·&nbsp; 22–26 weeks</text>
+
+        <g class="stage-group" data-stage="uni-track" onclick="showDetail('uni-track')">
+          <rect class="stage-rect" x="72"  y="250" width="100" height="38" rx="1.5"/>
+          <text class="stage-label" x="122" y="266">University</text>
+          <text class="stage-label small" x="122" y="280">Academic credit</text>
+        </g>
+        <g class="stage-group" data-stage="accelerator" onclick="showDetail('accelerator')">
+          <rect class="stage-rect" x="196" y="250" width="100" height="38" rx="1.5"/>
+          <text class="stage-label" x="246" y="266">Accelerator</text>
+          <text class="stage-label small" x="246" y="280">Product-mkt fit</text>
+        </g>
+        <g class="stage-group" data-stage="sparklabs" onclick="showDetail('sparklabs')">
+          <rect class="stage-rect" x="320" y="250" width="100" height="38" rx="1.5"/>
+          <text class="stage-label" x="370" y="266">Spark Labs</text>
+          <text class="stage-label small" x="370" y="280">Applied skills</text>
+        </g>
+
+        <!-- iteration arrows -->
+        <path class="connector dash" d="M172,269 L196,269" marker-end="url(#arr)"/>
+        <path class="connector dash" d="M296,269 L320,269" marker-end="url(#arr)"/>
+        <path class="connector dash" d="M196,274 L172,274" marker-end="url(#arr)"/>
+        <path class="connector dash" d="M320,274 L296,274" marker-end="url(#arr)"/>
+
+        <text class="dur-tag" x="432" y="265" text-anchor="start">State-wide</text>
+        <text class="dur-tag" x="432" y="277" text-anchor="start">+ El Paso</text>
+
+        <!-- converge -->
+        <line class="connector" x1="122" y1="288" x2="206" y2="338" marker-end="url(#arr)"/>
+        <line class="connector" x1="246" y1="288" x2="246" y2="338" marker-end="url(#arr)"/>
+        <line class="connector" x1="370" y1="288" x2="286" y2="338" marker-end="url(#arr)"/>
+
+        <!-- ═══ INDUSTRY INTENSIVE ═══ -->
+        <g class="stage-group" data-stage="intensive" onclick="showDetail('intensive')">
+          <rect class="stage-rect" x="148" y="338" width="196" height="58" rx="1.5"/>
+          <text class="stage-label" x="246" y="354">Industry Intensive</text>
+          <text class="stage-label small" x="246" y="367">Priority sector immersion · From prototype to pitch</text>
+        </g>
+        <text class="dur-tag" x="352" y="354" text-anchor="start">1 week, ABQ</text>
+
+        <!-- State focus areas — left callout beside intensive box -->
+        <text x="140" y="351" font-family="'EB Garamond',Georgia,serif" font-size="8.5" fill="var(--ink-lite)" font-style="italic" text-anchor="end">Advanced Computing</text>
+        <text x="140" y="362" font-family="'EB Garamond',Georgia,serif" font-size="8.5" fill="var(--ink-lite)" font-style="italic" text-anchor="end">Aerospace &amp; Defense</text>
+        <text x="140" y="373" font-family="'EB Garamond',Georgia,serif" font-size="8.5" fill="var(--ink-lite)" font-style="italic" text-anchor="end">Advanced Energy</text>
+        <text x="140" y="384" font-family="'EB Garamond',Georgia,serif" font-size="8.5" fill="var(--ink-lite)" font-style="italic" text-anchor="end">(Bio · Water · Ag)</text>
+
+        <line class="connector" x1="246" y1="396" x2="246" y2="422" marker-end="url(#arr)"/>
+
+        <!-- ═══ PLACEMENT FORK ═══ -->
+        <text class="fork-label" x="246" y="419">Placement</text>
+        <line class="connector emp"   x1="246" y1="425" x2="138" y2="457" marker-end="url(#arr-emp)"/>
+        <line class="connector start" x1="246" y1="425" x2="360" y2="457" marker-end="url(#arr-su)"/>
+        <text class="path-tag-emp"   x="138" y="451">internship track</text>
+        <text class="path-tag-start" x="360" y="451">startup track</text>
+
+        <g class="stage-group" data-stage="internship" onclick="showDetail('internship')">
+          <rect class="stage-rect" x="72"  y="452" width="134" height="40" rx="1.5" stroke="var(--emp)"/>
+          <text class="stage-label" x="139" y="468" fill="var(--emp)">Internship</text>
+          <text class="stage-label small" x="139" y="482">Employer-placed · 6 mos</text>
+        </g>
+        <g class="stage-group" data-stage="startup" onclick="showDetail('startup')">
+          <rect class="stage-rect" x="326" y="452" width="134" height="40" rx="1.5" stroke="var(--startup)"/>
+          <text class="stage-label" x="393" y="468" fill="var(--startup)">Startup</text>
+          <text class="stage-label small" x="393" y="482">Venture-ready · Venture-scalable</text>
+        </g>
+
+        <line class="connector emp"   x1="139" y1="492" x2="139" y2="535" marker-end="url(#arr-emp)"/>
+        <line class="connector start" x1="393" y1="492" x2="393" y2="535" marker-end="url(#arr-su)"/>
+
+        <!-- ═══ OUTCOMES ═══ -->
+        <g class="stage-group" data-stage="employment" onclick="showDetail('employment')">
+          <rect class="stage-rect" x="72"  y="535" width="134" height="40" rx="1.5" stroke="var(--emp)"/>
+          <text class="stage-label" x="139" y="551" fill="var(--emp)">Employment</text>
+          <text class="stage-label small" x="139" y="565">Gainful · Local · NM retained</text>
+        </g>
+        <g class="stage-group" data-stage="seedround" onclick="showDetail('seedround')">
+          <rect class="stage-rect" x="326" y="535" width="134" height="40" rx="1.5" stroke="var(--startup)"/>
+          <text class="stage-label" x="393" y="551" fill="var(--startup)">Seed Round</text>
+          <text class="stage-label small" x="393" y="565">Ward Hendon · Investment lead</text>
+        </g>
+
+
+        <!-- pledge annotations -->
+        <text class="annotation" x="68"  y="592">pledge % of salary</text>
+        <text class="annotation" x="393" y="592" text-anchor="middle">pledge equity</text>
+
+        <!-- reinvest: only startup/seed path flows to ASI -->
+        <line class="connector fly" x1="393" y1="575" x2="285" y2="622" marker-end="url(#arr-fly)"/>
+
+        <!-- ═══ RE-INVEST ═══ -->
+
+        <g class="stage-group" data-stage="asi" onclick="showDetail('asi')">
+          <rect class="stage-rect" x="130" y="624" width="232" height="50" rx="1.5" stroke="var(--flywheel)" stroke-width="1.2"/>
+          <text class="stage-label" x="246" y="643" fill="var(--flywheel)">Advanced Incubator Services</text>
+          <text class="stage-label small" x="246" y="659">Beyond the valley of death</text>
+        </g>
+
+        <!-- ASI sub-items — centered under the box -->
+        <text x="246" y="690" font-family="'EB Garamond',Georgia,serif" font-size="9.5" fill="var(--ink-mid)" text-anchor="middle">Continuous learning · Co-work &amp; event space · Next-level mentors · Dev resources</text>
+        <text x="246" y="705" font-family="'EB Garamond',Georgia,serif" font-size="9.5" fill="var(--ink-mid)" text-anchor="middle">WF support (interns) · Advisory — SME &amp; Faculty · Funding opps · Residencies</text>
+
+        <!-- Age progression -->
+        <text x="246" y="728" font-family="'EB Garamond',Georgia,serif" font-size="9" fill="var(--ink-lite)" font-style="italic" text-anchor="middle">Age progression: Undergrad → Graduate → Young Professional → Career Switcher</text>
+
+        <!-- Cohort note -->
+        <text x="246" y="746" font-family="'EB Garamond',Georgia,serif" font-size="9" fill="var(--ink-lite)" font-style="italic" text-anchor="middle">Cohort 1 (pilot): Solomon Gbara, Mariano Fernandez (San Felipe Pueblo) — UNM · 2025 ✓</text>
+        <text x="246" y="760" font-family="'EB Garamond',Georgia,serif" font-size="9" fill="var(--ink-lite)" font-style="italic" text-anchor="middle">Cohort 2: July 2026 · 4 of 6 applicants selected (Highlands, NMSU, Denver U, UNM)</text>
+
+        <!-- ═══ ORG BRACKETS — LEFT SIDE ═══ -->
+        <!-- Enroll: Intake -->
+        <line class="org-bracket" x1="62" y1="96"  x2="52" y2="96"/>
+        <line class="org-bracket" x1="52" y1="96"  x2="52" y2="140"/>
+        <line class="org-bracket" x1="52" y1="140" x2="62" y2="140"/>
+        <text class="org-tag" x="48" y="118" text-anchor="end">Enroll</text>
+
+        <!-- Delivery & Ops: D-School → Intensive -->
+        <line class="org-bracket" x1="62" y1="168" x2="52" y2="168"/>
+        <line class="org-bracket" x1="52" y1="168" x2="52" y2="396"/>
+        <line class="org-bracket" x1="52" y1="396" x2="62" y2="396"/>
+        <text class="org-tag" x="48" y="272" text-anchor="end">Delivery</text>
+        <text class="org-tag" x="48" y="283" text-anchor="end">&amp; Ops</text>
+
+        <!-- Fund &amp; Reinvest: Seed → ASI -->
+        <line class="org-bracket" x1="62" y1="535" x2="52" y2="535"/>
+        <line class="org-bracket" x1="52" y1="535" x2="52" y2="674"/>
+        <line class="org-bracket" x1="52" y1="674" x2="62" y2="674"/>
+        <text class="org-tag" x="48" y="596" text-anchor="end">Fund &amp;</text>
+        <text class="org-tag" x="48" y="607" text-anchor="end">Reinvest</text>
+
+      </svg>
+    </div><!-- /diagram -->
+
+    <!-- ══ COMMUNITY PILLAR ══ -->
+    <div class="pillar pillar-community">
+      <div class="pillar-label">Community</div>
+      <div class="pillar-sub">Peer cohorts · Alumni network · Employer partners · Grows with each class</div>
+    </div>
+
+    <!-- ── SIDENOTES ── -->
+    <div class="sidenotes">
+      <div style="margin-top: 96px;">
+        <div class="sidenote">
+          <b>Intake sources</b><br>
+          Tribes &amp; Pueblos · NM Universities · DOE Labs (LANL, Sandia — deep tech, needs entrepreneurial bridge) · Incubators<br>
+          Arrowhead: expanding southern NM reach.
+        </div>
+        <div class="sidenote">
+          <b>D. School</b><br>
+          Jon Wettersten (IDEO / Creative Santa Fe) leads the bootcamp. Mentor assigned before Day 1.
+        </div>
+        <div class="sidenote">
+          <b>Spark Labs</b><br>
+          Licensed curriculum. Teachers pay license fee, may charge students at SRP — distributes program statewide without central staffing cost.
+        </div>
+        <div class="sidenote">
+          <b>Ward teaches</b> product-market fit. UNM investing class with $1M fund (if matched) in discussion.
+        </div>
+        <div class="sidenote">
+          <b>Soft skills</b> embedded throughout: leadership, networking, cultural adjustment, communications, expectations management.
+        </div>
+        <div class="sidenote emp-note" style="margin-top:3.6rem;">
+          <b>Employment:</b> pledge % of salary by pay band → self-sustaining revenue.
+        </div>
+        <div class="sidenote su-note">
+          <b>Startup:</b> pledge equity → Ward's investment portfolio. NM Finance Authority: 0% loans available (Andrea Romero).
+        </div>
+        <div class="sidenote fly-note" style="margin-top:1.2rem;">
+          <b>ASI</b> addresses the "valley of death" post-incubator (per Eric Lee Smith). Graduates return as mentors, employers, and funders.
+        </div>
+        <div class="sidenote" style="margin-top:0.5rem;">
+          <b>Capital asks</b> (Ward's framing):<br>
+          Capital · People · Partnerships · Licensing fees · University support ($15K/student from NMSU)
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /inner -->
+
+
+</div><!-- /outer -->
+
+<!-- DETAIL PANEL -->
+<div id="detail-panel">
+  <button class="close-btn" onclick="closeDetail()">×</button>
+  <span class="dp-org" id="dp-org"></span>
+  <h3 id="dp-title"></h3>
+  <div id="dp-body"></div>
+</div>
+
+<!-- LEGEND -->
+<div class="legend">
+  <div class="li"><div class="sw solid"></div>Core journey</div>
+  <div class="li"><div class="sw emp"></div>Employment path</div>
+  <div class="li"><div class="sw su"></div>Startup path</div>
+  <div class="li"><div class="sw fly"></div>Reinvestment flywheel</div>
+  <div class="li"><div class="sw mentor"></div>Mentorship (continuous)</div>
+  <div class="li"><div class="sw comm"></div>Community (continuous)</div>
+  <div class="li" style="margin-left:auto;font-style:italic;font-size:0.72rem;color:var(--ink-lite)">Click any stage for details</div>
+</div>
+
+<p class="footer-note">
+  Pilot cohort complete 2025. Cohort 2 begins July 2026. Talent Lab operates its own Advanced Startup Incubator.
+  State priority sectors: Advanced Energy ★, Advanced Computing, Aerospace &amp; Defense, Bioscience, Water/Food/Ag.
+  Open-source curriculum under consideration (Ward &amp; Jon Wettersten).
+</p>
+
+<script>
+const stages = {
+  tribes: {
+    org: 'Intake Source — Enroll',
+    title: 'Tribes & Pueblos',
+    body: `<p>Indigenous communities are a primary intake channel. Mariano Fernandez (San Felipe Pueblo) was a pilot cohort EIT — a proof point for this pipeline.</p>
+           <ul><li>Tribal economic development offices as partners</li><li>Arrowhead program expanding southern NM reach</li><li>Pathway to tribal enterprise or startup</li><li>Cultural adjustment woven into soft-skills curriculum</li></ul>`
+  },
+  unis: {
+    org: 'Intake Source — Enroll',
+    title: 'Universities',
+    body: `<p>UNM, NMSU, Highlands, Denver U and others. NMSU provides $15K per student plus 6-month internship support. Cohort 2 (July 2026) includes applicants from Highlands, NMSU, Denver U, and UNM.</p>
+           <ul><li>Rob DelCampo / Ward: UNM investing class with $1M fund (if matched)</li><li>Kate Holland: $50K investment class at UNM (new)</li><li>Age progression: undergrad first, then graduate students</li></ul>`
+  },
+  doe: {
+    org: 'Intake Source — Enroll',
+    title: 'DOE Labs (LANL & Sandia)',
+    body: `<p>New Mexico's DOE laboratories hold exceptional technical talent but lack entrepreneurial infrastructure to spin technology out. Talent Lab bridges that gap.</p>
+           <ul><li>Scientists and engineers with deep IP but no commercialization path</li><li>Is the Feynman Center untapped? (flagged at founding dinner)</li><li>Fast-track to startup placement given technical depth</li></ul>`,
+    pledge: 'This is an emerging intake channel — not yet active in Cohort 1 or 2, but identified as high-value for Advanced Energy and Advanced Computing sectors.'
+  },
+  incubators: {
+    org: 'Intake Source — Enroll',
+    title: 'Incubators & Accelerators',
+    body: `<p>Incubator-referred candidates are most likely to pursue the startup track. QStation (ABQ's consolidated space incubator) is a natural partner.</p>
+           <ul><li>Pre-vetted for entrepreneurial intent</li><li>Licensing fees from incubators partially fund curriculum access</li><li>Fast-tracked to Startup placement</li><li>Open-source curriculum under consideration</li></ul>`
+  },
+  intake: {
+    org: 'Enroll',
+    title: 'Intake & EIT Selection',
+    body: `<p>Enroll identifies Entrepreneurs-in-Training from enrolled intake sources. Selection criteria: <em>ambition with a lack of opportunity.</em></p>
+           <ul><li>Enroll intake sources (Tribes, Unis, DOE Labs, Incubators)</li><li>Identify individual EIT candidates</li><li>Develop funders and sponsors</li><li>Manage licensing agreements</li><li>Mentor assigned before program begins</li></ul>`
+  },
+  dschool: {
+    org: 'Delivery & Ops — Jon Wettersten',
+    title: 'D. School Foundation',
+    body: `<p>A one-week residential bootcamp in Santa Fe and/or Albuquerque, led by Jon Wettersten (IDEO / Creative Santa Fe), grounding every EIT in design thinking.</p>
+           <ul><li>Empathy mapping, ideation, rapid prototyping</li><li>Creative confidence before technical specialization</li><li>Mentor assigned and active from Day 1</li><li>Soft skills introduced: leadership, networking, communications</li></ul>`
+  },
+  'uni-track': {
+    org: 'Delivery & Ops',
+    title: 'University Track',
+    body: `<p>EITs enrolled at NM universities continue aligned coursework. Academic credits where possible. Saint John's College intern curriculum being explored as a model.</p>`
+  },
+  accelerator: {
+    org: 'Delivery & Ops — Ward Hendon teaches PMF',
+    title: 'Accelerator Track',
+    body: `<p>A fast-track cohort model. Ward Hendon teaches product-market fit. Emphasizes speed-to-employability or speed-to-launch.</p>
+           <ul><li>Business fluency and problem-solving frameworks</li><li>Escalation, project management, expectations management</li><li>"Bring solutions, not problems" — aggressive follow-up culture</li></ul>`
+  },
+  sparklabs: {
+    org: 'Delivery & Ops — Licensed Curriculum',
+    title: 'Spark Labs',
+    body: `<p>Applied skills curriculum with a licensing model that creates a self-sustaining trainer network statewide and into El Paso without central staffing cost.</p>
+           <ul><li>Teachers license materials for private use</li><li>Pay a license fee; may charge students at SRP</li><li>Delivery & Ops manages certification and QC</li><li>Open-source model under consideration (Ward & Jon)</li></ul>`
+  },
+  intensive: {
+    org: 'Delivery & Ops',
+    title: 'Industry Intensive',
+    body: `<p>One-week full-immersion in Albuquerque with employer partners, organized by priority sector. Capstone of the learning phase before placement.</p>
+           <ul><li>Advanced Energy ★ (Ward's primary focus)</li><li>Advanced Computing · Aerospace & Defense</li><li>Bioscience · Water / Food / Ag</li><li>From prototype to pitch — soft skills culmination</li></ul>`
+  },
+  internship: {
+    org: 'Placement — Employment Track',
+    title: 'Internship',
+    body: `<p>Employer-placed internship. NMSU provides 6-month internship support. Structured mentorship continues weekly through the placement period.</p>
+           <ul><li>Matched to partner employers across NM</li><li>Mentor check-ins continue weekly</li><li>Performance feedback loop to Delivery & Ops</li></ul>`
+  },
+  startup: {
+    org: 'Placement — Startup Track',
+    title: 'Startup Formation',
+    body: `<p>EITs — especially from incubator and DOE Lab intake — form or join a startup. Goal: venture-ready and venture-scalable, staying in New Mexico.</p>
+           <ul><li>Ward's Stanford partner Mike (sustainability masters) as resource</li><li>Stanford Ecopreneurship connection for global exposure</li><li>Advanced Incubator Services available immediately</li><li>Seed round preparation begins</li></ul>`
+  },
+  employment: {
+    org: 'Outcome — Employment Track',
+    title: 'Gainful Employment',
+    body: `<p>The primary metric: NM-trained talent employed locally at living wages, staying in-state rather than exporting to coastal markets.</p>
+           <ul><li>Employer partners across priority sectors</li><li>Graduate remains in Talent Lab community as alumni</li><li>Pathway to future mentor or employer role</li></ul>`,
+    pledge: 'Pledge: A tiered % of salary by pay band flows back to Talent Lab — the primary self-sustaining revenue mechanism for future cohorts.'
+  },
+  seedround: {
+    org: 'Outcome — Startup Track · Ward Hendon / Fund &amp; Reinvest',
+    title: 'Seed Round',
+    body: `<p>Ward Hendon leads the investment side — developing grants, investments, and capital relationships. John Engen's consortium equity fund (working with state to reduce restrictions) is a key resource.</p>
+           <ul><li>NM Finance Authority: 0% loans available (Andrea Romero)</li><li>Strategic Capital Venture (Mary, State Investment Council)</li><li>Precore Institute / Woven Earth connections</li><li>Boulder Foundry Group model as reference</li></ul>`,
+    pledge: 'Pledge: An equity stake flows back to Talent Lab. As startups grow, Talent Lab participates in upside — the long-term endowment mechanism alongside Ward's investment portfolio.'
+  },
+  asi: {
+    org: 'Advanced Incubator Services — The BHAG · Fund &amp; Reinvest',
+    title: 'Advanced Incubator Services',
+    body: `<p>Beyond the "valley of death" that kills entrepreneurs post-graduation (per Eric Lee Smith). Talent Lab operates its own full incubator — Advanced Startup Incubator (ASI).</p>
+           <ul>
+             <li>Continuous learning programs</li>
+             <li>Co-work, meeting, and event space</li>
+             <li>Next-level mentor network</li>
+             <li>Development resources (legal, technical, design)</li>
+             <li>Workforce support — interns from current cohorts</li>
+             <li>Advisory: SMEs and Faculty</li>
+             <li>Funding opportunities and grant navigation</li>
+             <li>Residencies for deep-focus work</li>
+           </ul>`,
+    pledge: 'This closes the flywheel: graduates who found employment or launched startups return as mentors, advisors, employers, and funders — compounding impact with every cohort.'
+  }
+};
+
+function showDetail(id) {
+  const s = stages[id];
+  if (!s) return;
+  document.getElementById('dp-org').textContent = s.org;
+  document.getElementById('dp-title').textContent = s.title;
+  let html = s.body;
+  if (s.pledge) html += `<p class="pledge-note">${s.pledge}</p>`;
+  document.getElementById('dp-body').innerHTML = html;
+  document.getElementById('detail-panel').classList.add('visible');
+  document.querySelectorAll('.stage-rect').forEach(r => r.classList.remove('active'));
+  const el = document.querySelector(`[data-stage="${id}"] .stage-rect`);
+  if (el) el.classList.add('active');
+}
+
+function closeDetail() {
+  document.getElementById('detail-panel').classList.remove('visible');
+  document.querySelectorAll('.stage-rect').forEach(r => r.classList.remove('active'));
+}
+</script>
+</body>
+</html>
