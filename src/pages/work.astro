@@ -233,6 +233,28 @@ import Page from '../layouts/Page.astro';
     <!-- Clients -->
     <div class="mt-24 pt-12 border-t border-border-light">
       <h2 class="text-sm font-medium text-text-muted uppercase tracking-wider mb-10 text-center">Organizations I've worked with</h2>
+
+      <div class="flex flex-wrap items-center justify-center gap-x-12 gap-y-8 mb-12">
+        {[
+          { name: 'Oracle', file: 'oracle.svg' },
+          { name: 'Microsoft', file: 'microsoft.png' },
+          { name: 'Google', file: 'google.png' },
+          { name: 'Salesforce', file: 'salesforce.png' },
+          { name: 'Anaplan', file: 'anaplan.png' },
+          { name: 'Deloitte', file: 'deloitte.png' },
+          { name: 'SAS', file: 'sas.png' },
+          { name: 'Cisco', file: 'cisco.svg' },
+          { name: 'Infosys', file: 'infosys.svg' },
+        ].map(logo => (
+          <img
+            src={`/images/logos/${logo.file}`}
+            alt={logo.name}
+            class="h-8 md:h-10 w-auto object-contain opacity-50 grayscale hover:opacity-100 hover:grayscale-0 transition-all"
+            loading="lazy"
+          />
+        ))}
+      </div>
+
       <div class="relative overflow-hidden" id="client-scroll">
         <div class="flex animate-scroll gap-12 items-center">
           {[
