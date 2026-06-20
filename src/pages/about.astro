@@ -55,11 +55,17 @@ import Page from '../layouts/Page.astro';
           <li>I take a lot of photographs — mostly landscapes and architecture</li>
         </ul>
 
-        <!-- Pecha Kucha video placeholder -->
+        <!-- Pecha Kucha video -->
         <div class="mt-12">
           <h3 class="text-sm font-medium text-text-muted uppercase tracking-wider mb-4">Pecha Kucha Talk</h3>
-          <div class="rounded-lg overflow-hidden border border-border aspect-video bg-surface-alt flex items-center justify-center">
-            <p class="text-sm text-text-muted italic">Video coming soon</p>
+          <div class="rounded-lg overflow-hidden border border-border aspect-video bg-surface-alt">
+            <video
+              src="/videos/pecha-kucha.mp4"
+              class="w-full h-full"
+              controls
+              preload="none"
+              playsinline
+            ></video>
           </div>
         </div>
 
