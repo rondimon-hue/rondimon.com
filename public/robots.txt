@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://rondimon.com/sitemap-index.xml

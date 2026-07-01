@@ -1,0 +1,27 @@
+---
+import Page from '../layouts/Page.astro';
+---
+
+<Page title="Page Not Found" description="This page doesn't exist — but there's plenty more to explore on rondimon.com.">
+
+  <section class="container py-24 md:py-36">
+    <div class="max-w-2xl mx-auto text-center animate-in">
+      <p class="text-sm font-medium text-accent uppercase tracking-wider mb-4">404</p>
+      <h1 class="text-4xl md:text-5xl font-heading font-bold text-text-primary">
+        This page wandered off
+      </h1>
+      <p class="mt-6 text-lg text-text-secondary leading-relaxed">
+        The page you're looking for doesn't exist — it may have moved, or the link may be out of date. Sorry aboot that.
+      </p>
+      <div class="mt-10 flex flex-wrap justify-center gap-4">
+        <a href="/" class="inline-flex items-center px-6 py-3 bg-text-primary text-surface text-sm font-medium rounded-lg hover:bg-accent transition-colors">
+          Back home
+        </a>
+        <a href="/about/archive" class="inline-flex items-center px-6 py-3 border border-border text-text-primary text-sm font-medium rounded-lg hover:border-accent hover:text-accent transition-colors">
+          Browse the archive
+        </a>
+      </div>
+    </div>
+  </section>
+
+</Page>

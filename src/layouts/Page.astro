@@ -6,13 +6,17 @@ import Footer from '../components/Footer.astro';
 interface Props {
   title: string;
   description?: string;
+  image?: string;
 }
 
-const { title, description } = Astro.props;
+const { title, description, image } = Astro.props;
 ---
-<Base title={title} description={description}>
+<Base title={title} description={description} image={image}>
+  <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[60] focus:px-4 focus:py-2 focus:bg-surface focus:text-accent focus:rounded-lg focus:shadow-md">
+    Skip to content
+  </a>
   <Header />
-  <main class="min-h-screen">
+  <main id="main" class="min-h-screen">
     <slot />
   </main>
   <Footer />

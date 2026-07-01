@@ -1,5 +1,14 @@
 ---
 const year = new Date().getFullYear();
+
+const footerLinks = [
+  { href: '/about', label: 'Aboot' },
+  { href: '/work', label: 'Work' },
+  { href: '/books', label: 'Books' },
+  { href: '/speaking', label: 'Speaking' },
+  { href: '/photography', label: 'Photography' },
+  { href: '/contact', label: 'Contact' },
+];
 ---
 
 <footer class="border-t border-border bg-surface-alt">
@@ -9,6 +18,18 @@ const year = new Date().getFullYear();
         <p class="font-heading text-lg font-semibold text-text-primary">Ron Dimon</p>
         <p class="text-sm text-text-muted mt-1">Strategist. Author. Educator. Builder.</p>
       </div>
+
+      <nav aria-label="Footer">
+        <ul class="flex flex-wrap justify-center gap-x-5 gap-y-2">
+          {footerLinks.map(link => (
+            <li>
+              <a href={link.href} class="text-sm text-text-muted hover:text-accent transition-colors">
+                {link.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
 
       <div class="flex items-center gap-6">
         <a href="https://www.linkedin.com/in/rondimon/" target="_blank" rel="noopener noreferrer" class="text-text-muted hover:text-accent transition-colors" aria-label="LinkedIn">
