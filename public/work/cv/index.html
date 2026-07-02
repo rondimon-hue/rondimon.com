@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Curriculum Vitae of Ron Dimon — Strategist, Author, Educator, Builder. 40+ years in enterprise performance management, finance transformation, and strategic advisory.">
+<title>Curriculum Vitae | Ron Dimon</title>
+<style>
+  :root{
+    --bg:#FAFAF9;
+    --ink:#1f1e1c;
+    --ink-soft:#57534e;
+    --ink-faint:#a8a29e;
+    --accent:#b45309;
+    --accent-deep:#7c3a06;
+    --rule:#e7e5e4;
+    --card:#ffffff;
+    --max:880px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.6;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 28px;}
+  h1,h2,h3{font-family:Georgia,"Times New Roman",serif;font-weight:600;letter-spacing:-0.01em;}
+
+  /* Header */
+  header{padding:72px 0 40px;border-bottom:1px solid var(--rule);}
+  .kicker{text-transform:uppercase;letter-spacing:.22em;font-size:.72rem;color:var(--accent);font-weight:600;margin-bottom:14px;}
+  h1{font-size:clamp(2.4rem,6vw,3.4rem);line-height:1.1;}
+  .tagline{font-family:Georgia,serif;font-style:italic;color:var(--ink-soft);font-size:1.15rem;margin-top:10px;}
+  .contact{margin-top:22px;display:flex;flex-wrap:wrap;gap:8px 22px;font-size:.9rem;color:var(--ink-soft);}
+  .contact a{color:var(--accent-deep);text-decoration:none;border-bottom:1px solid transparent;}
+  .contact a:hover{border-bottom-color:var(--accent);}
+
+  /* Stat band */
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:10px;overflow:hidden;margin:40px 0 8px;}
+  .stat{background:var(--card);padding:18px 16px;text-align:center;}
+  .stat b{display:block;font-family:Georgia,serif;font-size:1.6rem;color:var(--accent-deep);font-weight:600;}
+  .stat span{font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-faint);}
+
+  /* Sections */
+  section{padding:44px 0 8px;}
+  h2{font-size:1.55rem;margin-bottom:6px;color:var(--ink);}
+  .h2-sub{color:var(--ink-faint);font-size:.9rem;margin-bottom:26px;}
+  h2::after{content:"";display:block;width:44px;height:3px;background:var(--accent);margin-top:10px;border-radius:2px;}
+  .h2-sub{margin-top:14px;}
+
+  /* Summary */
+  .summary p{font-size:1.08rem;color:var(--ink-soft);margin-top:18px;max-width:62ch;}
+  .summary p strong{color:var(--ink);}
+
+  /* Experience entries */
+  .role{display:grid;grid-template-columns:150px 1fr;gap:10px 34px;padding:26px 0;border-bottom:1px solid var(--rule);}
+  .role:last-of-type{border-bottom:none;}
+  .when{font-size:.85rem;color:var(--ink-faint);padding-top:5px;white-space:nowrap;}
+  .role h3{font-size:1.14rem;line-height:1.35;}
+  .org{color:var(--accent-deep);font-weight:600;font-family:Georgia,serif;}
+  .loc{font-size:.85rem;color:var(--ink-faint);margin-top:2px;}
+  .role p.desc{color:var(--ink-soft);font-size:.95rem;margin-top:8px;}
+  .role ul{margin:10px 0 0 18px;color:var(--ink-soft);font-size:.95rem;}
+  .role li{margin-bottom:7px;}
+  .role li::marker{color:var(--accent);}
+  .badge{display:inline-block;background:#fdf3e7;color:var(--accent-deep);border:1px solid #f3ddc0;border-radius:999px;font-size:.72rem;font-weight:600;letter-spacing:.04em;padding:2px 11px;margin:10px 6px 0 0;}
+
+  /* Two-column lists */
+  .cols{columns:2;column-gap:44px;}
+  .cols ul{margin-left:18px;color:var(--ink-soft);font-size:.95rem;}
+  .cols li{margin-bottom:7px;break-inside:avoid;}
+  .cols li::marker{color:var(--accent);}
+
+  /* Books */
+  .books{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:8px;}
+  .book{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:22px;}
+  .book h3{font-size:1.05rem;line-height:1.4;}
+  .book .pub{font-size:.8rem;color:var(--accent);font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;}
+  .book p{font-size:.9rem;color:var(--ink-soft);margin-top:8px;}
+
+  /* Clients */
+  .clients{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:4px 34px;font-size:.92rem;}
+  .clients div{padding:9px 0;border-bottom:1px dashed var(--rule);}
+  .clients b{font-family:Georgia,serif;color:var(--ink);}
+  .clients span{color:var(--ink-soft);}
+
+  /* Competencies */
+  .chips{display:flex;flex-wrap:wrap;gap:9px;margin-top:6px;}
+  .chip{background:var(--card);border:1px solid var(--rule);border-radius:999px;padding:7px 16px;font-size:.86rem;color:var(--ink-soft);}
+
+  /* Education */
+  .edu-item{padding:14px 0;border-bottom:1px solid var(--rule);display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;}
+  .edu-item:last-child{border-bottom:none;}
+  .edu-item b{font-family:Georgia,serif;}
+  .edu-item span{color:var(--ink-soft);font-size:.92rem;}
+
+  footer{margin-top:56px;padding:34px 0 56px;border-top:1px solid var(--rule);color:var(--ink-faint);font-size:.85rem;text-align:center;}
+  footer a{color:var(--accent-deep);text-decoration:none;}
+
+  @media(max-width:640px){
+    .role{grid-template-columns:1fr;gap:2px 0;}
+    .when{padding-top:0;}
+    .cols{columns:1;}
+    header{padding:48px 0 32px;}
+  }
+  @media print{
+    body{font-size:11pt;background:#fff;}
+    header{padding:0 0 18px;}
+    .stats,.book,.chip{border-color:#ccc;}
+    section{padding:20px 0 4px;break-inside:avoid-page;}
+    .role{padding:12px 0;}
+    a{color:inherit;text-decoration:none;}
+    footer{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="kicker">Curriculum Vitae</div>
+    <h1>Ron W. Dimon</h1>
+    <p class="tagline">Strategist. Author. Educator. Builder.</p>
+    <div class="contact">
+      <span>Santa Fe, New Mexico &amp; Toronto, Ontario</span>
+      <a href="mailto:RonDimon@gmail.com">RonDimon@gmail.com</a>
+      <a href="https://www.linkedin.com/in/rondimon/">LinkedIn.com/in/RonDimon</a>
+      <a href="https://rondimon.com">rondimon.com</a>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="summary" id="summary">
+    <h2>Profile</h2>
+    <p>Enterprise strategy and finance-transformation executive with <strong>four decades of experience</strong> at the intersection of strategy, technology, and decision-making. Helped pioneer the <strong>Enterprise Performance Management (EPM)</strong> industry at Hyperion Solutions, served on the <strong>founding team of Anaplan</strong>, and built Deloitte's global Anaplan practice to <strong>$80M+ in annual revenue</strong> as a Global Managing Director.</p>
+    <p>Author of two Wiley books on performance management and connected planning, with <strong>200+ strategy, transformation, and systems engagements</strong> across Fortune 500, public-sector, higher-education, and nonprofit organizations. Today: founder, executive advisor, educator, and champion of responsible entrepreneurship in New Mexico.</p>
+
+    <div class="stats">
+      <div class="stat"><b>40+</b><span>Years in the field</span></div>
+      <div class="stat"><b>200+</b><span>Client engagements</span></div>
+      <div class="stat"><b>$80M+</b><span>Practice built at Deloitte</span></div>
+      <div class="stat"><b>2</b><span>Books published by Wiley</span></div>
+      <div class="stat"><b>316</b><span>Kiva microloans, 58 countries</span></div>
+    </div>
+  </section>
+
+  <section id="experience">
+    <h2>Professional Experience</h2>
+    <p class="h2-sub"></p>
+
+    <div class="role">
+      <div class="when">2020 – Present</div>
+      <div>
+        <h3><span class="org">MRWD, LLC</span> (dba stratuum in Canada) — Founder &amp; Executive Advisor</h3>
+        <div class="loc">Santa Fe, NM &amp; Toronto, ON</div>
+        <p class="desc">Executive advisory firm focused on enterprise performance management, finance transformation, value realization, and strategic facilitation.</p>
+        <ul>
+          <li><strong>Anavate Partners</strong> — Fractional CMO &amp; Managing Partner: led 110% growth and helped position the firm as Anaplan's <em>Rising Star of the Year</em> (2024), leading to acquisition by Argano (2025).</li>
+          <li><strong>Spaulding Ridge</strong> — Cloud Advisory Partner, advising on EPM, finance transformation, and growth strategy.</li>
+          <li><strong>Anaplan</strong> — Adjunct Value Engineer: ROI models and financial business cases for CFO-level decision-makers.</li>
+          <li><strong>Spark Labs</strong> — Founder &amp; Lead Facilitator: modular, workshop-based business education (45+ hands-on modules across strategy, execution, sales, thinking, and technology).</li>
+          <li><strong>Whatifi</strong> — Advisor, mentoring early-stage technology firms on financial modeling, growth, and funding strategy.</li>
+          <li>Value-led consulting for Fortune 500 and public-sector clients including Akamai, Arrow Electronics, Roku, GE Healthcare, TD Bank (Cowen), Symetra, Archer Daniels Midland, and the State of Arizona.</li>
+        </ul>
+        <span class="badge">Anaplan Rising Star of the Year 2024</span>
+      </div>
+    </div>
+
+    <div class="role">
+      <div class="when">2016 – 2019</div>
+      <div>
+        <h3><span class="org">Deloitte Consulting LLP</span> — Managing Director, Global Anaplan Alliance Partner; Analytics &amp; Information Management</h3>
+        <div class="loc">Chicago, IL &amp; San Francisco, CA</div>
+        <ul>
+          <li>Built and scaled Deloitte's global Anaplan / Connected Planning practice to <strong>$80M+ in annual revenue</strong>, earning four Anaplan Partner-of-the-Year awards.</li>
+          <li>Led large-scale finance and planning transformations for Google, Salesforce, Shell, Dyson, Cargill, Hyatt, Draper Labs, UVA, and New York Life.</li>
+          <li>Established global delivery models, value frameworks, and Centers of Excellence for enterprise planning; trusted advisor to CFOs and CIOs on strategy-to-execution.</li>
+        </ul>
+        <span class="badge">4× Anaplan Partner of the Year</span>
+      </div>
+    </div>
+
+    <div class="role">
+      <div class="when">2012 – 2016</div>
+      <div>
+        <h3><span class="org">CheckPoint Consulting LLC</span> — Partner, Advisory Services</h3>
+        <ul>
+          <li>Sold and managed an $8M enterprise-wide Oracle transformation for a Fortune 50 agribusiness.</li>
+          <li>Led business development, client pursuit, solution design, and engagement management; clients included GE, ADM, and Hyatt.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="role">
+      <div class="when">2011 – 2012</div>
+      <div>
+        <h3><span class="org">Infosys Consulting</span> — Senior Principal, Finance Transformation</h3>
+        <ul>
+          <li>Helped build the EPM, Business Intelligence, and Data Visualization practice in North America.</li>
+          <li>Integrated management-consulting value methodology with EPM frameworks.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="role">
+      <div class="when">2007 – 2016</div>
+      <div>
+        <h3><span class="org">Business Foundation Corp.</span> — Co-Founder &amp; Managing Partner</h3>
+        <div class="loc">Washington, DC &amp; Chicago, IL</div>
+        <ul>
+          <li>Delivered EPM and strategy-to-execution consulting for Fortune 500 and nonprofit organizations.</li>
+          <li>Developed the <strong>Enterprise Value Mapping / Blueprint Methodology</strong> and a KPI library by industry and function, used to align financial resources with strategic outcomes.</li>
+          <li>Key engagements with PwC, Microsoft, Citrix, Oracle, Newmont Mining, Herman Miller, Ohio State, and Anaplan.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="role">
+      <div class="when">2008 – 2009</div>
+      <div>
+        <h3><span class="org">Anaplan</span> — Founders Team</h3>
+        <div class="loc">San Francisco, CA</div>
+        <ul>
+          <li>Worked with Anaplan's founders to prove product-market fit, shape go-to-market strategy, and drive early customer adoption.</li>
+          <li>Wrote version 1 of <em>Anapedia</em>, the platform's knowledge base.</li>
+        </ul>
+        <span class="badge">Anaplan Founding Team</span>
+      </div>
+    </div>
+
+    <div class="role">
+      <div class="when">1999 – 2007</div>
+      <div>
+        <h3><span class="org">Hyperion Solutions</span> (acquired by Oracle) — Senior Director, Office of Strategy</h3>
+        <div class="loc">Stamford, CT &amp; Washington, DC</div>
+        <p class="desc">Earlier roles: Director, Quality &amp; Practices, Global Professional Services; Director, North America Strategic Consulting Services.</p>
+        <ul>
+          <li>Helped pioneer the <strong>Corporate / Enterprise Performance Management (CPM/EPM) category</strong>, transforming financial and operational planning for major enterprises.</li>
+          <li>Built and led engagement-manager teams and consulting methodologies with $20M P&amp;L responsibility.</li>
+          <li>Clients included GE, British Telecom, Coca-Cola, Goodyear, Kraft, GSK, Textron, Ryder, Grupo Bimbo, Herman Miller, Cisco, Bank of America, GM Finance, Manulife, and the University of Vermont.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="role">
+      <div class="when">1991 – 1999</div>
+      <div>
+        <h3><span class="org">ITG</span> — Director, Software Products; Director, Systems &amp; Networks</h3>
+        <div class="loc">Washington, DC</div>
+        <ul>
+          <li>Managed a $15M P&amp;L spanning software, consulting services, and training.</li>
+          <li>Sold, designed, and managed development of back-end finance and federal procurement systems for Citigroup, the Department of Defense, and the US Navy.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="role">
+      <div class="when">1982 – 1991</div>
+      <div>
+        <h3><span class="org">Deloitte &amp; Touche</span> (Deloitte Haskins + Sells) — Senior Manager, Computer Assisted Services</h3>
+        <div class="loc">Toronto, ON</div>
+        <p class="desc">Earlier roles: Manager, Systems Integration; Programmer/Analyst, Corporate Tax &amp; Audit — joined as a 19-year-old programmer.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="academic">
+    <h2>Academic, Board &amp; Community Leadership</h2>
+    <p class="h2-sub"></p>
+
+    <div class="role">
+      <div class="when">2023 – Present</div>
+      <div>
+        <h3><span class="org">University of New Mexico</span> — Center for Responsible Entrepreneurship, Lead Faculty &amp; Acting Executive Director</h3>
+        <ul>
+          <li>Leads a social-entrepreneurship accelerator focused on innovation, economic impact, and founder development across Northern New Mexico.</li>
+          <li>Co-developed the <em>Beyond Profit</em> community series with Creative Santa Fe and UNM Anderson, exploring business as a force for positive change.</li>
+          <li>Builds partnerships with donors, faculty, and community leaders to expand program reach.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="role">
+      <div class="when">Current</div>
+      <div>
+        <h3><span class="org">Creative Santa Fe</span> — Board Member</h3>
+        <ul>
+          <li>Supports the creative economy of northern New Mexico through strategic planning, program development, and business-model coaching for creative organizations.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="role">
+      <div class="when">2022 – Present</div>
+      <div>
+        <h3><span class="org">New Mexico Angels</span> — Angel Investor &amp; Advisor</h3>
+        <ul>
+          <li>Supports early-stage entrepreneurs and social-impact ventures through mentorship and investment guidance.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="role">
+      <div class="when">2019 – 2025</div>
+      <div>
+        <h3><span class="org">Santa Fe Innovates &amp; New Mexico Business for Good</span> — Mentor &amp; Board Advisor</h3>
+        <ul>
+          <li>Guided local businesses and nonprofits in fundraising, strategic planning, and operational improvement.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="role">
+      <div class="when">2008 – Present</div>
+      <div>
+        <h3><span class="org">Kiva</span> — Microfinance Lender</h3>
+        <ul>
+          <li>316 microloans to women entrepreneurs in 58 countries, supporting sustainable economic development.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="role">
+      <div class="when">Earlier</div>
+      <div>
+        <h3>Prior community service</h3>
+        <ul>
+          <li>Textbook Narrator, Learning Ally (formerly Recording for the Blind &amp; Dyslexic), 2007–2015.</li>
+          <li>Chairman &amp; Member, Hyperion Charitable Giving Committee, 2002–2007.</li>
+          <li>Board Member, Sunrise Foundation, 2002–2003.</li>
+          <li>President, Toastmasters (Toronto), 1988–1990.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="publications">
+    <h2>Publications</h2>
+    <p class="h2-sub"></p>
+    <div class="books">
+      <div class="book">
+        <div class="pub">Wiley · 2021 · 2nd Edition</div>
+        <h3>Connected Planning: A Playbook for Agile Decision Making</h3>
+        <p>Breaking down silos between financial, operational, and strategic planning to build an agile, integrated decision-making system for the age of cloud, real-time data, and AI.</p>
+      </div>
+      <div class="book">
+        <div class="pub">Wiley · 2013</div>
+        <h3>Enterprise Performance Management Done Right: An Operating System for Your Organization</h3>
+        <p>The practitioner's guide to building a working performance-management system — from data and insight through strategic planning, execution, and accountability.</p>
+      </div>
+      <div class="book">
+        <div class="pub">Booklet</div>
+        <h3>SG&amp;A Expense Performance Management</h3>
+        <p>A practical approach to measuring and optimizing selling, general &amp; administrative expenses — turning a cost center into competitive advantage.</p>
+      </div>
+    </div>
+
+    <div style="margin-top:28px">
+      <h3 style="font-size:1.05rem;margin-bottom:10px;">Articles &amp; contributed works</h3>
+      <div class="cols">
+        <ul>
+          <li>"Design to Align: A Key Component in BPM Success," <em>Business Performance Management Magazine</em></li>
+          <li>"Building the Business Case for Return on EPM Investment," <em>Oracle Journal of Management Excellence</em></li>
+          <li>"Seven Steps to Next-Generation Supplier Performance Management," <em>Supply &amp; Demand Chain Executive</em></li>
+          <li>"Role-Based Business Intelligence," <em>Information Management Magazine</em></li>
+          <li>Contributor/co-editor, <em>The Performance Management Revolution</em> (Howard Dresner)</li>
+          <li>Contributor, <em>Scorecard Best Practices</em> (Lawson, Hatch &amp; Desroches)</li>
+          <li>Contributor, <em>Achieving Breakthrough Performance Through Insight</em> (Jeff Rodek)</li>
+          <li>Contributor, <em>Making Technology Work for Your Business</em> (Deloitte &amp; Touche Canada, 1st ed.)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="speaking">
+    <h2>Speaking &amp; Teaching</h2>
+    <p class="h2-sub"></p>
+    <div class="cols">
+      <ul>
+        <li>Keynote speaker, Oracle OpenWorld, OAUG Collaborate, and ODTUG Kscope (2000–2016)</li>
+        <li>Keynote speaker, Oracle Business Intelligence &amp; EPM events (2008–2016)</li>
+        <li>Featured speaker, Anaplan Sales Kickoff and Anaplan webinars (including "Connected Planning with Deloitte")</li>
+        <li>Speaker, Deloitte University, Deloitte leadership conferences, and PwC University</li>
+        <li>Guest lecturer: DePaul University, Ohio State University, Carleton University, Indiana University, University of New Mexico, and PwC Advisory University</li>
+        <li>Talk topics: the Management Operating System, value selling, KPI selection, scenario planning, turning data into decisions, and workshop-based learning</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="clients">
+    <h2>Representative Clients by Industry</h2>
+    <p class="h2-sub"></p>
+    <div class="clients">
+      <div><b>High Tech</b> — <span>Google, Microsoft, Oracle, Salesforce, Cisco, Akamai, Citrix, Anaplan, SAS, Red Hat, Roku</span></div>
+      <div><b>Financial Services</b> — <span>Citigroup, Bank of America, New York Life, TD Bank (Cowen), Citizens Financial, AIG, Symetra, Manulife, GM Finance, Morningstar</span></div>
+      <div><b>Consumer &amp; Industrial</b> — <span>Coca-Cola, Kraft, Goodyear, Dyson, Herman Miller, Grupo Bimbo, Brunswick, Michelin, Textron</span></div>
+      <div><b>Energy &amp; Agribusiness</b> — <span>Shell, Cargill, ADM, Newmont Mining, NRG, MidAmerican, Alcoa, CF Industries</span></div>
+      <div><b>Healthcare &amp; Pharma</b> — <span>GE Healthcare, AbbVie, GlaxoSmithKline, Novartis, Pfizer, Anthem/BCBS</span></div>
+      <div><b>Public Sector</b> — <span>US Navy, Department of Defense, State Department, US Census, State of Arizona, NY/NJ Port Authority</span></div>
+      <div><b>Higher Education</b> — <span>Yale, UVA, University of Vermont, Ohio State, UNM, McMaster, Carleton</span></div>
+      <div><b>Hospitality &amp; Services</b> — <span>Hyatt, Fairmont, Mandarin Oriental, Ryder, PwC, Draper Labs, ClubCorp</span></div>
+      <div><b>Retail</b> — <span>Lowe's, Safeway, CVS, Office Depot, Pep Boys, Rona</span></div>
+      <div><b>Telecom</b> — <span>British Telecom, Sprint, Verizon</span></div>
+    </div>
+  </section>
+
+  <section id="competencies">
+    <h2>Areas of Expertise</h2>
+    <p class="h2-sub"></p>
+    <div class="chips">
+      <span class="chip">Enterprise Performance Management</span>
+      <span class="chip">Connected Planning</span>
+      <span class="chip">Finance Transformation</span>
+      <span class="chip">Value Engineering &amp; Business Cases</span>
+      <span class="chip">Strategic Planning &amp; Facilitation</span>
+      <span class="chip">Financial Modeling &amp; FP&amp;A</span>
+      <span class="chip">GTM Transformation &amp; Alliances</span>
+      <span class="chip">Consulting Practice Building</span>
+      <span class="chip">Board &amp; C-Suite Advisory</span>
+      <span class="chip">AI-Enabled Decision Support</span>
+      <span class="chip">Scenario Planning</span>
+      <span class="chip">KPI Design &amp; Analytics</span>
+      <span class="chip">Workshop Design &amp; Business Education</span>
+      <span class="chip">Operating Models &amp; Governance</span>
+      <span class="chip">Change Leadership</span>
+    </div>
+  </section>
+
+  <section id="education">
+    <h2>Education</h2>
+    <p class="h2-sub"></p>
+    <div class="edu-item"><b>Toronto Metropolitan University (formerly Ryerson)</b><span>Electronics Engineering Technology · Toronto, 1980–1982</span></div>
+    <div class="edu-item"><b>York University</b><span>Business Administration · Toronto, 1988–1991</span></div>
+    <div class="edu-item"><b>The Second City</b><span>Adult Improv, Levels 1–5 · Chicago</span></div>
+    <p style="margin-top:18px;color:var(--ink-soft);font-size:.92rem;">Eligible to work in the USA, Canada, and the UK.</p>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    Ron W. Dimon · <a href="https://rondimon.com">rondimon.com</a> · <a href="https://www.linkedin.com/in/rondimon/">LinkedIn</a>
+  </div>
+</footer>
+
+</body>
+</html>
