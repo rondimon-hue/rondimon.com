@@ -15,6 +15,25 @@ import Page from '../layouts/Page.astro';
       </p>
     </div>
 
+    <!-- Photo gallery -->
+    <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4">
+      {[
+        { src: '/images/speaking/connected-planning-whiteboard.jpg', alt: 'Live graphic recording mural of a Connected Planning talk' },
+        { src: '/images/speaking/anaplan-connected-planning-talk.jpg', alt: 'Presenting the Connected Planning framework on stage at an Anaplan event' },
+        { src: '/images/speaking/anaplan-panel.jpg', alt: 'Panel discussion on stage at an Anaplan conference' },
+        { src: '/images/speaking/suppose-talk.jpg', alt: 'Speaking at a podium during a "Suppose" themed talk' },
+      ].map(photo => (
+        <div class="image-frame aspect-square">
+          <img
+            src={photo.src}
+            alt={photo.alt}
+            class="w-full h-full object-cover"
+            loading="lazy"
+          />
+        </div>
+      ))}
+    </div>
+
     <!-- Topics -->
     <div class="mt-16">
       <h2 class="text-sm font-medium text-text-muted uppercase tracking-wider mb-8">Topics I speak on</h2>
