@@ -1,0 +1,30 @@
+---
+import Page from '../../layouts/Page.astro';
+---
+
+<Page title="Design" description="Design explorations and brand concepts by Ron Dimon." noindex={true}>
+
+  <section class="container py-20 md:py-28">
+    <div class="max-w-2xl animate-in">
+      <p class="text-sm font-medium text-accent uppercase tracking-wider mb-4">Design</p>
+      <h1 class="text-4xl md:text-5xl font-heading font-bold text-text-primary">
+        Design explorations
+      </h1>
+      <p class="mt-6 text-lg text-text-secondary leading-relaxed">
+        A working folder of visual concepts, frameworks, and brand ideas.
+      </p>
+    </div>
+
+    <div class="mt-12 grid sm:grid-cols-2 gap-4 max-w-2xl">
+      <a href="/design/blueprint-portfolio" class="group block bg-surface rounded-lg border border-border p-5 hover:border-accent/30 hover:shadow-md transition-all">
+        <h4 class="font-heading font-semibold text-text-primary group-hover:text-accent transition-colors">Blueprint Value Map Portfolio</h4>
+        <p class="mt-1 text-sm text-text-secondary">A gallery of Blueprint value-mapping engagements.</p>
+      </a>
+      <a href="/design/jedox-brand-idea" class="group block bg-surface rounded-lg border border-border p-5 hover:border-accent/30 hover:shadow-md transition-all">
+        <h4 class="font-heading font-semibold text-text-primary group-hover:text-accent transition-colors">Jedox Brand Idea</h4>
+        <p class="mt-1 text-sm text-text-secondary">A concept exploring "Enterprise Decisions on X."</p>
+      </a>
+    </div>
+  </section>
+
+</Page>

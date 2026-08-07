@@ -5,12 +5,14 @@ interface Props {
   title: string;
   description?: string;
   image?: string;
+  noindex?: boolean;
 }
 
 const {
   title,
   description = 'Ron Dimon — Strategist, author, educator, and builder.',
   image = '/images/og-image.jpg',
+  noindex = false,
 } = Astro.props;
 
 const fullTitle = title === 'Home'
@@ -42,6 +44,7 @@ const personSchema = {
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="sitemap" href="/sitemap-index.xml" />
   <meta name="theme-color" content="#FAFAF9" />
+  {noindex && <meta name="robots" content="noindex, nofollow" />}
 
   <!-- Open Graph -->
   <meta property="og:type" content="website" />

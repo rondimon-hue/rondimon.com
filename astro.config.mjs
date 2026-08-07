@@ -5,7 +5,8 @@ import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
   site: 'https://rondimon.com',
-  integrations: [sitemap()],
+  // /design is an unlisted working area — keep it out of the sitemap
+  integrations: [sitemap({ filter: (page) => !page.includes('/design') })],
   vite: {
     plugins: [tailwindcss()]
   }

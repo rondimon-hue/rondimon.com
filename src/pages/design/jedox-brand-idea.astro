@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Jedox Brand Idea — Ron Dimon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Open+Sans:ital,wght@0,400;0,600;0,700;1,600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --navy-dark: #16223c;
+    --navy: #20355f;
+    --purple: #4a2f6f;
+    --pink: #ed1979;
+    --white: #ffffff;
+    --item-h: 1.2em;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    font-family: 'Open Sans', Arial, sans-serif;
+    background: linear-gradient(160deg, var(--navy-dark) 0%, var(--navy) 45%, var(--purple) 100%);
+    color: var(--white);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+  }
+
+  header {
+    text-align: center;
+    padding: 56px 24px 0;
+  }
+  .eyebrow {
+    display: inline-block;
+    font-weight: 700;
+    font-size: 0.75rem;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--pink);
+    background: rgba(237, 25, 121, 0.12);
+    border: 1px solid rgba(237, 25, 121, 0.4);
+    border-radius: 999px;
+    padding: 6px 18px;
+    margin-bottom: 18px;
+  }
+  h1 {
+    font-family: 'Baloo 2', 'Open Sans', sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.4rem, 2.6vw, 2.1rem);
+    line-height: 1.25;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .subhead {
+    max-width: 600px;
+    margin: 18px auto 0;
+    font-size: 0.98rem;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.75);
+  }
+
+  /* ---- The centered one-line equation ---- */
+  main.hero {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 20px;
+  }
+
+  .equation {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    font-family: 'Baloo 2', 'Open Sans', sans-serif;
+    font-weight: 700;
+    font-size: clamp(1rem, 2.9vw, 2.5rem);
+    line-height: var(--item-h);
+  }
+
+  .static-text { color: var(--white); }
+
+  /* Scroll windows: one item tall, clipped */
+  .scroll-window {
+    display: inline-block;
+    overflow: hidden;
+    height: var(--item-h);
+    vertical-align: middle;
+  }
+  .scroll-track { display: block; }
+  .scroll-track > span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: var(--item-h);
+    line-height: var(--item-h);
+    white-space: nowrap;
+  }
+
+  /* J-word list: same type + size as the sentence, sits left of it.
+     Right-aligned so the gap before "Enterprise" stays constant. */
+  .word-scroll { margin-right: 0.32em; }
+  .word-scroll .scroll-track > span {
+    color: var(--pink);
+    justify-content: flex-end;
+  }
+  .word-scroll .scroll-track {
+    animation: scrollWords 14s steps(7) infinite;
+  }
+  @keyframes scrollWords {
+    from { transform: translateY(0); }
+    to   { transform: translateY(calc(var(--item-h) * -7)); }
+  }
+
+  .x-mark {
+    height: 0.92em;
+    width: auto;
+    margin-left: 0.28em;
+    vertical-align: middle;
+  }
+
+  /* X= list: smaller pills, sits right of the X mark */
+  .phrase-scroll {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 700;
+    font-size: 0.34em;
+    letter-spacing: 0.3px;
+    margin-left: 0.9em;
+  }
+  .phrase-scroll .scroll-track {
+    animation: scrollPhrases 30s steps(15) infinite;
+  }
+  .phrase-scroll .scroll-track > span {
+    justify-content: flex-start;
+  }
+  /* Inner pill hugs its own text instead of filling the window */
+  .phrase-scroll .pill {
+    display: inline-flex;
+    align-items: center;
+    height: calc(var(--item-h) - 0.15em);
+    color: rgba(255,255,255,0.9);
+    background: rgba(255,255,255,0.09);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 999px;
+    padding: 0 1em;
+  }
+  @keyframes scrollPhrases {
+    from { transform: translateY(0); }
+    to   { transform: translateY(calc(var(--item-h) * -15)); }
+  }
+
+  footer {
+    text-align: center;
+    padding: 24px 24px 36px;
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.5);
+  }
+  footer a { color: var(--pink); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+
+  /* On narrow screens let the equation wrap onto two centred lines */
+  @media (max-width: 700px) {
+    .equation {
+      flex-wrap: wrap;
+      font-size: 1.5rem;
+      gap: 0.15em 0;
+    }
+    .phrase-scroll {
+      font-size: 0.85rem;
+      margin-left: 0;
+      flex-basis: 100%;
+      margin-top: 0.5em;
+    }
+    .phrase-scroll .scroll-track > span { justify-content: center; }
+    .word-scroll .scroll-track > span { justify-content: center; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .scroll-track { animation: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Brand Concept</p>
+  <h1>Jedox brand idea by Ron Dimon of sparklabs.studio</h1>
+  <p class="subhead">
+    Every enterprise decision is really a question about an unknown — X. This page turns that thought into a live brand device: a single sentence whose opening word and closing variable keep rotating, so the line can be read hundreds of ways. Watch it long enough and it tells you what Jedox is actually for.
+  </p>
+</header>
+
+<main class="hero">
+  <div class="equation">
+
+    <span class="scroll-window word-scroll">
+      <span class="scroll-track">
+        <span>Jedox</span>
+        <span>Joint</span>
+        <span>Jedi</span>
+        <span>Justified</span>
+        <span>Jazzy</span>
+        <span>Just-in-time</span>
+        <span>Jammin&rsquo;</span>
+      </span>
+    </span>
+
+    <span class="static-text">Enterprise Decisions on</span>
+
+    <img class="x-mark" src="/images/design/jedox-x-mark-pink.png" alt="X." />
+
+    <span class="scroll-window phrase-scroll">
+      <span class="scroll-track">
+        <span><span class="pill">X=Investments</span></span>
+        <span><span class="pill">X=Growth</span></span>
+        <span><span class="pill">X=Headwinds</span></span>
+        <span><span class="pill">X=Competition</span></span>
+        <span><span class="pill">X=Pricing</span></span>
+        <span><span class="pill">X=M&amp;A</span></span>
+        <span><span class="pill">X=Operational Efficiency</span></span>
+        <span><span class="pill">X=Profitability</span></span>
+        <span><span class="pill">X=Channels</span></span>
+        <span><span class="pill">X=Markets</span></span>
+        <span><span class="pill">X=Cash Cycle</span></span>
+        <span><span class="pill">X=Asset Utilization</span></span>
+        <span><span class="pill">X=ESG</span></span>
+        <span><span class="pill">X=Workforce</span></span>
+        <span><span class="pill">X=Revenue Ops</span></span>
+      </span>
+    </span>
+
+  </div>
+</main>
+
+<footer>
+  <p>A brand concept by Ron Dimon &middot; <a href="https://sparklabs.studio" target="_blank" rel="noopener noreferrer">sparklabs.studio</a> &middot; not an official Jedox property</p>
+</footer>
+
+</body>
+</html>
