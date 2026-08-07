@@ -15,7 +15,8 @@
     --purple: #4a2f6f;
     --pink: #ed1979;
     --white: #ffffff;
-    --item-h: 1.2em;
+    --item-h: 1.3em;   /* height of one row in the scrolling lists */
+    --rows: 5;         /* how many rows are visible at once */
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { height: 100%; }
@@ -31,7 +32,7 @@
 
   header {
     text-align: center;
-    padding: 56px 24px 0;
+    padding: 48px 24px 0;
   }
   .eyebrow {
     display: inline-block;
@@ -44,20 +45,20 @@
     border: 1px solid rgba(237, 25, 121, 0.4);
     border-radius: 999px;
     padding: 6px 18px;
-    margin-bottom: 18px;
+    margin-bottom: 16px;
   }
   h1 {
     font-family: 'Baloo 2', 'Open Sans', sans-serif;
     font-weight: 700;
-    font-size: clamp(1.4rem, 2.6vw, 2.1rem);
+    font-size: clamp(1.35rem, 2.4vw, 2rem);
     line-height: 1.25;
     max-width: 720px;
     margin: 0 auto;
   }
   .subhead {
     max-width: 600px;
-    margin: 18px auto 0;
-    font-size: 0.98rem;
+    margin: 16px auto 0;
+    font-size: 0.95rem;
     line-height: 1.7;
     color: rgba(255,255,255,0.75);
   }
@@ -68,120 +69,109 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 32px 20px;
+    padding: 24px 20px;
   }
 
   .equation {
     display: flex;
     flex-wrap: nowrap;
-    align-items: center;
+    align-items: center;      /* centre row of each list lines up with the sentence */
     justify-content: center;
     white-space: nowrap;
     font-family: 'Baloo 2', 'Open Sans', sans-serif;
     font-weight: 700;
-    font-size: clamp(1rem, 2.9vw, 2.5rem);
+    font-size: clamp(1rem, 2.4vw, 2.2rem);
     line-height: var(--item-h);
   }
 
   .static-text { color: var(--white); }
 
-  /* Scroll windows: one item tall, clipped */
+  /* Scroll windows: several rows tall, faded top and bottom so the
+     middle row reads as the "live" one while the rest glide past. */
   .scroll-window {
-    display: inline-block;
+    display: block;
     overflow: hidden;
-    height: var(--item-h);
-    vertical-align: middle;
+    height: calc(var(--item-h) * var(--rows));
+    -webkit-mask-image: linear-gradient(to bottom,
+      transparent 0%, rgba(0,0,0,0.35) 14%, #000 40%, #000 60%, rgba(0,0,0,0.35) 86%, transparent 100%);
+    mask-image: linear-gradient(to bottom,
+      transparent 0%, rgba(0,0,0,0.35) 14%, #000 40%, #000 60%, rgba(0,0,0,0.35) 86%, transparent 100%);
   }
   .scroll-track { display: block; }
   .scroll-track > span {
     display: flex;
     align-items: center;
-    justify-content: center;
     height: var(--item-h);
     line-height: var(--item-h);
     white-space: nowrap;
   }
 
-  /* J-word list: same type + size as the sentence, sits left of it.
-     Right-aligned so the gap before "Enterprise" stays constant. */
-  .word-scroll { margin-right: 0.32em; }
+  /* Each track holds the list twice, so translating up by exactly half
+     its height lands back on an identical frame — a seamless loop. */
+  @keyframes scrollList {
+    from { transform: translateY(0); }
+    to   { transform: translateY(-50%); }
+  }
+
+  /* J-word list — right-aligned so the gap before "Enterprise" never moves */
+  .word-scroll { margin-right: 0.34em; }
   .word-scroll .scroll-track > span {
     color: var(--pink);
     justify-content: flex-end;
   }
   .word-scroll .scroll-track {
-    animation: scrollWords 14s steps(7) infinite;
-  }
-  @keyframes scrollWords {
-    from { transform: translateY(0); }
-    to   { transform: translateY(calc(var(--item-h) * -7)); }
+    animation: scrollList 21s linear infinite;   /* 7 items × 3s */
   }
 
   .x-mark {
     height: 0.92em;
     width: auto;
-    margin-left: 0.28em;
-    vertical-align: middle;
+    margin-left: 0.3em;
+    flex-shrink: 0;
   }
 
-  /* X= list: smaller pills, sits right of the X mark */
-  .phrase-scroll {
-    font-family: 'Open Sans', sans-serif;
-    font-weight: 700;
-    font-size: 0.34em;
-    letter-spacing: 0.3px;
-    margin-left: 0.9em;
-  }
-  .phrase-scroll .scroll-track {
-    animation: scrollPhrases 30s steps(15) infinite;
-  }
+  /* X= list — same face, size and weight as the sentence, in white */
+  .phrase-scroll { margin-left: 0.55em; }
   .phrase-scroll .scroll-track > span {
+    color: var(--white);
     justify-content: flex-start;
   }
-  /* Inner pill hugs its own text instead of filling the window */
-  .phrase-scroll .pill {
-    display: inline-flex;
-    align-items: center;
-    height: calc(var(--item-h) - 0.15em);
-    color: rgba(255,255,255,0.9);
-    background: rgba(255,255,255,0.09);
-    border: 1px solid rgba(255,255,255,0.2);
-    border-radius: 999px;
-    padding: 0 1em;
-  }
-  @keyframes scrollPhrases {
-    from { transform: translateY(0); }
-    to   { transform: translateY(calc(var(--item-h) * -15)); }
+  .phrase-scroll .scroll-track {
+    animation: scrollList 45s linear infinite;   /* 15 items × 3s */
   }
 
   footer {
     text-align: center;
-    padding: 24px 24px 36px;
+    padding: 24px 24px 32px;
     font-size: 0.8rem;
     color: rgba(255,255,255,0.5);
   }
   footer a { color: var(--pink); text-decoration: none; }
   footer a:hover { text-decoration: underline; }
 
-  /* On narrow screens let the equation wrap onto two centred lines */
-  @media (max-width: 700px) {
+  /* Narrow screens: fewer rows, wrap the X= list onto its own centred line */
+  @media (max-width: 760px) {
+    :root { --rows: 3; }
     .equation {
       flex-wrap: wrap;
-      font-size: 1.5rem;
-      gap: 0.15em 0;
+      font-size: 1.45rem;
     }
+    .word-scroll .scroll-track > span { justify-content: center; }
     .phrase-scroll {
-      font-size: 0.85rem;
-      margin-left: 0;
       flex-basis: 100%;
-      margin-top: 0.5em;
+      margin-left: 0;
+      margin-top: 0.4em;
     }
     .phrase-scroll .scroll-track > span { justify-content: center; }
-    .word-scroll .scroll-track > span { justify-content: center; }
   }
 
   @media (prefers-reduced-motion: reduce) {
     .scroll-track { animation: none !important; }
+    .scroll-window {
+      height: var(--item-h);
+      -webkit-mask-image: none;
+      mask-image: none;
+    }
   }
 </style>
 </head>
@@ -207,6 +197,13 @@
         <span>Jazzy</span>
         <span>Just-in-time</span>
         <span>Jammin&rsquo;</span>
+        <span aria-hidden="true">Jedox</span>
+        <span aria-hidden="true">Joint</span>
+        <span aria-hidden="true">Jedi</span>
+        <span aria-hidden="true">Justified</span>
+        <span aria-hidden="true">Jazzy</span>
+        <span aria-hidden="true">Just-in-time</span>
+        <span aria-hidden="true">Jammin&rsquo;</span>
       </span>
     </span>
 
@@ -216,21 +213,36 @@
 
     <span class="scroll-window phrase-scroll">
       <span class="scroll-track">
-        <span><span class="pill">X=Investments</span></span>
-        <span><span class="pill">X=Growth</span></span>
-        <span><span class="pill">X=Headwinds</span></span>
-        <span><span class="pill">X=Competition</span></span>
-        <span><span class="pill">X=Pricing</span></span>
-        <span><span class="pill">X=M&amp;A</span></span>
-        <span><span class="pill">X=Operational Efficiency</span></span>
-        <span><span class="pill">X=Profitability</span></span>
-        <span><span class="pill">X=Channels</span></span>
-        <span><span class="pill">X=Markets</span></span>
-        <span><span class="pill">X=Cash Cycle</span></span>
-        <span><span class="pill">X=Asset Utilization</span></span>
-        <span><span class="pill">X=ESG</span></span>
-        <span><span class="pill">X=Workforce</span></span>
-        <span><span class="pill">X=Revenue Ops</span></span>
+        <span>X=Investments</span>
+        <span>X=Growth</span>
+        <span>X=Headwinds</span>
+        <span>X=Competition</span>
+        <span>X=Pricing</span>
+        <span>X=M&amp;A</span>
+        <span>X=Operational Efficiency</span>
+        <span>X=Profitability</span>
+        <span>X=Channels</span>
+        <span>X=Markets</span>
+        <span>X=Cash Cycle</span>
+        <span>X=Asset Utilization</span>
+        <span>X=ESG</span>
+        <span>X=Workforce</span>
+        <span>X=Revenue Ops</span>
+        <span aria-hidden="true">X=Investments</span>
+        <span aria-hidden="true">X=Growth</span>
+        <span aria-hidden="true">X=Headwinds</span>
+        <span aria-hidden="true">X=Competition</span>
+        <span aria-hidden="true">X=Pricing</span>
+        <span aria-hidden="true">X=M&amp;A</span>
+        <span aria-hidden="true">X=Operational Efficiency</span>
+        <span aria-hidden="true">X=Profitability</span>
+        <span aria-hidden="true">X=Channels</span>
+        <span aria-hidden="true">X=Markets</span>
+        <span aria-hidden="true">X=Cash Cycle</span>
+        <span aria-hidden="true">X=Asset Utilization</span>
+        <span aria-hidden="true">X=ESG</span>
+        <span aria-hidden="true">X=Workforce</span>
+        <span aria-hidden="true">X=Revenue Ops</span>
       </span>
     </span>
 
