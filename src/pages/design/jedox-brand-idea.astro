@@ -163,9 +163,35 @@
     animation: scrollList 48s linear infinite;   /* 16 items × 3s */
   }
 
+  /* Notes above the footer */
+  .notes {
+    text-align: center;
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+  .notice {
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+    color: var(--pink);
+  }
+  .concept {
+    margin-top: 10px;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: rgba(255,255,255,0.72);
+  }
+  .concept .eg {
+    display: inline-block;
+    color: rgba(255,255,255,0.5);
+    font-style: italic;
+  }
+
   footer {
     text-align: center;
-    padding: 24px 24px 32px;
+    padding: 18px 24px 32px;
     font-size: 0.8rem;
     color: rgba(255,255,255,0.5);
   }
@@ -202,7 +228,10 @@
 
     /* Scrollers are max-width so long entries never force a sideways scroll */
     .scroll-window { max-width: 100%; }
-    footer { padding: 16px 20px 24px; font-size: 0.72rem; }
+    .notes { padding: 0 18px; }
+    .notice { font-size: 0.68rem; letter-spacing: 1.2px; }
+    .concept { margin-top: 8px; font-size: 0.8rem; }
+    footer { padding: 14px 20px 24px; font-size: 0.72rem; }
   }
 
   /* Short viewports — small phones and any phone held sideways.
@@ -218,6 +247,7 @@
   @media (max-height: 560px) {
     :root { --rows: 3; }
     .subhead { display: none; }
+    .concept .eg { display: none; }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -314,6 +344,14 @@
 
   </div>
 </main>
+
+<section class="notes">
+  <p class="notice">Best watched on a desktop browser</p>
+  <p class="concept">
+    Each combination of J word and X= is a thought leadership piece
+    <span class="eg">(eg: &ldquo;Justifiable Enterprise Decisions on Headwinds&rdquo;)</span>
+  </p>
+</section>
 
 <footer>
   <p>A brand concept by Ron Dimon &middot; <a href="https://sparklabs.studio" target="_blank" rel="noopener noreferrer">sparklabs.studio</a> &middot; not an official Jedox property</p>
