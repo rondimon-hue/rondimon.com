@@ -19,12 +19,13 @@
     --rows: 5;         /* how many rows are visible at once */
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body { height: 100%; }
   body {
     font-family: 'Open Sans', Arial, sans-serif;
     background: linear-gradient(160deg, var(--navy-dark) 0%, var(--navy) 45%, var(--purple) 100%);
+    background-attachment: fixed;
     color: var(--white);
     min-height: 100vh;
+    min-height: 100dvh;   /* dvh excludes mobile browser chrome; vh does not */
     display: flex;
     flex-direction: column;
     overflow-x: hidden;
@@ -88,6 +89,13 @@
     line-height: var(--item-h);
   }
 
+  /* Keeps "Enterprise Decisions on" and the X mark welded together so they
+     can never be split across lines, whatever the screen width. */
+  .mid {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
   .static-text { color: var(--white); }
 
   /* Scroll windows: several rows tall, faded top and bottom so the
@@ -164,20 +172,52 @@
   footer a { color: var(--pink); text-decoration: none; }
   footer a:hover { text-decoration: underline; }
 
-  /* Narrow screens: fewer rows, wrap the X= list onto its own centred line */
+  /* ---- Phones ----
+     The full sentence needs ~550px to stay readable, so below that it
+     becomes a deliberate vertical composition, read top to bottom:
+     rotating word / fixed sentence / rotating variable. */
   @media (max-width: 760px) {
     :root { --rows: 3; }
+
+    header { padding: 32px 20px 0; }
+    h1 { font-size: 1.3rem; }
+    .subhead {
+      font-size: 0.88rem;
+      line-height: 1.6;
+      margin-top: 14px;
+    }
+    main.hero { padding: 12px 16px 20px; }
+
     .equation {
-      flex-wrap: wrap;
-      font-size: 1.45rem;
+      flex-direction: column;
+      flex-wrap: nowrap;
+      align-items: center;
+      font-size: clamp(1.35rem, 6.2vw, 1.9rem);
+      row-gap: 0.05em;
     }
+    .word-scroll { margin-right: 0; }
     .word-scroll .scroll-track > span { justify-content: center; }
-    .phrase-scroll {
-      flex-basis: 100%;
-      margin-left: 0;
-      margin-top: 0.4em;
-    }
+    .phrase-scroll { margin-left: 0; }
     .phrase-scroll .scroll-track > span { justify-content: center; }
+
+    /* Scrollers are max-width so long entries never force a sideways scroll */
+    .scroll-window { max-width: 100%; }
+    footer { padding: 16px 20px 24px; font-size: 0.72rem; }
+  }
+
+  /* Short viewports — small phones and any phone held sideways.
+     Trim vertical padding so the composition still fits without scrolling. */
+  @media (max-height: 700px) {
+    header { padding-top: 22px; }
+    h1 { font-size: 1.2rem; }
+    .subhead { margin-top: 10px; font-size: 0.82rem; }
+    main.hero { padding-top: 4px; padding-bottom: 10px; }
+    footer { padding: 10px 20px 16px; }
+  }
+  /* Very short (landscape phone): drop to 3 rows so nothing is cut off */
+  @media (max-height: 560px) {
+    :root { --rows: 3; }
+    .subhead { display: none; }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -230,9 +270,10 @@
       </span>
     </span>
 
-    <span class="static-text">Enterprise Decisions on</span>
-
-    <img class="x-mark" src="/images/design/jedox-x-mark-pink.png" alt="X." />
+    <span class="mid">
+      <span class="static-text">Enterprise Decisions on</span>
+      <img class="x-mark" src="/images/design/jedox-x-mark-pink.png" alt="X." />
+    </span>
 
     <span class="scroll-window phrase-scroll">
       <span class="scroll-track">
