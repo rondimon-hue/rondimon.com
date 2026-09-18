@@ -1,0 +1,787 @@
+---
+import Page from '../../layouts/Page.astro';
+---
+
+<Page
+  title="Whole Life Experiment"
+  description="An interactive Whole Life Matrix — circle the life drivers that matter, colour how they're going, connect what drives what, and take the map with you."
+  noindex={true}
+>
+
+<section class="wlm">
+  <div class="wlm-wide">
+
+    <a href="/design" class="wlm-back">&larr; Design</a>
+
+    <!-- ===== Poster header ===== -->
+    <header class="wlm-head">
+      <div class="wlm-title-wrap">
+        <svg class="wlm-mark" viewBox="0 0 40 40" aria-hidden="true">
+          <circle cx="20" cy="20" r="18" fill="none" stroke="#2E7D5B" stroke-width="2.4"/>
+          <circle cx="20" cy="20" r="12" fill="none" stroke="#B5651D" stroke-width="2.4"/>
+          <circle cx="20" cy="20" r="6" fill="none" stroke="#5B4A9E" stroke-width="2.4"/>
+          <circle cx="20" cy="20" r="1.8" fill="#2B2B2B"/>
+        </svg>
+        <div>
+          <h1 class="wlm-title">The Whole Life Matrix</h1>
+          <p class="wlm-sub">A values &amp; priorities blueprint &mdash; 75 things that could matter; a handful that matter most right now.</p>
+        </div>
+      </div>
+      <aside class="wlm-howto">
+        <p class="wlm-howto-h">How to use this page</p>
+        <ol>
+          <li><b>Circle</b> up to <b>10</b> drivers that matter most this season. Star up to <b>3</b> non-negotiables.</li>
+          <li><b>Colour</b> each circle honestly: <i class="dot dot-green"></i>thriving <i class="dot dot-yellow"></i>needs attention <i class="dot dot-red"></i>neglected.</li>
+          <li><b>Connect</b> &mdash; draw arrows where one driver feeds another. The busiest source is your <b>keystone</b>.</li>
+          <li><b>Commit</b> &mdash; pick 1&ndash;3 drivers; write a 90-day intention and one weekly practice for each.</li>
+        </ol>
+      </aside>
+    </header>
+
+    <!-- ===== Mode bar ===== -->
+    <div class="wlm-bar">
+      <div class="wlm-modes" id="wlm-steps">
+        <button class="wlm-mode is-active" data-step="1"><span>1</span>Circle</button>
+        <button class="wlm-mode" data-step="2"><span>2</span>Colour</button>
+        <button class="wlm-mode" data-step="3"><span>3</span>Connect</button>
+        <button class="wlm-mode" data-step="4"><span>4</span>Commit &darr;</button>
+      </div>
+      <p class="wlm-instruct" id="wlm-instruct"></p>
+      <div class="wlm-bar-right">
+        <span class="wlm-count" id="wlm-count"></span>
+        <button class="wlm-reset" id="wlm-reset" type="button">Reset</button>
+      </div>
+    </div>
+    <p class="wlm-scroll-hint">Scroll sideways to see the whole matrix.</p>
+
+    <!-- ===== The board ===== -->
+    <div class="wlm-scroll">
+      <div class="wlm-board" id="wlm-board">
+        <svg class="wlm-arrows" id="wlm-arrows" aria-hidden="true"></svg>
+        <!-- header row -->
+        <div class="wlm-corner">
+          <span class="wlm-key"><i class="pin"></i>available</span>
+          <span class="wlm-key"><i class="pin pin-on"></i>circled</span>
+          <span class="wlm-key"><i class="pin pin-c"></i>coloured</span>
+          <span class="wlm-key"><b class="wlm-star">&#9733;</b>non-negotiable</span>
+        </div>
+        <div id="wlm-cols" class="wlm-contents"></div>
+        <div id="wlm-rows" class="wlm-contents"></div>
+      </div>
+    </div>
+    <p class="wlm-foot">
+      <b>It&rsquo;s a compass, not a scorecard.</b> No one tends all seventy-five. Every season of life deliberately
+      neglects most of this matrix. The goal isn&rsquo;t balance &mdash; it&rsquo;s choosing your neglect on purpose.
+    </p>
+  </div>
+
+  <!-- ===== Results ===== -->
+  <div class="wlm-wide">
+    <div id="wlm-results" class="wlm-results" hidden>
+
+      <div class="wlm-two">
+        <div class="wlm-panel">
+          <h2 class="wlm-h2">Where your attention is</h2>
+          <div id="wlm-attention" class="wlm-attn"></div>
+        </div>
+        <div class="wlm-panel">
+          <h2 class="wlm-h2">Balance</h2>
+          <p class="wlm-p wlm-p-tight">Where your circles fall. Clustered is honest; even is worth a second look.</p>
+          <div id="wlm-heat" class="wlm-heat"></div>
+        </div>
+      </div>
+
+      <div class="wlm-panel wlm-panel-ink">
+        <h2 class="wlm-h2">Assessment</h2>
+        <div class="wlm-assessment" id="wlm-assessment"></div>
+        <p class="wlm-note">
+          Written by Ron Dimon and Claude: the reasoning behind this read is encoded in the page, so it runs
+          instantly and privately in your browser &mdash; nothing you mark here is ever sent anywhere.
+        </p>
+      </div>
+
+      <div class="wlm-panel">
+        <h2 class="wlm-h2">Commit</h2>
+        <p class="wlm-p">
+          Pick one to three drivers &mdash; usually the keystone plus one starred red. For each, a 90-day intention
+          (a description of a state, not a number) and one weekly practice (the smallest repeatable act).
+        </p>
+        <div id="wlm-commit"></div>
+      </div>
+
+      <div class="wlm-actions">
+        <button class="wlm-btn" id="wlm-pdf" type="button">Download map + assessment (PDF)</button>
+        <span class="wlm-actions-note">Two pages, landscape. Keep it &mdash; re-colour the same sheet in 90 days and watch the colours migrate.</span>
+      </div>
+    </div>
+
+    <div id="wlm-empty" class="wlm-empty">
+      Circle at least one driver above to begin. The assessment appears once you&rsquo;ve marked the matrix.
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  /* is:global — the board is built by JS at runtime, so Astro's scoped
+     selectors would never match it. All rules are .wlm-prefixed. */
+  /* ---------- paper ---------- */
+  .wlm {
+    --paper: #FBF7F1; --ink: #2B2B2B; --mut: #6B6560; --rule: #D9D2C7;
+    --arrow: #2563EB;
+    background: var(--paper); color: var(--ink);
+    padding: 2.5rem 0 4rem;
+  }
+  .wlm-wide { max-width: 1560px; margin-inline: auto; padding-inline: 1.5rem; }
+  .wlm-back { font-size: .8rem; color: var(--mut); text-decoration: none; }
+  .wlm-back:hover { color: var(--ink); }
+
+  /* ---------- header ---------- */
+  .wlm-head { display: grid; grid-template-columns: 1fr auto; gap: 1.5rem 3rem; align-items: start; margin-top: 1rem; }
+  .wlm-title-wrap { display: flex; gap: 1rem; align-items: flex-start; }
+  .wlm-mark { width: 52px; height: 52px; flex: none; margin-top: .35rem; }
+  .wlm-title { font-family: var(--font-heading); font-weight: 700; font-size: clamp(2rem, 3.6vw, 3rem); line-height: 1.05; margin: 0; letter-spacing: -.01em; }
+  .wlm-sub { font-family: var(--font-heading); font-style: italic; font-size: 1.05rem; color: var(--mut); margin: .5rem 0 0; }
+  .wlm-howto { border-left: 2px solid var(--ink); padding-left: 1rem; max-width: 520px; font-size: .8rem; line-height: 1.55; }
+  .wlm-howto-h { font-size: .68rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; margin: 0 0 .35rem; }
+  .wlm-howto ol { margin: 0; padding-left: 1.2rem; }
+  .wlm-howto li { margin: .1rem 0; color: var(--ink); }
+  .wlm-howto li::marker { color: var(--mut); font-family: var(--font-heading); }
+  .dot { width: .58rem; height: .58rem; border-radius: 999px; display: inline-block; vertical-align: -1px; margin: 0 .2rem 0 .35rem; }
+  .dot-green { background: #16A34A; } .dot-yellow { background: #CA8A04; } .dot-red { background: #DC2626; }
+
+  /* ---------- mode bar ---------- */
+  .wlm-bar {
+    margin-top: 1.75rem; display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap;
+    padding: .6rem .85rem; background: #fff; border: 1px solid var(--rule); border-radius: .75rem;
+  }
+  .wlm-modes { display: flex; gap: .35rem; }
+  .wlm-mode {
+    display: inline-flex; align-items: center; gap: .45rem; font: inherit; font-size: .82rem; font-weight: 600;
+    padding: .4rem .8rem .4rem .45rem; border-radius: 999px; border: 1px solid var(--rule); background: #fff; color: var(--ink); cursor: pointer;
+  }
+  .wlm-mode span {
+    width: 1.3rem; height: 1.3rem; border-radius: 999px; display: inline-flex; align-items: center; justify-content: center;
+    background: var(--paper); font-size: .7rem; font-family: var(--font-heading);
+  }
+  .wlm-mode:hover { border-color: var(--ink); }
+  .wlm-mode.is-active { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .wlm-mode.is-active span { background: rgba(255,255,255,.18); }
+  .wlm-instruct { flex: 1 1 320px; font-size: .82rem; color: var(--mut); margin: 0; line-height: 1.45; }
+  .wlm-bar-right { display: flex; align-items: center; gap: .9rem; margin-left: auto; }
+  .wlm-count { font-size: .78rem; font-weight: 600; color: var(--mut); white-space: nowrap; }
+  .wlm-count.is-full { color: #B5651D; }
+  .wlm-reset { font: inherit; font-size: .78rem; color: var(--mut); background: none; border: none; cursor: pointer; text-decoration: underline; text-decoration-color: var(--rule); }
+  .wlm-reset:hover { color: var(--ink); }
+  .wlm-scroll-hint { display: none; font-size: .72rem; color: var(--mut); margin: .5rem 0 0; }
+
+  /* ---------- board ---------- */
+  .wlm-scroll { overflow-x: auto; margin-top: 1.25rem; padding-bottom: .5rem; }
+  .wlm-board {
+    position: relative; min-width: 1120px;
+    display: grid; grid-template-columns: 172px repeat(5, minmax(0, 1fr));
+    column-gap: 18px; row-gap: 14px;
+  }
+  .wlm-contents { display: contents; }
+  .wlm-arrows { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5; overflow: visible; }
+
+  .wlm-corner { display: flex; flex-direction: column; gap: .25rem; justify-content: flex-end; padding-bottom: .5rem; }
+  .wlm-key { display: inline-flex; align-items: center; gap: .4rem; font-size: .66rem; color: var(--mut); }
+  .wlm-key .pin { --lc: var(--mut); }
+  .wlm-key .pin-c { background: #16A34A; border-color: #16A34A; }
+
+  .wlm-colh { align-self: end; padding-bottom: .5rem; border-bottom: 2px solid var(--ink); }
+  .wlm-colh b { font-size: .95rem; font-weight: 700; letter-spacing: -.005em; }
+
+  .wlm-row { display: contents; }
+  .wlm-row[data-layer="self"]      { --lc: #5B4A9E; --lb: #ECE8F5; }
+  .wlm-row[data-layer="family"]    { --lc: #B5651D; --lb: #F8ECDD; }
+  .wlm-row[data-layer="community"] { --lc: #2E7D5B; --lb: #E4F0E8; }
+
+  .wlm-label { background: var(--lb); border-radius: 12px; padding: 1rem .9rem; }
+  .wlm-badge { display: inline-flex; align-items: center; gap: .4rem; font-size: .62rem; font-weight: 700; letter-spacing: .14em; color: var(--lc); }
+  .wlm-badge i { width: 1.15rem; height: 1.15rem; border-radius: 999px; border: 2px solid var(--lc); position: relative; }
+  .wlm-badge i::after { content: ''; position: absolute; inset: 4px; border-radius: 999px; background: var(--lc); }
+  .wlm-lname { font-family: var(--font-heading); font-weight: 700; font-size: 1.3rem; line-height: 1.15; color: var(--lc); margin: .55rem 0 .4rem; }
+  .wlm-lblurb { font-size: .72rem; line-height: 1.4; color: var(--mut); }
+
+  .wlm-cell { display: flex; flex-direction: column; gap: 3px; min-width: 0; padding-top: .15rem; }
+
+  /* a driver at its intersection */
+  .wlm-chip {
+    position: relative; display: grid; grid-template-columns: 14px 1fr auto; gap: 8px; align-items: start;
+    width: 100%; text-align: left; padding: 6px 8px 6px 7px; border-radius: 9px;
+    background: transparent; border: 1px solid transparent; cursor: pointer; font: inherit; color: var(--ink);
+    transition: background .12s, border-color .12s, box-shadow .12s, opacity .12s;
+  }
+  .wlm-chip:hover { background: rgba(255,255,255,.7); border-color: var(--rule); }
+  .pin {
+    width: 14px; height: 14px; border-radius: 999px; margin-top: 2px;
+    border: 2px solid var(--lc); background: transparent; box-sizing: border-box; flex: none; transition: all .12s;
+  }
+  .pin-on, .is-on .pin { background: var(--lc); box-shadow: 0 0 0 3px color-mix(in srgb, var(--lc) 22%, transparent); }
+  .wlm-nm { display: block; font-size: .8rem; font-weight: 600; line-height: 1.25; }
+  .wlm-ds { display: block; font-size: .67rem; line-height: 1.3; color: var(--mut); margin-top: 1px; font-weight: 400; }
+  .wlm-mk { display: flex; align-items: center; gap: .25rem; min-height: 1rem; }
+  .wlm-star { color: #B5651D; font-size: .8rem; line-height: 1; }
+
+  .is-on { background: #fff; border-color: color-mix(in srgb, var(--lc) 55%, transparent); box-shadow: 0 1px 2px rgba(0,0,0,.05); }
+  .c-green { background: #F0FDF4; border-color: #86EFAC; }  .c-green .pin { background: #16A34A; border-color: #16A34A; box-shadow: 0 0 0 3px rgba(22,163,74,.2); }
+  .c-yellow { background: #FEFCE8; border-color: #FDE047; } .c-yellow .pin { background: #CA8A04; border-color: #CA8A04; box-shadow: 0 0 0 3px rgba(202,138,4,.2); }
+  .c-red { background: #FEF2F2; border-color: #FCA5A5; }    .c-red .pin { background: #DC2626; border-color: #DC2626; box-shadow: 0 0 0 3px rgba(220,38,38,.2); }
+  .is-dim { opacity: .32; }
+  .is-src { outline: 2px solid var(--arrow); outline-offset: 1px; }
+
+  /* colour-mode controls */
+  .wlm-ctl { display: flex; gap: .22rem; align-items: center; }
+  .wlm-ctl button { width: 1rem; height: 1rem; border-radius: 999px; border: 1px solid rgba(0,0,0,.18); padding: 0; cursor: pointer; line-height: 0; }
+  .wlm-ctl .sw-green { background: #16A34A; } .wlm-ctl .sw-yellow { background: #CA8A04; } .wlm-ctl .sw-red { background: #DC2626; }
+  .wlm-ctl button[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--ink); }
+  .wlm-ctl .sw-star { width: auto; padding: 0 .3rem; border-radius: .3rem; background: #fff; color: #B5651D; font-size: .7rem; line-height: 1; }
+  .wlm-ctl .sw-star.on { background: #F8ECDD; border-color: #B5651D; }
+
+  .wlm-foot { margin: 1.25rem 0 0; font-size: .85rem; color: var(--mut); max-width: 62rem; line-height: 1.55; }
+  .wlm-foot b { color: var(--ink); }
+
+  /* ---------- results ---------- */
+  .wlm-results { display: grid; gap: 1.1rem; margin-top: 2.5rem; }
+  .wlm-two { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; }
+  .wlm-panel { background: #fff; border: 1px solid var(--rule); border-radius: .9rem; padding: 1.4rem 1.5rem; }
+  .wlm-panel-ink { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .wlm-panel-ink .wlm-h2 { color: #fff; }
+  .wlm-h2 { font-family: var(--font-heading); font-size: 1.25rem; font-weight: 700; margin: 0 0 .8rem; }
+  .wlm-p { font-size: .88rem; color: var(--mut); margin: 0 0 1rem; line-height: 1.6; }
+  .wlm-p-tight { margin-bottom: .75rem; }
+  .wlm-assessment { font-size: 1rem; line-height: 1.75; }
+  .wlm-assessment strong { color: #FDE68A; font-weight: 700; }
+  .wlm-assessment p + p { margin-top: .85rem; }
+  .wlm-note { font-size: .72rem; color: rgba(255,255,255,.6); margin: 1rem 0 0; line-height: 1.5; }
+
+  .wlm-attn { display: grid; grid-template-columns: repeat(3, 1fr); gap: .9rem; }
+  .wlm-attn-col h3 { font-size: .66rem; letter-spacing: .12em; text-transform: uppercase; margin: 0 0 .45rem; padding-bottom: .3rem; border-bottom: 2px solid; }
+  .wlm-attn-col.now h3 { color: #DC2626; border-color: #DC2626; }
+  .wlm-attn-col.grow h3 { color: #CA8A04; border-color: #CA8A04; }
+  .wlm-attn-col.hold h3 { color: #16A34A; border-color: #16A34A; }
+  .wlm-attn-col ul { list-style: none; margin: 0; padding: 0; }
+  .wlm-attn-col li { font-size: .8rem; line-height: 1.35; padding: .18rem 0; }
+  .wlm-attn-col li small { display: block; font-size: .66rem; color: var(--mut); }
+  .wlm-attn-col .none { font-size: .74rem; color: var(--mut); font-style: italic; }
+  .wlm-keystone { grid-column: 1 / -1; margin-top: .4rem; padding: .6rem .8rem; background: var(--paper); border-radius: .6rem; font-size: .82rem; }
+  .wlm-keystone b { color: var(--arrow); }
+
+  .wlm-heat { display: grid; grid-template-columns: 96px repeat(5, 1fr) 36px; gap: 4px; font-size: .68rem; align-items: stretch; }
+  .wlm-heat .h { color: var(--mut); text-align: center; padding-bottom: 2px; align-self: end; line-height: 1.1; }
+  .wlm-heat .r { color: var(--mut); display: flex; align-items: center; }
+  .wlm-heat .t { color: var(--ink); font-weight: 700; display: flex; align-items: center; justify-content: center; }
+  .wlm-heat .c { height: 34px; border-radius: 6px; display: flex; align-items: center; justify-content: center; gap: 4px; font-weight: 700; color: var(--ink); background: var(--paper); border: 1px solid var(--rule); }
+  .wlm-heat .c i { width: 7px; height: 7px; border-radius: 999px; display: inline-block; }
+  .wlm-heat-read { margin: .7rem 0 0; font-size: .8rem; color: var(--mut); line-height: 1.5; }
+
+  .wlm-commit-row { border-top: 1px solid var(--rule); padding-top: 1rem; margin-top: 1rem; }
+  .wlm-commit-row:first-child { border-top: none; padding-top: 0; margin-top: 0; }
+  .wlm-commit-name { font-weight: 600; font-size: .9rem; display: flex; align-items: center; gap: .4rem; }
+  .wlm-commit-row label { display: block; font-size: .7rem; color: var(--mut); margin: .6rem 0 .2rem; font-weight: 600; }
+  .wlm-commit-row input { width: 100%; font: inherit; font-size: .85rem; padding: .5rem .65rem; border: 1px solid var(--rule); border-radius: .45rem; background: #fff; color: var(--ink); }
+  .wlm-commit-row input:focus { outline: 2px solid var(--ink); outline-offset: -1px; }
+
+  .wlm-actions { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+  .wlm-btn { font: inherit; font-size: .9rem; font-weight: 600; background: var(--ink); color: #fff; border: none; padding: .75rem 1.4rem; border-radius: .55rem; cursor: pointer; }
+  .wlm-btn:hover { background: #000; }
+  .wlm-actions-note { font-size: .75rem; color: var(--mut); max-width: 30rem; line-height: 1.5; }
+  .wlm-empty { margin-top: 2rem; text-align: center; font-size: .88rem; color: var(--mut); border: 1px dashed var(--rule); border-radius: .9rem; padding: 1.6rem; }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 1180px) {
+    .wlm-scroll-hint { display: block; }
+    .wlm-ds { display: none; }
+    .wlm-board { min-width: 900px; grid-template-columns: 140px repeat(5, minmax(0, 1fr)); column-gap: 12px; }
+  }
+  @media (max-width: 900px) {
+    .wlm-head { grid-template-columns: 1fr; }
+    .wlm-two { grid-template-columns: 1fr; }
+    .wlm-attn { grid-template-columns: 1fr; }
+  }
+</style>
+
+<script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script is:inline>
+(function () {
+  'use strict';
+
+  /* ============ DATA: 5 domains x 3 layers x 5 drivers = 75 ============ */
+  var DOMAINS = [
+    { id: 'health',        name: 'Health & Vitality',          short: 'Health' },
+    { id: 'wealth',        name: 'Wealth & Career',            short: 'Wealth' },
+    { id: 'relationships', name: 'Relationships & Connection', short: 'Relationships' },
+    { id: 'growth',        name: 'Growth & Mindset',           short: 'Growth' },
+    { id: 'lifestyle',     name: 'Lifestyle & Environment',    short: 'Lifestyle' }
+  ];
+  var LAYERS = [
+    { id: 'self',      n: 1, short: 'Self & Spirit',         blurb: 'Your inner world, personal responsibility, and connection to a Higher Power or your deepest values' },
+    { id: 'family',    n: 2, short: 'Family & Inner Circle', blurb: 'Your partner, children, parents, and those you consider chosen family' },
+    { id: 'community', n: 3, short: 'Community & World',     blurb: 'Your friends, colleagues, neighbours, local community, and the wider world' }
+  ];
+  var D = {
+    'self-health': [['Body awareness & release','Tune into your signals; move to process stress'],['Nutritional choices','What you choose to feed and fuel yourself'],['Sleep hygiene','Routines that ensure deep, restorative rest'],['Preventative care','Own your checkups and your health data'],['Self-image','Your relationship with your body and appearance']],
+    'self-wealth': [['Intrinsic motivation','A deep personal why behind your work'],['Skill mastery','Commitment to sharpening your talents'],['Financial psychology','Unlearn scarcity thinking and impulse spending'],['Autonomous savings','Build your personal safety net'],['Career alignment','Work that fits your gifts and personality']],
+    'self-relationships': [['Relationship with self','Self-compassion, forgiveness, healthy solitude'],['Boundaries','What you will and will not tolerate'],['Emotional regulation','Manage your triggers before they project'],['Attachment style','Understand and heal the way you connect'],['Authenticity','Show up as your true self, without a mask']],
+    'self-growth': [['Spiritual practice & intuition','Prayer, meditation, ritual; trusting inner guidance'],['Intellectual curiosity','Read and learn purely for yourself'],['Core values','Name the principles that guide your decisions'],['Ego awareness','Notice when pride or fear is driving'],['Mental resilience','Talk yourself through failure and hardship']],
+    'self-lifestyle': [['Inner sanctuary','A private space that feels peaceful'],['Digital boundaries','Limits on screens, feeds, and noise'],['Daily rhythm','A morning or evening routine that anchors you'],['Personal aesthetic','Art, music, and objects that inspire you'],['Solitary leisure','Hobbies you enjoy entirely on your own']],
+    'family-health': [['Shared nutrition','Cook healthy meals together; a nourishing kitchen'],['Family play','Active recreation together — hikes, sports, rides'],['Genetic awareness','Know your family history and inherited risks'],['Caregiving','Nurse loved ones with patience and empathy'],['Sleep alignment','Household rhythms so everyone rests well']],
+    'family-wealth': [['Shared financial goals','Align on budget, purchases, and investments'],['Legacy planning','Wills, insurance, and generational wealth'],['Work-life harmony','Career boundaries so stress stays at work'],['Financial communication','Transparent, calm conversations about money'],["Dependents’ future",'Fund education; secure care for aging parents']],
+    'family-relationships': [['Partner intimacy','Romantic, intellectual, and emotional closeness'],['Parental presence','Undistracted, quality time with children'],['Repair & psychological safety','Conflict ends in apology; feelings are safe'],['Traditions & rituals','Holidays, Sunday dinners, annual trips'],['Extended family ties','Healthy dynamics with in-laws and siblings']],
+    'family-growth': [['Shared values','A unified family identity and mission'],['Co-learning','Read, discuss, and learn skills together'],['Spiritual harmony','Navigate faith and big questions as a unit'],['Emotional growth','Help each other through grief and transitions'],['Modeling behavior','Demonstrate maturity for the next generation']],
+    'family-lifestyle': [['Home management','Fairly share chores, cooking, and upkeep'],['Comfort & order','A clean, welcoming, organised home'],['Family vacations','Travel that bonds and builds memories'],['Hospitality','Open your home to the people you love'],['Shared leisure','Movies, games, and hobbies everyone enjoys']],
+    'community-health': [['Public health','Keep shared spaces safe, clean, accessible'],['Group fitness','Leagues, run clubs, and classes'],['Healthcare access','Support and advocate for local care'],['Wellness openness','Normalise honest mental-health conversations'],['Food security','Community gardens, local farms, food banks']],
+    'community-wealth': [['Professional network','Mutually beneficial ties in your field'],['Local economy','Support the businesses in your community'],['Mentorship','Lift up juniors and newcomers'],['Philanthropy','Give to causes you believe in'],['Ethical work','Choices that do no harm to the public good']],
+    'community-relationships': [['Deep friendships','A loyal, supportive circle beyond family'],['Neighborliness','A reliable, helpful presence next door'],['Belonging & inclusion','A third place; welcoming people unlike you'],['Civic engagement','Vote, show up, participate locally'],['Service','Give time freely to people in need']],
+    'community-growth': [['Collective wisdom','Book clubs, lectures, and group discussion'],['Cultural enrichment','Support the arts, museums, libraries'],['Advocacy','Stand up for principles and needed change'],['Open dialogue','Engage different faiths and ideas with respect'],['Shared hope','Contribute to a culture of optimism']],
+    'community-lifestyle': [['Environmental stewardship','Conserve, recycle, reduce your footprint'],['Public spaces','Enjoy and care for parks and trails'],['Group travel','New cultures with friends or groups'],['Community events','Markets, festivals, block parties'],['Workplace culture','A positive, inspiring shared environment']]
+  };
+  var DRIVERS = [], BY_ID = {};
+  LAYERS.forEach(function (L) { DOMAINS.forEach(function (M) {
+    (D[L.id + '-' + M.id] || []).forEach(function (row, i) {
+      var d = { id: L.id + '-' + M.id + '-' + (i + 1), layer: L.id, domain: M.id, name: row[0], desc: row[1] };
+      DRIVERS.push(d); BY_ID[d.id] = d;
+    });
+  }); });
+
+  var MAX_CIRCLE = 10, MAX_STAR = 3;
+  var LAYER_SHORT = {}, DOMAIN_SHORT = {}, LAYER_COLOR = { self: '#5B4A9E', family: '#B5651D', community: '#2E7D5B' };
+  LAYERS.forEach(function (l) { LAYER_SHORT[l.id] = l.short; });
+  DOMAINS.forEach(function (m) { DOMAIN_SHORT[m.id] = m.short; });
+
+  /* ============ STATE ============ */
+  var KEY = 'wlm.v1';
+  var S = { step: 1, circled: [], starred: [], colors: {}, conns: [], commit: {}, src: null };
+  function save() { try { localStorage.setItem(KEY, JSON.stringify({ step: S.step, circled: S.circled, starred: S.starred, colors: S.colors, conns: S.conns, commit: S.commit })); } catch (e) {} }
+  function load() {
+    try {
+      var o = JSON.parse(localStorage.getItem(KEY) || 'null'); if (!o) return;
+      S.step = Math.min(o.step || 1, 3);
+      S.circled = (o.circled || []).filter(function (id) { return BY_ID[id]; });
+      S.starred = (o.starred || []).filter(function (id) { return S.circled.indexOf(id) > -1; });
+      S.colors = o.colors || {};
+      S.conns = (o.conns || []).filter(function (c) { return S.circled.indexOf(c.from) > -1 && S.circled.indexOf(c.to) > -1; });
+      S.commit = o.commit || {};
+    } catch (e) {}
+  }
+
+  /* ============ DOM ============ */
+  var $ = function (id) { return document.getElementById(id); };
+  var $board = $('wlm-board'), $arrows = $('wlm-arrows'), $steps = $('wlm-steps'), $instruct = $('wlm-instruct'),
+      $count = $('wlm-count'), $results = $('wlm-results'), $empty = $('wlm-empty'), $attn = $('wlm-attention'),
+      $heat = $('wlm-heat'), $assess = $('wlm-assessment'), $commit = $('wlm-commit'), $pdf = $('wlm-pdf');
+
+  var INSTRUCT = {
+    1: 'Click a driver to circle it — no more than ten. Star up to three non-negotiables. If everything matters, nothing does.',
+    2: 'Be honest about each circle: click a swatch — green thriving, yellow slipping, red neglected. Most sheets have more red than green; red means honest, not failing.',
+    3: 'Click a source driver, then the one it feeds, to draw an arrow. The driver with the most arrows leaving it is your keystone.',
+    4: 'Read the assessment below, write your commitments, and take the PDF with you.'
+  };
+
+  function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+
+  /* ============ BUILD BOARD ============ */
+  function buildBoard() {
+    $('wlm-cols').innerHTML = DOMAINS.map(function (m) { return '<div class="wlm-colh"><b>' + esc(m.name) + '</b></div>'; }).join('');
+    $('wlm-rows').innerHTML = LAYERS.map(function (L) {
+      var cells = DOMAINS.map(function (M) {
+        return '<div class="wlm-cell">' + DRIVERS.filter(function (d) { return d.layer === L.id && d.domain === M.id; }).map(function (d) {
+          return '<button type="button" class="wlm-chip" data-id="' + d.id + '"><i class="pin"></i>' +
+            '<span><span class="wlm-nm">' + esc(d.name) + '</span><span class="wlm-ds">' + esc(d.desc) + '</span></span>' +
+            '<span class="wlm-mk"></span></button>';
+        }).join('') + '</div>';
+      }).join('');
+      return '<div class="wlm-row" data-layer="' + L.id + '"><div class="wlm-label">' +
+        '<span class="wlm-badge"><i></i>LAYER ' + L.n + '</span>' +
+        '<div class="wlm-lname">' + esc(L.short) + '</div><div class="wlm-lblurb">' + esc(L.blurb) + '</div></div>' + cells + '</div>';
+    }).join('');
+  }
+
+  /* ============ RENDER ============ */
+  function render() {
+    Array.prototype.forEach.call($steps.querySelectorAll('.wlm-mode'), function (b) { b.classList.toggle('is-active', +b.dataset.step === S.step); });
+    if (Date.now() >= flashUntil) { $instruct.textContent = INSTRUCT[S.step]; $instruct.style.color = ''; }
+
+    if (S.step === 1) { $count.textContent = S.circled.length + ' / ' + MAX_CIRCLE + ' circled · ' + S.starred.length + ' / ' + MAX_STAR + ' starred'; $count.classList.toggle('is-full', S.circled.length >= MAX_CIRCLE); }
+    else if (S.step === 2) { var done = S.circled.filter(function (id) { return S.colors[id]; }).length; $count.textContent = done + ' / ' + S.circled.length + ' coloured'; $count.classList.remove('is-full'); }
+    else if (S.step === 3) { $count.textContent = S.conns.length + ' connection' + (S.conns.length === 1 ? '' : 's'); $count.classList.remove('is-full'); }
+    else { $count.textContent = ''; }
+
+    Array.prototype.forEach.call($board.querySelectorAll('.wlm-chip'), function (el) {
+      var id = el.dataset.id, on = S.circled.indexOf(id) > -1;
+      el.className = 'wlm-chip' + (on ? ' is-on' : '');
+      if (on && S.colors[id]) el.classList.add('c-' + S.colors[id]);
+      if (S.step === 3) { if (!on) el.classList.add('is-dim'); if (S.src === id) el.classList.add('is-src'); }
+      var mk = el.querySelector('.wlm-mk'); mk.innerHTML = '';
+      if (on && S.step === 2) {
+        var ctl = document.createElement('span'); ctl.className = 'wlm-ctl';
+        ['green', 'yellow', 'red'].forEach(function (c) {
+          var b = document.createElement('button'); b.type = 'button'; b.className = 'sw-' + c;
+          b.dataset.color = c; b.dataset.for = id; b.setAttribute('aria-label', c);
+          b.setAttribute('aria-pressed', S.colors[id] === c ? 'true' : 'false'); ctl.appendChild(b);
+        });
+        var st = document.createElement('button'); st.type = 'button'; st.dataset.star = id;
+        st.className = 'sw-star' + (S.starred.indexOf(id) > -1 ? ' on' : ''); st.textContent = '★'; st.setAttribute('aria-label', 'star');
+        ctl.appendChild(st); mk.appendChild(ctl);
+      } else if (on && S.starred.indexOf(id) > -1) {
+        mk.innerHTML = '<span class="wlm-star">★</span>';
+      }
+    });
+    drawArrows(); renderResults(); save();
+  }
+
+  /* ============ ARROWS ============ */
+  function drawArrows() {
+    var box = $board.getBoundingClientRect();
+    $arrows.setAttribute('viewBox', '0 0 ' + box.width + ' ' + box.height);
+    var svg = '<defs><marker id="wlm-ah" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 z" fill="#2563EB"/></marker></defs>';
+    S.conns.forEach(function (c) {
+      var a = $board.querySelector('[data-id="' + c.from + '"] .pin'), b = $board.querySelector('[data-id="' + c.to + '"] .pin');
+      if (!a || !b) return;
+      var ra = a.getBoundingClientRect(), rb = b.getBoundingClientRect();
+      var x1 = ra.left + ra.width / 2 - box.left, y1 = ra.top + ra.height / 2 - box.top;
+      var x2 = rb.left + rb.width / 2 - box.left, y2 = rb.top + rb.height / 2 - box.top;
+      var mx = (x1 + x2) / 2, my = (y1 + y2) / 2 - Math.min(80, Math.abs(x2 - x1) * .22 + 14);
+      svg += '<path d="M' + x1 + ',' + y1 + ' Q' + mx + ',' + my + ' ' + x2 + ',' + y2 + '" fill="none" stroke="#2563EB" stroke-width="1.7" stroke-opacity=".6" marker-end="url(#wlm-ah)"/>';
+    });
+    $arrows.innerHTML = svg;
+  }
+
+  /* ============ SIGNALS ============ */
+  function signals() {
+    var circled = S.circled.map(function (id) { return BY_ID[id]; }), n = circled.length;
+    var layerCounts = {}, domainCounts = {}, colorCounts = { green: 0, yellow: 0, red: 0, none: 0 };
+    circled.forEach(function (d) { layerCounts[d.layer] = (layerCounts[d.layer] || 0) + 1; domainCounts[d.domain] = (domainCounts[d.domain] || 0) + 1; colorCounts[S.colors[d.id] || 'none']++; });
+    var out = {}, inc = {};
+    S.conns.forEach(function (c) { out[c.from] = (out[c.from] || 0) + 1; inc[c.to] = (inc[c.to] || 0) + 1; });
+    var keystone = null, best = -1;
+    S.circled.forEach(function (id) {
+      var o = out[id] || 0; if (!o) return;
+      var feedsRed = S.conns.filter(function (c) { return c.from === id && S.colors[c.to] === 'red'; }).length;
+      var score = o * 10 + feedsRed * 3 + (S.colors[id] !== 'red' ? 1 : 0);
+      if (score > best) { best = score; keystone = id; }
+    });
+    var upstream = S.circled.filter(function (id) {
+      if (S.colors[id] === 'red' || !out[id]) return false;
+      return S.conns.filter(function (c) { return c.from === id && S.colors[c.to] === 'red'; }).length >= 2;
+    });
+    var topLayer = null, topLayerN = 0; Object.keys(layerCounts).forEach(function (k) { if (layerCounts[k] > topLayerN) { topLayerN = layerCounts[k]; topLayer = k; } });
+    var topDomain = null, topDomainN = 0; Object.keys(domainCounts).forEach(function (k) { if (domainCounts[k] > topDomainN) { topDomainN = domainCounts[k]; topDomain = k; } });
+    return {
+      n: n, circled: circled, layerCounts: layerCounts, domainCounts: domainCounts, colorCounts: colorCounts, out: out, inc: inc,
+      keystone: keystone, upstream: upstream, topLayer: topLayer, topLayerN: topLayerN, topDomain: topDomain, topDomainN: topDomainN,
+      layersTouched: Object.keys(layerCounts).length, domainsTouched: Object.keys(domainCounts).length,
+      untouchedDomains: DOMAINS.filter(function (m) { return !domainCounts[m.id]; }),
+      untouchedLayers: LAYERS.filter(function (l) { return !layerCounts[l.id]; }),
+      starvedStars: S.starred.filter(function (id) { return S.colors[id] === 'red'; }),
+      orphans: S.circled.filter(function (id) { return !out[id] && !inc[id]; })
+    };
+  }
+  function listify(a) { return a.length < 2 ? (a[0] || '') : a.length === 2 ? a[0] + ' and ' + a[1] : a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1]; }
+  function nm(id) { return BY_ID[id] ? BY_ID[id].name : ''; }
+
+  /* ============ ASSESSMENT ============ */
+  function assessment(g) {
+    if (!g.n) return '';
+    var p1 = [], p2 = [], share = g.topLayerN / g.n;
+    if (g.n < 4) {
+      p1.push('You have circled ' + g.n + ', which is fewer than this exercise needs to show you anything structural — but what is here already points somewhere: ' + listify(g.circled.map(function (d) { return '**' + d.name + '**'; })) + '.');
+    } else if (share >= 0.55) {
+      p1.push('Your ' + g.n + ' circles cluster hard in **' + LAYER_SHORT[g.topLayer] + '** — ' + g.topLayerN + ' of ' + g.n + '. Read that as a season rather than an imbalance: one relational world is asking for most of you right now, and clustered circles are more honest than evenly spread ones.');
+    } else if (g.domainsTouched === 5 && g.layersTouched === 3) {
+      p1.push('Your ' + g.n + ' circles touch all five domains and all three layers. That even coverage is worth one hard look — people often spread their circles to look well-rounded rather than to be accurate. If the spread is real, good; if it is the balance trap, the sheet will not tell you anything you did not already want to hear.');
+    } else {
+      p1.push('Your ' + g.n + ' circles span ' + g.domainsTouched + ' of five domains across ' + g.layersTouched + ' of three layers — a partial, deliberate shape rather than an attempt at balance.');
+    }
+    if (g.untouchedDomains.length && g.untouchedDomains.length < 5) {
+      p1.push('You left ' + listify(g.untouchedDomains.map(function (m) { return '**' + m.short + '**'; })) + ' unmarked entirely. That is your chosen neglect, and choosing it on purpose is the whole point — the goal was never balance.');
+    }
+    if (g.untouchedLayers.length === 1) {
+      p1.push('Nothing at all in ' + LAYER_SHORT[g.untouchedLayers[0].id] + ', which is either a clean seasonal decision or a blind spot; only you know which.');
+    }
+    var cc = g.colorCounts;
+    if (cc.none === 0 && g.n >= 4) {
+      if (cc.red > cc.green) p2.push('More red than green on the sheet (' + cc.red + ' to ' + cc.green + ') — that usually means you marked it honestly, not that you are failing.');
+      else if (cc.green >= g.n * 0.7) p2.push('Almost everything is green, which is either a genuinely good season or a sheet marked more generously than honestly — worth a second pass before you trust it.');
+    }
+    var keyIsUpstream = g.keystone && g.upstream.indexOf(g.keystone) > -1;
+    if (g.keystone) {
+      var o = g.out[g.keystone];
+      var redsFed = S.conns.filter(function (c) { return c.from === g.keystone && S.colors[c.to] === 'red'; }).length;
+      var line = 'The arrows make **' + nm(g.keystone) + '** your keystone: ' + o + ' connection' + (o === 1 ? '' : 's') + ' lead out of it, so it is the highest-leverage place to intervene.';
+      if (keyIsUpstream) line += ' And it is marked ' + S.colors[g.keystone] + ' rather than red while feeding ' + redsFed + ' drivers that are red — which makes it the most useful thing on this sheet. Fix what is upstream, because it is starving what is below it.';
+      else if (S.colors[g.keystone] && S.colors[g.keystone] !== 'red') line += ' Note that it is marked ' + S.colors[g.keystone] + ' rather than red — the best move is usually upstream of the pain rather than at it.';
+      p2.push(line);
+    } else if (S.conns.length === 0 && g.n >= 3) {
+      p2.push('You have not drawn any connections yet, so no keystone has emerged — and the keystone is where the leverage hides. Go back to the Connect pass and look for the one driver that feeds the others.');
+    }
+    var otherUp = g.upstream.filter(function (id) { return id !== g.keystone; });
+    if (otherUp.length) p2.push('**' + nm(otherUp[0]) + '** is also sitting upstream of trouble: not red itself, but feeding drivers that are.');
+    if (g.starvedStars.length) {
+      var many = g.starvedStars.length > 1, names = listify(g.starvedStars.map(function (id) { return '**' + nm(id) + '**'; }));
+      p2.push(names + (many ? ' are starred and red: non-negotiables you are currently starving. Those matter most to you and they are going worst' : ' is starred and red: a non-negotiable you are currently starving. That matters most to you and it is going worst') + ' — of everything on the page, that intersection is the finding to act on.');
+    } else if (S.starred.length && Object.keys(S.colors).length) {
+      p2.push('None of your starred non-negotiables are red, which means the things you refuse to compromise are at least holding. Protect that.');
+    }
+    if (g.orphans.length >= 3 && S.conns.length > 0) p2.push(g.orphans.length + ' of your circles have no arrows at all — either they genuinely stand alone, or you have not yet found what they are connected to.');
+    if (g.starvedStars.length) p2.push('The question to sit with: what would you have to put down, this month, to stop starving ' + nm(g.starvedStars[0]) + '?');
+    else if (g.keystone) p2.push('The question to sit with: what is the smallest weekly act that would move ' + nm(g.keystone) + ' — and what are you already doing that works against it?');
+    else p2.push('The question to sit with: of everything you circled, which one, if it improved, would quietly improve the others?');
+    return md(p1.join(' ')) + (p2.length ? md(p2.join(' ')) : '');
+  }
+  function md(s) { return '<p>' + esc(s).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>') + '</p>'; }
+  function plain(html) { var t = document.createElement('div'); t.innerHTML = html; return Array.prototype.map.call(t.querySelectorAll('p'), function (p) { return p.textContent; }); }
+
+  /* ============ RESULTS ============ */
+  function renderResults() {
+    var g = signals(), has = g.n > 0;
+    $results.hidden = !has; $empty.hidden = has;
+    if (!has) return;
+
+    // --- attention map: now / growing edge / holding ---
+    var reds = S.circled.filter(function (id) { return S.colors[id] === 'red'; });
+    var yels = S.circled.filter(function (id) { return S.colors[id] === 'yellow'; });
+    var grns = S.circled.filter(function (id) { return S.colors[id] === 'green'; });
+    var uncol = S.circled.filter(function (id) { return !S.colors[id]; });
+    function col(cls, title, ids, empty) {
+      ids = ids.slice().sort(function (a, b) { return (S.starred.indexOf(b) > -1) - (S.starred.indexOf(a) > -1); });
+      return '<div class="wlm-attn-col ' + cls + '"><h3>' + title + '</h3>' + (ids.length ? '<ul>' + ids.map(function (id) {
+        var d = BY_ID[id];
+        return '<li>' + (S.starred.indexOf(id) > -1 ? '<span class="wlm-star">★</span> ' : '') + esc(d.name) +
+          '<small>' + esc(LAYER_SHORT[d.layer]) + ' · ' + esc(DOMAIN_SHORT[d.domain]) + '</small></li>';
+      }).join('') + '</ul>' : '<p class="none">' + empty + '</p>') + '</div>';
+    }
+    var attn = col('now', 'Needs attention now', reds, 'Nothing red — or not coloured yet.') +
+      col('grow', 'Growing edge', yels, 'Nothing slipping yet.') +
+      col('hold', 'Holding', grns, 'Nothing marked thriving yet.');
+    if (uncol.length && Object.keys(S.colors).length) attn += '<p class="wlm-keystone">' + uncol.length + ' circled driver' + (uncol.length === 1 ? '' : 's') + ' still uncoloured.</p>';
+    if (g.keystone) attn += '<p class="wlm-keystone">Keystone: <b>' + esc(nm(g.keystone)) + '</b> — ' + g.out[g.keystone] + ' arrow' + (g.out[g.keystone] === 1 ? '' : 's') + ' out. Move this and the rest tends to follow.</p>';
+    $attn.innerHTML = attn;
+
+    // --- balance heatmap ---
+    var h = '<div></div>' + DOMAINS.map(function (m) { return '<div class="h">' + esc(m.short) + '</div>'; }).join('') + '<div class="h">all</div>';
+    var colTot = {};
+    LAYERS.forEach(function (L) {
+      var rowTot = 0;
+      h += '<div class="r">' + esc(L.short) + '</div>';
+      DOMAINS.forEach(function (M) {
+        var ids = S.circled.filter(function (id) { var d = BY_ID[id]; return d.layer === L.id && d.domain === M.id; });
+        var k = ids.length; rowTot += k; colTot[M.id] = (colTot[M.id] || 0) + k;
+        var worst = ids.some(function (id) { return S.colors[id] === 'red'; }) ? '#DC2626' : ids.some(function (id) { return S.colors[id] === 'yellow'; }) ? '#CA8A04' : ids.some(function (id) { return S.colors[id] === 'green'; }) ? '#16A34A' : null;
+        var alpha = k ? (0.18 + k * 0.14) : 0;
+        h += '<div class="c" style="' + (k ? 'background:color-mix(in srgb, ' + LAYER_COLOR[L.id] + ' ' + Math.round(alpha * 100) + '%, #fff);border-color:' + LAYER_COLOR[L.id] + '55;' : '') + '">' +
+          (k ? k + (worst ? '<i style="background:' + worst + '"></i>' : '') : '<span style="color:#C9C2B6">·</span>') + '</div>';
+      });
+      h += '<div class="t">' + rowTot + '</div>';
+    });
+    h += '<div class="r">all</div>' + DOMAINS.map(function (m) { return '<div class="t">' + (colTot[m.id] || 0) + '</div>'; }).join('') + '<div class="t">' + g.n + '</div>';
+    var read = g.topLayer ? 'Weighted toward <b>' + esc(LAYER_SHORT[g.topLayer]) + '</b>' + (g.topDomain ? ' and <b>' + esc(DOMAIN_SHORT[g.topDomain]) + '</b>' : '') : '';
+    if (g.untouchedDomains.length && g.untouchedDomains.length < 5) read += '; nothing in ' + esc(listify(g.untouchedDomains.map(function (m) { return m.short; })));
+    if (g.untouchedLayers.length) read += '; ' + esc(listify(g.untouchedLayers.map(function (l) { return l.short; }))) + ' untouched';
+    $heat.innerHTML = h + (read ? '<p class="wlm-heat-read">' + read + '.</p>' : '');
+
+    $assess.innerHTML = assessment(g);
+
+    // --- commit rows: keystone, starred reds, other stars, then the rest (max 3) ---
+    var pick = [];
+    if (g.keystone) pick.push(g.keystone);
+    g.starvedStars.concat(S.starred, S.circled).forEach(function (id) { if (pick.indexOf(id) < 0) pick.push(id); });
+    pick = pick.slice(0, 3);
+    $commit.innerHTML = pick.map(function (id) {
+      var c = S.commit[id] || {};
+      return '<div class="wlm-commit-row"><div class="wlm-commit-name">' + esc(nm(id)) +
+        (S.starred.indexOf(id) > -1 ? ' <span class="wlm-star">★</span>' : '') + (S.colors[id] ? ' <i class="dot dot-' + S.colors[id] + '"></i>' : '') + '</div>' +
+        '<label>90-day intention — what "better" looks like, as a state not a number</label>' +
+        '<input type="text" data-commit="' + id + '" data-f="intent" value="' + esc(c.intent || '') + '" placeholder="Evenings where my phone is in a drawer and I am on the floor with the kids." />' +
+        '<label>One weekly practice — the smallest repeatable act</label>' +
+        '<input type="text" data-commit="' + id + '" data-f="practice" value="' + esc(c.practice || '') + '" placeholder="Phone in the drawer at 6pm, four nights a week." /></div>';
+    }).join('');
+  }
+
+  /* ============ EVENTS ============ */
+  var flashUntil = 0;
+  function flash(msg) {
+    flashUntil = Date.now() + 2600; $instruct.textContent = msg; $instruct.style.color = '#B5651D';
+    setTimeout(function () { if (Date.now() >= flashUntil) { $instruct.textContent = INSTRUCT[S.step]; $instruct.style.color = ''; } }, 2700);
+  }
+  $steps.addEventListener('click', function (e) {
+    var b = e.target.closest('.wlm-mode'); if (!b) return;
+    S.step = +b.dataset.step; S.src = null; render();
+    if (S.step === 4) (S.circled.length ? $results : $empty).scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+  $board.addEventListener('click', function (e) {
+    var sw = e.target.closest('[data-color]');
+    if (sw) { e.stopPropagation(); var cid = sw.dataset.for; if (S.colors[cid] === sw.dataset.color) delete S.colors[cid]; else S.colors[cid] = sw.dataset.color; render(); return; }
+    var st = e.target.closest('[data-star]');
+    if (st) { e.stopPropagation(); toggleStar(st.dataset.star); render(); return; }
+    var chip = e.target.closest('.wlm-chip'); if (!chip) return;
+    var id = chip.dataset.id;
+    if (S.step === 3) {
+      if (S.circled.indexOf(id) < 0) return;
+      if (S.src === null) S.src = id;
+      else if (S.src === id) S.src = null;
+      else {
+        var i = S.conns.findIndex(function (c) { return c.from === S.src && c.to === id; });
+        var j = S.conns.findIndex(function (c) { return c.from === id && c.to === S.src; });
+        if (i > -1) S.conns.splice(i, 1); else if (j > -1) S.conns.splice(j, 1); else S.conns.push({ from: S.src, to: id });
+        S.src = null;
+      }
+      render(); return;
+    }
+    if (S.step === 4) S.step = 1;
+    var k = S.circled.indexOf(id);
+    if (k > -1) {
+      S.circled.splice(k, 1); var sk = S.starred.indexOf(id); if (sk > -1) S.starred.splice(sk, 1);
+      delete S.colors[id]; delete S.commit[id];
+      S.conns = S.conns.filter(function (c) { return c.from !== id && c.to !== id; });
+    } else {
+      if (S.circled.length >= MAX_CIRCLE) { flash('Ten is the cap. If everything matters, nothing does — take one off first.'); return; }
+      S.circled.push(id);
+    }
+    render();
+  });
+  function toggleStar(id) {
+    if (S.circled.indexOf(id) < 0) return;
+    var k = S.starred.indexOf(id);
+    if (k > -1) { S.starred.splice(k, 1); return; }
+    if (S.starred.length >= MAX_STAR) { flash('Three stars maximum — those are the ones that survive any season.'); return; }
+    S.starred.push(id);
+  }
+  $commit.addEventListener('input', function (e) {
+    var el = e.target.closest('[data-commit]'); if (!el) return;
+    S.commit[el.dataset.commit] = S.commit[el.dataset.commit] || {};
+    S.commit[el.dataset.commit][el.dataset.f] = el.value; save();
+  });
+  $('wlm-reset').addEventListener('click', function () {
+    if (!confirm('Clear the whole sheet and start again?')) return;
+    S = { step: 1, circled: [], starred: [], colors: {}, conns: [], commit: {}, src: null };
+    try { localStorage.removeItem(KEY); } catch (e) {} render();
+  });
+  var rt; window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(drawArrows, 120); });
+
+  /* ============ PDF ============ */
+  $pdf.addEventListener('click', function () {
+    if (!window.jspdf || !window.jspdf.jsPDF) { alert('The PDF library did not load. Check your connection and reload the page.'); return; }
+    var g = signals(), doc = new window.jspdf.jsPDF({ orientation: 'landscape', unit: 'pt', format: 'letter' });
+    var W = 792, H = 612, M = 34;
+    var RGB = { green: [22, 163, 74], yellow: [202, 138, 4], red: [220, 38, 38], none: [168, 162, 158] };
+    var INK = [43, 43, 43], MUT = [107, 101, 96], ACC = [37, 99, 235], LINE = [217, 210, 199];
+    var LC = { self: [91, 74, 158], family: [181, 101, 29], community: [46, 125, 91] };
+    var LB = { self: [236, 232, 245], family: [248, 236, 221], community: [228, 240, 232] };
+
+    doc.setFillColor(251, 247, 241); doc.rect(0, 0, W, H, 'F');
+    doc.setFont('times', 'bold'); doc.setFontSize(20); doc.setTextColor.apply(doc, INK); doc.text('The Whole Life Matrix', M, M + 6);
+    doc.setFont('times', 'italic'); doc.setFontSize(9.5); doc.setTextColor.apply(doc, MUT);
+    doc.text('A values & priorities blueprint — 75 things that could matter; a handful that matter most right now.', M, M + 21);
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(8);
+    doc.text(new Date().toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }), W - M, M + 6, { align: 'right' });
+    doc.setFontSize(7.5); doc.text('rondimon.com/design/whole-life-experiment', W - M, M + 21, { align: 'right' });
+
+    var gridTop = M + 46, rowLabelW = 86, gridH = H - gridTop - 66, colW = (W - 2 * M - rowLabelW) / 5, rowH = gridH / 3, pos = {};
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(8); doc.setTextColor.apply(doc, INK);
+    DOMAINS.forEach(function (m, ci) {
+      var x0 = M + rowLabelW + ci * colW;
+      doc.text(m.short.toUpperCase(), x0 + (colW - 6) / 2, gridTop - 7, { align: 'center' });
+      doc.setDrawColor.apply(doc, INK); doc.setLineWidth(1); doc.line(x0, gridTop - 3, x0 + colW - 6, gridTop - 3);
+    });
+    LAYERS.forEach(function (L, ri) {
+      var y0 = gridTop + ri * rowH;
+      doc.setFillColor.apply(doc, LB[L.id]); doc.roundedRect(M, y0, rowLabelW - 8, rowH - 8, 5, 5, 'F');
+      doc.setFont('times', 'bold'); doc.setFontSize(9.5); doc.setTextColor.apply(doc, LC[L.id]);
+      doc.text(doc.splitTextToSize(L.short, rowLabelW - 20), M + 6, y0 + 16);
+      DOMAINS.forEach(function (Mo, ci) {
+        var x0 = M + rowLabelW + ci * colW;
+        var sel = S.circled.filter(function (id) { var d = BY_ID[id]; return d.layer === L.id && d.domain === Mo.id; });
+        doc.setDrawColor.apply(doc, LINE); doc.setLineWidth(0.5);
+        if (!sel.length) { doc.setFillColor(246, 242, 235); doc.rect(x0, y0, colW - 6, rowH - 8, 'FD'); }
+        else { doc.setFillColor(255, 255, 255); doc.rect(x0, y0, colW - 6, rowH - 8, 'FD'); }
+        var ty = y0 + 13;
+        sel.forEach(function (id) {
+          var c = S.colors[id] || 'none';
+          if (c === 'none') { doc.setDrawColor.apply(doc, LC[L.id]); doc.setLineWidth(1.2); doc.circle(x0 + 8, ty - 2.4, 2.6, 'D'); }
+          else { doc.setFillColor.apply(doc, RGB[c]); doc.circle(x0 + 8, ty - 2.4, 2.8, 'F'); }
+          var starred = S.starred.indexOf(id) > -1;
+          doc.setFont('helvetica', starred ? 'bold' : 'normal'); doc.setFontSize(7.2); doc.setTextColor.apply(doc, INK);
+          var lines = doc.splitTextToSize((starred ? '* ' : '') + BY_ID[id].name, colW - 24);
+          doc.text(lines, x0 + 14, ty); pos[id] = { x: x0 + 8, y: ty - 2.4 }; ty += lines.length * 8 + 3.5;
+        });
+      });
+    });
+    doc.setDrawColor.apply(doc, ACC); doc.setLineWidth(0.9);
+    S.conns.forEach(function (c) {
+      var a = pos[c.from], b = pos[c.to]; if (!a || !b) return;
+      var ax = a.x, ay = a.y + 7, bx = b.x, by = b.y + 7;
+      var dip = Math.min(52, 14 + Math.abs(bx - ax) * 0.12 + Math.abs(by - ay) * 0.10), cx = (ax + bx) / 2, cy = Math.max(ay, by) + dip;
+      var px = ax, py = ay, lx = ax, ly = ay, N = 16;
+      for (var i = 1; i <= N; i++) { var t = i / N, mt = 1 - t, qx = mt * mt * ax + 2 * mt * t * cx + t * t * bx, qy = mt * mt * ay + 2 * mt * t * cy + t * t * by; doc.line(px, py, qx, qy); lx = px; ly = py; px = qx; py = qy; }
+      var ang = Math.atan2(py - ly, px - lx), L2 = 4.5;
+      doc.line(px, py, px - L2 * Math.cos(ang - .42), py - L2 * Math.sin(ang - .42)); doc.line(px, py, px - L2 * Math.cos(ang + .42), py - L2 * Math.sin(ang + .42));
+    });
+    var ly2 = H - 44, lx = M; doc.setFont('helvetica', 'normal'); doc.setFontSize(7.5);
+    [['green', 'Thriving'], ['yellow', 'Slipping'], ['red', 'Neglected']].forEach(function (p) { doc.setFillColor.apply(doc, RGB[p[0]]); doc.circle(lx + 3, ly2 - 2.4, 2.6, 'F'); doc.setTextColor.apply(doc, MUT); doc.text(p[1], lx + 9, ly2); lx += 62; });
+    doc.setTextColor.apply(doc, MUT); doc.text('*  starred non-negotiable      arrow = drives / feeds      shaded cell = not this season', lx + 6, ly2);
+
+    /* page 2 */
+    doc.addPage('letter', 'landscape'); doc.setFillColor(251, 247, 241); doc.rect(0, 0, W, H, 'F');
+    doc.setFont('times', 'bold'); doc.setFontSize(17); doc.setTextColor.apply(doc, INK); doc.text('Assessment', M, M + 6);
+    var y = M + 30, colWidth = W - 2 * M;
+    function room(need) { if (y + need > H - 46) { doc.addPage('letter', 'landscape'); doc.setFillColor(251, 247, 241); doc.rect(0, 0, W, H, 'F'); y = M + 10; } }
+    var keys = [];
+    if (g.keystone) keys.push(['Keystone', nm(g.keystone)]);
+    if (g.starvedStars.length) keys.push(['Starved non-negotiable', listify(g.starvedStars.map(nm))]);
+    if (g.topLayer) keys.push(['Heaviest layer', LAYER_SHORT[g.topLayer] + ' (' + g.topLayerN + ' of ' + g.n + ')']);
+    if (g.untouchedDomains.length) keys.push(['Chosen neglect', listify(g.untouchedDomains.map(function (m) { return m.short; }))]);
+    if (keys.length) {
+      var kx = M, kw = colWidth / Math.min(keys.length, 4);
+      keys.slice(0, 4).forEach(function (k) {
+        doc.setDrawColor.apply(doc, ACC); doc.setLineWidth(1.8); doc.line(kx, y - 8, kx, y + 16);
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(6.8); doc.setTextColor.apply(doc, MUT); doc.text(k[0].toUpperCase(), kx + 7, y - 1);
+        doc.setFontSize(9); doc.setTextColor.apply(doc, INK); doc.text(doc.splitTextToSize(k[1], kw - 16), kx + 7, y + 11); kx += kw;
+      });
+      y += 40;
+    }
+    // attention lists
+    var lists = [['NEEDS ATTENTION NOW', S.circled.filter(function (id) { return S.colors[id] === 'red'; }), RGB.red], ['GROWING EDGE', S.circled.filter(function (id) { return S.colors[id] === 'yellow'; }), RGB.yellow], ['HOLDING', S.circled.filter(function (id) { return S.colors[id] === 'green'; }), RGB.green]];
+    if (lists.some(function (l) { return l[1].length; })) {
+      var lw = colWidth / 3, startY = y, maxY = y;
+      lists.forEach(function (l, i) {
+        var x = M + i * lw, yy = startY;
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(6.8); doc.setTextColor.apply(doc, l[2]); doc.text(l[0], x, yy); yy += 11;
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5); doc.setTextColor.apply(doc, INK);
+        l[1].forEach(function (id) { doc.text((S.starred.indexOf(id) > -1 ? '* ' : '') + nm(id), x, yy); yy += 11; });
+        if (yy > maxY) maxY = yy;
+      });
+      y = maxY + 10;
+    }
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor.apply(doc, INK);
+    plain(assessment(g)).forEach(function (para) {
+      var lines = doc.splitTextToSize(para, colWidth); room(lines.length * 14);
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor.apply(doc, INK); doc.text(lines, M, y); y += lines.length * 14 + 10;
+    });
+    var cIds = Object.keys(S.commit).filter(function (id) { var c = S.commit[id]; return c && ((c.intent || '').trim() || (c.practice || '').trim()); });
+    if (cIds.length) {
+      y += 6; room(40); doc.setFont('times', 'bold'); doc.setFontSize(14); doc.setTextColor.apply(doc, INK); doc.text('Commitments', M, y); y += 18;
+      cIds.forEach(function (id) {
+        var c = S.commit[id]; room(48);
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(9.5); doc.setTextColor.apply(doc, ACC); doc.text((S.starred.indexOf(id) > -1 ? '* ' : '') + nm(id), M, y); y += 13;
+        doc.setTextColor.apply(doc, INK); doc.setFontSize(9);
+        if ((c.intent || '').trim()) { doc.setFont('helvetica', 'bold'); doc.text('90-day intention:', M + 10, y); doc.setFont('helvetica', 'normal'); var li = doc.splitTextToSize(c.intent, colWidth - 105); doc.text(li, M + 95, y); y += li.length * 12 + 2; }
+        if ((c.practice || '').trim()) { doc.setFont('helvetica', 'bold'); doc.text('Weekly practice:', M + 10, y); doc.setFont('helvetica', 'normal'); var lp = doc.splitTextToSize(c.practice, colWidth - 105); doc.text(lp, M + 95, y); y += lp.length * 12 + 2; }
+        y += 8;
+      });
+    }
+    doc.setFont('times', 'italic'); doc.setFontSize(7.5); doc.setTextColor.apply(doc, MUT);
+    doc.text('Re-colour this same sheet in 90 days and watch the colours migrate.  The Whole Life Matrix — Ron Dimon · rondimon.com.  Not therapy, financial or legal advice.', M, H - 26);
+    doc.save('whole-life-matrix.pdf');
+  });
+
+  /* ============ GO ============ */
+  load(); buildBoard(); render();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(drawArrows);
+  window.addEventListener('load', drawArrows);
+})();
+</script>
+
+</Page>
