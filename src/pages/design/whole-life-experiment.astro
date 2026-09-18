@@ -4,7 +4,7 @@ import Page from '../../layouts/Page.astro';
 
 <Page
   title="Whole Life Experiment"
-  description="An interactive Whole Life Matrix — circle the life drivers that matter, colour how they're going, connect what drives what, and take the map with you."
+  description="An interactive Whole Life Matrix — select the life drivers that matter, colour how they're going, connect what drives what, and take the map with you."
   noindex={true}
 >
 
@@ -30,8 +30,8 @@ import Page from '../../layouts/Page.astro';
       <aside class="wlm-howto">
         <p class="wlm-howto-h">How to use this page</p>
         <ol>
-          <li><b>Circle</b> up to <b>10</b> drivers that matter most this season. Star up to <b>3</b> non-negotiables.</li>
-          <li><b>Colour</b> each circle honestly: <i class="dot dot-green"></i>thriving <i class="dot dot-yellow"></i>needs attention <i class="dot dot-red"></i>neglected.</li>
+          <li><b>Select</b> up to <b>10</b> drivers that matter most this season. Star up to <b>3</b> non-negotiables.</li>
+          <li><b>Colour</b> each selection honestly: <i class="dot dot-green"></i>thriving <i class="dot dot-yellow"></i>needs attention <i class="dot dot-red"></i>neglected.</li>
           <li><b>Connect</b> &mdash; draw arrows where one driver feeds another. The busiest source is your <b>keystone</b>.</li>
           <li><b>Commit</b> &mdash; pick 1&ndash;3 drivers; write a 90-day intention and one weekly practice for each.</li>
         </ol>
@@ -41,7 +41,7 @@ import Page from '../../layouts/Page.astro';
     <!-- ===== Mode bar ===== -->
     <div class="wlm-bar">
       <div class="wlm-modes" id="wlm-steps">
-        <button class="wlm-mode is-active" data-step="1"><span>1</span>Circle</button>
+        <button class="wlm-mode is-active" data-step="1"><span>1</span>Select</button>
         <button class="wlm-mode" data-step="2"><span>2</span>Colour</button>
         <button class="wlm-mode" data-step="3"><span>3</span>Connect</button>
         <button class="wlm-mode" data-step="4"><span>4</span>Commit &darr;</button>
@@ -61,7 +61,7 @@ import Page from '../../layouts/Page.astro';
         <!-- header row -->
         <div class="wlm-corner">
           <span class="wlm-key"><i class="pin"></i>available</span>
-          <span class="wlm-key"><i class="pin pin-on"></i>circled</span>
+          <span class="wlm-key"><i class="pin pin-on"></i>selected</span>
           <span class="wlm-key"><i class="pin pin-c"></i>coloured</span>
           <span class="wlm-key"><b class="wlm-star">&#9733;</b>non-negotiable</span>
         </div>
@@ -86,7 +86,7 @@ import Page from '../../layouts/Page.astro';
         </div>
         <div class="wlm-panel">
           <h2 class="wlm-h2">Balance</h2>
-          <p class="wlm-p wlm-p-tight">Where your circles fall. Clustered is honest; even is worth a second look.</p>
+          <p class="wlm-p wlm-p-tight">Where your selections fall. Clustered is honest; even is worth a second look.</p>
           <div id="wlm-heat" class="wlm-heat"></div>
         </div>
       </div>
@@ -112,11 +112,28 @@ import Page from '../../layouts/Page.astro';
       <div class="wlm-actions">
         <button class="wlm-btn" id="wlm-pdf" type="button">Download map + assessment (PDF)</button>
         <span class="wlm-actions-note">Two pages, landscape. Keep it &mdash; re-colour the same sheet in 90 days and watch the colours migrate.</span>
+        <button class="wlm-btn wlm-btn-out wlm-fb" id="wlm-fb" type="button">Send me feedback</button>
       </div>
     </div>
 
+    <dialog id="wlm-fbd" class="wlm-dlg">
+      <form id="wlm-fbf" class="wlm-dlg-form" novalidate>
+        <h3>Send me feedback</h3>
+        <p>What worked, what didn&rsquo;t, what you&rsquo;d change. It goes straight to Ron.</p>
+        <label for="wlm-fb-email">Your email</label>
+        <input id="wlm-fb-email" name="email" type="email" required autocomplete="email" placeholder="you@example.com" />
+        <label for="wlm-fb-comments">Comments</label>
+        <textarea id="wlm-fb-comments" name="comments" rows="5" required placeholder="What would make this more useful?"></textarea>
+        <div class="wlm-dlg-actions">
+          <button type="button" class="wlm-btn wlm-btn-out" id="wlm-fb-cancel">Cancel</button>
+          <button type="submit" class="wlm-btn">Send</button>
+        </div>
+        <p class="wlm-dlg-note" id="wlm-fb-note" aria-live="polite"></p>
+      </form>
+    </dialog>
+
     <div id="wlm-empty" class="wlm-empty">
-      Circle at least one driver above to begin. The assessment appears once you&rsquo;ve marked the matrix.
+      Select at least one driver above to begin. The assessment appears once you&rsquo;ve marked the matrix.
     </div>
   </div>
 </section>
@@ -289,6 +306,21 @@ import Page from '../../layouts/Page.astro';
   .wlm-actions-note { font-size: .75rem; color: var(--mut); max-width: 30rem; line-height: 1.5; }
   .wlm-empty { margin-top: 2rem; text-align: center; font-size: .88rem; color: var(--mut); border: 1px dashed var(--rule); border-radius: .9rem; padding: 1.6rem; }
 
+  /* ---------- feedback ---------- */
+  .wlm-actions .wlm-fb { margin-left: auto; }
+  .wlm-btn-out { background: #fff; color: var(--ink); border: 1px solid var(--ink); }
+  .wlm-btn-out:hover { background: var(--paper); }
+  .wlm-dlg { border: none; border-radius: .9rem; padding: 0; width: min(92vw, 460px); box-shadow: 0 20px 60px rgba(0,0,0,.25); color: var(--ink); }
+  .wlm-dlg::backdrop { background: rgba(43,43,43,.45); }
+  .wlm-dlg-form { padding: 1.5rem; }
+  .wlm-dlg-form h3 { font-family: var(--font-heading); font-size: 1.25rem; margin: 0 0 .3rem; }
+  .wlm-dlg-form p { font-size: .85rem; color: var(--mut); margin: 0 0 .6rem; line-height: 1.5; }
+  .wlm-dlg-form label { display: block; font-size: .72rem; font-weight: 600; color: var(--mut); margin: .8rem 0 .25rem; }
+  .wlm-dlg-form input, .wlm-dlg-form textarea { width: 100%; font: inherit; font-size: .9rem; padding: .55rem .7rem; border: 1px solid var(--rule); border-radius: .45rem; background: #fff; color: var(--ink); resize: vertical; }
+  .wlm-dlg-form input:focus, .wlm-dlg-form textarea:focus { outline: 2px solid var(--ink); outline-offset: -1px; }
+  .wlm-dlg-actions { display: flex; gap: .6rem; justify-content: flex-end; margin-top: 1.1rem; }
+  .wlm-dlg-note { min-height: 1.2em; margin: .8rem 0 0; font-size: .78rem; }
+
   /* ---------- responsive ---------- */
   @media (max-width: 1180px) {
     .wlm-scroll-hint { display: block; }
@@ -374,8 +406,8 @@ import Page from '../../layouts/Page.astro';
       $heat = $('wlm-heat'), $assess = $('wlm-assessment'), $commit = $('wlm-commit'), $pdf = $('wlm-pdf');
 
   var INSTRUCT = {
-    1: 'Click a driver to circle it — no more than ten. Star up to three non-negotiables. If everything matters, nothing does.',
-    2: 'Be honest about each circle: click a swatch — green thriving, yellow slipping, red neglected. Most sheets have more red than green; red means honest, not failing.',
+    1: 'Click a driver to select it — no more than ten. Star up to three non-negotiables. If everything matters, nothing does.',
+    2: 'Be honest about each selection: click a swatch — green thriving, yellow slipping, red neglected. Most sheets have more red than green; red means honest, not failing.',
     3: 'Click a source driver, then the one it feeds, to draw an arrow. The driver with the most arrows leaving it is your keystone.',
     4: 'Read the assessment below, write your commitments, and take the PDF with you.'
   };
@@ -404,7 +436,7 @@ import Page from '../../layouts/Page.astro';
     Array.prototype.forEach.call($steps.querySelectorAll('.wlm-mode'), function (b) { b.classList.toggle('is-active', +b.dataset.step === S.step); });
     if (Date.now() >= flashUntil) { $instruct.textContent = INSTRUCT[S.step]; $instruct.style.color = ''; }
 
-    if (S.step === 1) { $count.textContent = S.circled.length + ' / ' + MAX_CIRCLE + ' circled · ' + S.starred.length + ' / ' + MAX_STAR + ' starred'; $count.classList.toggle('is-full', S.circled.length >= MAX_CIRCLE); }
+    if (S.step === 1) { $count.textContent = S.circled.length + ' / ' + MAX_CIRCLE + ' selected · ' + S.starred.length + ' / ' + MAX_STAR + ' starred'; $count.classList.toggle('is-full', S.circled.length >= MAX_CIRCLE); }
     else if (S.step === 2) { var done = S.circled.filter(function (id) { return S.colors[id]; }).length; $count.textContent = done + ' / ' + S.circled.length + ' coloured'; $count.classList.remove('is-full'); }
     else if (S.step === 3) { $count.textContent = S.conns.length + ' connection' + (S.conns.length === 1 ? '' : 's'); $count.classList.remove('is-full'); }
     else { $count.textContent = ''; }
@@ -487,13 +519,13 @@ import Page from '../../layouts/Page.astro';
     if (!g.n) return '';
     var p1 = [], p2 = [], share = g.topLayerN / g.n;
     if (g.n < 4) {
-      p1.push('You have circled ' + g.n + ', which is fewer than this exercise needs to show you anything structural — but what is here already points somewhere: ' + listify(g.circled.map(function (d) { return '**' + d.name + '**'; })) + '.');
+      p1.push('You have selected ' + g.n + ', which is fewer than this exercise needs to show you anything structural — but what is here already points somewhere: ' + listify(g.circled.map(function (d) { return '**' + d.name + '**'; })) + '.');
     } else if (share >= 0.55) {
-      p1.push('Your ' + g.n + ' circles cluster hard in **' + LAYER_SHORT[g.topLayer] + '** — ' + g.topLayerN + ' of ' + g.n + '. Read that as a season rather than an imbalance: one relational world is asking for most of you right now, and clustered circles are more honest than evenly spread ones.');
+      p1.push('Your ' + g.n + ' selections cluster hard in **' + LAYER_SHORT[g.topLayer] + '** — ' + g.topLayerN + ' of ' + g.n + '. Read that as a season rather than an imbalance: one relational world is asking for most of you right now, and clustered selections are more honest than evenly spread ones.');
     } else if (g.domainsTouched === 5 && g.layersTouched === 3) {
-      p1.push('Your ' + g.n + ' circles touch all five domains and all three layers. That even coverage is worth one hard look — people often spread their circles to look well-rounded rather than to be accurate. If the spread is real, good; if it is the balance trap, the sheet will not tell you anything you did not already want to hear.');
+      p1.push('Your ' + g.n + ' selections touch all five domains and all three layers. That even coverage is worth one hard look — people often spread their selections to look well-rounded rather than to be accurate. If the spread is real, good; if it is the balance trap, the sheet will not tell you anything you did not already want to hear.');
     } else {
-      p1.push('Your ' + g.n + ' circles span ' + g.domainsTouched + ' of five domains across ' + g.layersTouched + ' of three layers — a partial, deliberate shape rather than an attempt at balance.');
+      p1.push('Your ' + g.n + ' selections span ' + g.domainsTouched + ' of five domains across ' + g.layersTouched + ' of three layers — a partial, deliberate shape rather than an attempt at balance.');
     }
     if (g.untouchedDomains.length && g.untouchedDomains.length < 5) {
       p1.push('You left ' + listify(g.untouchedDomains.map(function (m) { return '**' + m.short + '**'; })) + ' unmarked entirely. That is your chosen neglect, and choosing it on purpose is the whole point — the goal was never balance.');
@@ -525,10 +557,10 @@ import Page from '../../layouts/Page.astro';
     } else if (S.starred.length && Object.keys(S.colors).length) {
       p2.push('None of your starred non-negotiables are red, which means the things you refuse to compromise are at least holding. Protect that.');
     }
-    if (g.orphans.length >= 3 && S.conns.length > 0) p2.push(g.orphans.length + ' of your circles have no arrows at all — either they genuinely stand alone, or you have not yet found what they are connected to.');
+    if (g.orphans.length >= 3 && S.conns.length > 0) p2.push(g.orphans.length + ' of your selections have no arrows at all — either they genuinely stand alone, or you have not yet found what they are connected to.');
     if (g.starvedStars.length) p2.push('The question to sit with: what would you have to put down, this month, to stop starving ' + nm(g.starvedStars[0]) + '?');
     else if (g.keystone) p2.push('The question to sit with: what is the smallest weekly act that would move ' + nm(g.keystone) + ' — and what are you already doing that works against it?');
-    else p2.push('The question to sit with: of everything you circled, which one, if it improved, would quietly improve the others?');
+    else p2.push('The question to sit with: of everything you selected, which one, if it improved, would quietly improve the others?');
     return md(p1.join(' ')) + (p2.length ? md(p2.join(' ')) : '');
   }
   function md(s) { return '<p>' + esc(s).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>') + '</p>'; }
@@ -556,7 +588,7 @@ import Page from '../../layouts/Page.astro';
     var attn = col('now', 'Needs attention now', reds, 'Nothing red — or not coloured yet.') +
       col('grow', 'Growing edge', yels, 'Nothing slipping yet.') +
       col('hold', 'Holding', grns, 'Nothing marked thriving yet.');
-    if (uncol.length && Object.keys(S.colors).length) attn += '<p class="wlm-keystone">' + uncol.length + ' circled driver' + (uncol.length === 1 ? '' : 's') + ' still uncoloured.</p>';
+    if (uncol.length && Object.keys(S.colors).length) attn += '<p class="wlm-keystone">' + uncol.length + ' selected driver' + (uncol.length === 1 ? '' : 's') + ' still uncoloured.</p>';
     if (g.keystone) attn += '<p class="wlm-keystone">Keystone: <b>' + esc(nm(g.keystone)) + '</b> — ' + g.out[g.keystone] + ' arrow' + (g.out[g.keystone] === 1 ? '' : 's') + ' out. Move this and the rest tends to follow.</p>';
     $attn.innerHTML = attn;
 
@@ -775,6 +807,36 @@ import Page from '../../layouts/Page.astro';
     doc.setFont('times', 'italic'); doc.setFontSize(7.5); doc.setTextColor.apply(doc, MUT);
     doc.text('Re-colour this same sheet in 90 days and watch the colours migrate.  The Whole Life Matrix — Ron Dimon · rondimon.com.  Not therapy, financial or legal advice.', M, H - 26);
     doc.save('whole-life-matrix.pdf');
+  });
+
+  /* ============ FEEDBACK ============ */
+  // Direct send needs a form endpoint (e.g. a free Formspree form: paste its URL below).
+  // With no endpoint, the visitor's mail app opens with the message prefilled.
+  var FEEDBACK_TO = 'ron@sparklabs.com';
+  var FEEDBACK_ENDPOINT = '';
+  var $fbd = $('wlm-fbd'), $fbf = $('wlm-fbf'), $fbn = $('wlm-fb-note');
+  function fbOpen() { $fbn.textContent = ''; if ($fbd.showModal) $fbd.showModal(); else $fbd.setAttribute('open', ''); }
+  function fbClose() { if ($fbd.close) $fbd.close(); else $fbd.removeAttribute('open'); }
+  $('wlm-fb').addEventListener('click', fbOpen);
+  $('wlm-fb-cancel').addEventListener('click', fbClose);
+  $fbd.addEventListener('click', function (e) { if (e.target === $fbd) fbClose(); });
+  $fbf.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var email = $fbf.elements.email.value.trim(), comments = $fbf.elements.comments.value.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { $fbn.textContent = 'Please enter a valid email address.'; $fbf.elements.email.focus(); return; }
+    if (!comments) { $fbn.textContent = 'Please add a comment.'; $fbf.elements.comments.focus(); return; }
+    var subject = 'Whole Life Experiment feedback';
+    function viaMail() {
+      var body = 'From: ' + email + '\n\n' + comments + '\n\n\u2014 sent from ' + location.href;
+      window.location.href = 'mailto:' + FEEDBACK_TO + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+      $fbn.textContent = 'Your mail app should open with the message ready to send.';
+    }
+    if (!FEEDBACK_ENDPOINT) { viaMail(); return; }
+    $fbn.textContent = 'Sending\u2026';
+    fetch(FEEDBACK_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ email: email, comments: comments, _subject: subject, page: location.href }) })
+      .then(function (r) { if (!r.ok) throw new Error(r.status); $fbn.textContent = 'Sent \u2014 thank you.'; $fbf.reset(); setTimeout(fbClose, 1200); })
+      .catch(function () { $fbn.textContent = 'That did not go through \u2014 opening your mail app instead.'; setTimeout(viaMail, 900); });
   });
 
   /* ============ GO ============ */
