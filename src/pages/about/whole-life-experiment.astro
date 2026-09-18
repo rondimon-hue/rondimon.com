@@ -1,0 +1,1147 @@
+---
+import Page from '../../layouts/Page.astro';
+---
+
+<Page
+  title="Whole Life Experiment"
+  description="An interactive Whole Life Matrix — circle the life drivers that matter, colour how they're going, connect what drives what, and get an assessment you can download."
+>
+
+  <section class="py-16 md:py-20">
+    <div class="container">
+      <div class="max-w-3xl animate-in">
+        <a href="/about" class="inline-flex items-center text-sm text-text-muted hover:text-accent transition-colors mb-8">
+          <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+          </svg>
+          Aboot
+        </a>
+        <p class="text-sm font-medium text-accent uppercase tracking-wider mb-4">The Whole Life Experiment</p>
+        <h1 class="text-4xl md:text-5xl font-heading font-bold text-text-primary">
+          The Whole Life Matrix
+        </h1>
+        <p class="mt-6 text-lg text-text-secondary leading-relaxed">
+          The same value-mapping discipline I use with companies, applied to a life. Five life domains across three
+          relational layers, with seventy-five life drivers at the intersections. Not KPIs — the things that matter.
+        </p>
+        <p class="mt-4 text-text-secondary leading-relaxed">
+          <strong class="text-text-primary">It's a compass, not a scorecard.</strong> No one tends all seventy-five.
+          Every season of life deliberately neglects most of this matrix. The goal isn't balance — it's choosing your
+          neglect on purpose.
+        </p>
+      </div>
+    </div>
+
+    <!-- ===== Stepper ===== -->
+    <div class="container mt-12">
+      <div class="wlm-steps" id="wlm-steps">
+        <button class="wlm-step is-active" data-step="1">
+          <span class="wlm-step-n">1</span>
+          <span class="wlm-step-t">Circle</span>
+          <span class="wlm-step-d">What matters most right now?</span>
+        </button>
+        <button class="wlm-step" data-step="2">
+          <span class="wlm-step-n">2</span>
+          <span class="wlm-step-t">Colour</span>
+          <span class="wlm-step-d">How is each one actually going?</span>
+        </button>
+        <button class="wlm-step" data-step="3">
+          <span class="wlm-step-n">3</span>
+          <span class="wlm-step-t">Connect</span>
+          <span class="wlm-step-d">What drives what?</span>
+        </button>
+        <button class="wlm-step" data-step="4">
+          <span class="wlm-step-n">4</span>
+          <span class="wlm-step-t">Commit</span>
+          <span class="wlm-step-d">Read the assessment, take the PDF</span>
+        </button>
+      </div>
+
+      <!-- Contextual instruction + controls -->
+      <div class="wlm-bar">
+        <p class="wlm-instruct" id="wlm-instruct"></p>
+        <div class="wlm-bar-right">
+          <span class="wlm-count" id="wlm-count"></span>
+          <button class="wlm-btn-ghost" id="wlm-reset" type="button">Reset</button>
+        </div>
+      </div>
+
+      <!-- Colour legend (step 2+) -->
+      <div class="wlm-legend" id="wlm-legend" hidden>
+        <span class="wlm-lg"><i class="dot dot-green"></i>Green — thriving, getting the attention it deserves</span>
+        <span class="wlm-lg"><i class="dot dot-yellow"></i>Yellow — coasting or slipping, needs attention soon</span>
+        <span class="wlm-lg"><i class="dot dot-red"></i>Red — neglected or painful, costing you something now</span>
+      </div>
+    </div>
+
+    <!-- ===== Matrix ===== -->
+    <div class="wlm-wide mt-8">
+      <div class="wlm-matrix-wrap" id="wlm-wrap">
+        <svg class="wlm-arrows" id="wlm-arrows" aria-hidden="true"></svg>
+        <div id="wlm-matrix"></div>
+      </div>
+    </div>
+
+    <!-- ===== Results ===== -->
+    <div class="container mt-14">
+      <div id="wlm-results" class="wlm-results" hidden>
+
+        <div class="wlm-panel">
+          <h2 class="wlm-h2">Your map at a glance</h2>
+          <div class="wlm-stats" id="wlm-stats"></div>
+        </div>
+
+        <div class="wlm-panel wlm-panel-accent">
+          <h2 class="wlm-h2">Assessment</h2>
+          <div class="wlm-assessment" id="wlm-assessment"></div>
+          <p class="wlm-note" id="wlm-note">
+            Written by Ron Dimon and Claude: the reasoning behind this read is encoded in the page, so it runs
+            instantly and privately in your browser — nothing you mark here is ever sent anywhere.
+          </p>
+        </div>
+
+        <div class="wlm-panel">
+          <h2 class="wlm-h2">Commit</h2>
+          <p class="wlm-p">
+            Pick one to three drivers — usually the keystone plus one starred red. For each, a 90-day intention
+            (a description of a state, not a number) and one weekly practice (the smallest repeatable act).
+          </p>
+          <div id="wlm-commit"></div>
+        </div>
+
+        <div class="wlm-actions">
+          <button class="wlm-btn" id="wlm-pdf" type="button">Download map + assessment (PDF)</button>
+          <span class="wlm-actions-note">Two pages, landscape. Keep it — re-colour the same sheet in 90 days and watch the colours migrate.</span>
+        </div>
+      </div>
+
+      <div id="wlm-empty" class="wlm-empty">
+        Circle at least one driver above to begin. The assessment appears once you've marked the matrix.
+      </div>
+    </div>
+  </section>
+
+  <style>
+    /* ---------- layout ---------- */
+    .wlm-wide {
+      max-width: 1500px;
+      margin-inline: auto;
+      padding-inline: 1.5rem;
+    }
+
+    /* ---------- stepper ---------- */
+    .wlm-steps {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.75rem;
+    }
+    .wlm-step {
+      text-align: left;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 0.6rem;
+      padding: 0.85rem 1rem;
+      cursor: pointer;
+      transition: border-color .15s, box-shadow .15s, background .15s;
+    }
+    .wlm-step:hover { border-color: color-mix(in srgb, var(--color-accent) 40%, transparent); }
+    .wlm-step.is-active {
+      border-color: var(--color-accent);
+      background: var(--color-accent-light);
+      box-shadow: 0 1px 2px rgba(0,0,0,.04);
+    }
+    .wlm-step-n {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 1.35rem; height: 1.35rem; border-radius: 999px;
+      background: var(--color-surface-alt); color: var(--color-text-muted);
+      font-size: .72rem; font-weight: 700; margin-bottom: .4rem;
+    }
+    .wlm-step.is-active .wlm-step-n { background: var(--color-accent); color: #fff; }
+    .wlm-step-t { display: block; font-weight: 600; font-size: .95rem; color: var(--color-text-primary); }
+    .wlm-step.is-active .wlm-step-t { color: var(--color-accent); }
+    .wlm-step-d { display: block; font-size: .75rem; color: var(--color-text-muted); margin-top: .15rem; line-height: 1.35; }
+
+    /* ---------- bar ---------- */
+    .wlm-bar {
+      margin-top: 1.25rem;
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+      flex-wrap: wrap;
+      padding: .75rem 1rem;
+      background: var(--color-surface-alt);
+      border: 1px solid var(--color-border-light);
+      border-radius: .6rem;
+    }
+    .wlm-instruct { font-size: .9rem; color: var(--color-text-secondary); margin: 0; }
+    .wlm-bar-right { display: flex; align-items: center; gap: .9rem; }
+    .wlm-count { font-size: .8rem; font-weight: 600; color: var(--color-text-muted); white-space: nowrap; }
+    .wlm-count.is-full { color: var(--color-warm); }
+    .wlm-btn-ghost {
+      font-size: .8rem; color: var(--color-text-muted);
+      background: none; border: none; cursor: pointer; text-decoration: underline;
+      text-decoration-color: var(--color-border);
+    }
+    .wlm-btn-ghost:hover { color: var(--color-accent); }
+
+    /* ---------- legend ---------- */
+    .wlm-legend {
+      margin-top: .75rem; display: flex; flex-wrap: wrap; gap: .4rem 1.4rem;
+      font-size: .78rem; color: var(--color-text-muted);
+    }
+    .wlm-lg { display: inline-flex; align-items: center; gap: .4rem; }
+    .dot { width: .6rem; height: .6rem; border-radius: 999px; display: inline-block; flex: none; }
+    .dot-green { background: #16A34A; }
+    .dot-yellow { background: #CA8A04; }
+    .dot-red { background: #DC2626; }
+
+    /* ---------- matrix ---------- */
+    .wlm-matrix-wrap { position: relative; }
+    .wlm-arrows {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      pointer-events: none; z-index: 5; overflow: visible;
+    }
+    .wlm-layer + .wlm-layer { margin-top: 1.5rem; }
+    .wlm-layer-head {
+      display: flex; align-items: baseline; gap: .6rem; flex-wrap: wrap;
+      padding-bottom: .5rem; margin-bottom: .75rem;
+      border-bottom: 2px solid var(--color-border);
+    }
+    .wlm-layer-name { font-family: var(--font-heading, inherit); font-size: 1.05rem; font-weight: 700; color: var(--color-text-primary); }
+    .wlm-layer-blurb { font-size: .78rem; color: var(--color-text-muted); }
+    .wlm-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: .6rem; }
+    .wlm-cell {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: .5rem;
+      padding: .6rem;
+      min-width: 0;
+    }
+    .wlm-cell-head {
+      font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em;
+      color: var(--color-text-muted); margin-bottom: .45rem;
+    }
+    .wlm-chip {
+      position: relative;
+      display: block; width: 100%; text-align: left;
+      font-size: .78rem; line-height: 1.3;
+      padding: .32rem .45rem; border-radius: .35rem;
+      border: 1px solid transparent; background: none; cursor: pointer;
+      color: var(--color-text-secondary);
+      transition: background .12s, border-color .12s, color .12s;
+    }
+    .wlm-chip + .wlm-chip { margin-top: .1rem; }
+    .wlm-chip:hover { background: var(--color-surface-alt); color: var(--color-text-primary); }
+    .wlm-chip.is-on {
+      background: var(--color-accent-light);
+      border-color: color-mix(in srgb, var(--color-accent) 35%, transparent);
+      color: var(--color-text-primary); font-weight: 600;
+    }
+    .wlm-chip.c-green { background: #F0FDF4; border-color: #86EFAC; }
+    .wlm-chip.c-yellow { background: #FEFCE8; border-color: #FDE047; }
+    .wlm-chip.c-red { background: #FEF2F2; border-color: #FCA5A5; }
+    .wlm-chip.is-src { outline: 2px solid var(--color-accent); outline-offset: 1px; }
+    .wlm-chip.is-dim { opacity: .38; }
+    .wlm-chip-marks { position: absolute; top: .3rem; right: .3rem; display: flex; gap: .15rem; align-items: center; }
+    .wlm-star { color: var(--color-warm); font-size: .7rem; line-height: 1; }
+    .wlm-chip-desc { display: block; font-size: .68rem; color: var(--color-text-muted); font-weight: 400; margin-top: .1rem; }
+
+    /* per-chip controls shown in colour step */
+    .wlm-ctl { display: flex; gap: .2rem; margin-top: .3rem; }
+    .wlm-ctl button {
+      width: 1.1rem; height: 1.1rem; border-radius: 999px; cursor: pointer;
+      border: 1px solid rgba(0,0,0,.15); padding: 0; line-height: 0;
+    }
+    .wlm-ctl .sw-green { background: #16A34A; }
+    .wlm-ctl .sw-yellow { background: #CA8A04; }
+    .wlm-ctl .sw-red { background: #DC2626; }
+    .wlm-ctl .sw-star { background: var(--color-surface); font-size: .62rem; line-height: 1; color: var(--color-warm); width: auto; padding: 0 .3rem; border-radius: .3rem; }
+    .wlm-ctl .sw-star.on { background: var(--color-warm-light); border-color: var(--color-warm); }
+    .wlm-ctl button[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--color-text-primary); }
+
+    /* ---------- results ---------- */
+    .wlm-results { display: grid; gap: 1.25rem; }
+    .wlm-panel {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: .75rem;
+      padding: 1.5rem;
+    }
+    .wlm-panel-accent { border-color: color-mix(in srgb, var(--color-accent) 30%, transparent); background: var(--color-accent-light); }
+    .wlm-h2 { font-family: var(--font-heading, inherit); font-size: 1.25rem; font-weight: 700; color: var(--color-text-primary); margin: 0 0 .85rem; }
+    .wlm-p { font-size: .9rem; color: var(--color-text-secondary); margin: 0 0 1rem; line-height: 1.6; }
+    .wlm-assessment { font-size: 1rem; line-height: 1.75; color: var(--color-text-primary); }
+    .wlm-assessment strong { font-weight: 700; }
+    .wlm-assessment p + p { margin-top: .85rem; }
+    .wlm-note { font-size: .72rem; color: var(--color-text-muted); margin: 1rem 0 0; line-height: 1.5; }
+
+    .wlm-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; }
+    .wlm-stat { border-left: 3px solid var(--color-border); padding-left: .75rem; }
+    .wlm-stat-k { font-size: .7rem; text-transform: uppercase; letter-spacing: .06em; color: var(--color-text-muted); font-weight: 700; }
+    .wlm-stat-v { font-size: .95rem; color: var(--color-text-primary); margin-top: .2rem; line-height: 1.4; }
+    .wlm-stat.is-key { border-left-color: var(--color-accent); }
+    .wlm-stat.is-warn { border-left-color: #DC2626; }
+
+    .wlm-commit-row { border-top: 1px solid var(--color-border-light); padding-top: 1rem; margin-top: 1rem; }
+    .wlm-commit-row:first-child { border-top: none; padding-top: 0; margin-top: 0; }
+    .wlm-commit-name { font-weight: 600; font-size: .9rem; color: var(--color-text-primary); display: flex; align-items: center; gap: .4rem; }
+    .wlm-commit-row label { display: block; font-size: .72rem; color: var(--color-text-muted); margin: .6rem 0 .2rem; font-weight: 600; }
+    .wlm-commit-row input {
+      width: 100%; font: inherit; font-size: .85rem;
+      padding: .5rem .65rem; border: 1px solid var(--color-border); border-radius: .4rem;
+      background: var(--color-surface); color: var(--color-text-primary);
+    }
+    .wlm-commit-row input:focus { outline: 2px solid var(--color-accent); outline-offset: -1px; border-color: var(--color-accent); }
+
+    .wlm-actions { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+    .wlm-btn {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: var(--color-accent); color: #fff; border: none;
+      font: inherit; font-size: .9rem; font-weight: 600;
+      padding: .75rem 1.4rem; border-radius: .5rem; cursor: pointer;
+      transition: background .15s;
+    }
+    .wlm-btn:hover { background: var(--color-accent-hover); }
+    .wlm-btn:disabled { opacity: .5; cursor: not-allowed; }
+    .wlm-actions-note { font-size: .75rem; color: var(--color-text-muted); max-width: 30rem; line-height: 1.5; }
+
+    .wlm-empty {
+      text-align: center; font-size: .9rem; color: var(--color-text-muted);
+      background: var(--color-surface-alt); border: 1px dashed var(--color-border);
+      border-radius: .75rem; padding: 2rem 1.5rem;
+    }
+
+    /* ---------- responsive ---------- */
+    @media (max-width: 1100px) {
+      .wlm-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 760px) {
+      .wlm-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .wlm-step-d { display: none; }
+      .wlm-grid { grid-template-columns: 1fr; }
+      .wlm-arrows { display: none; }
+      .wlm-bar { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+
+  <script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <script is:inline>
+  (function () {
+    'use strict';
+
+    /* ============ DATA: 5 domains x 3 layers x 5 drivers = 75 ============ */
+    var DOMAINS = [
+      { id: 'health',        name: 'Health & Vitality',            short: 'Health' },
+      { id: 'wealth',        name: 'Wealth & Career',              short: 'Wealth' },
+      { id: 'relationships', name: 'Relationships & Connection',   short: 'Relationships' },
+      { id: 'growth',        name: 'Growth & Mindset',             short: 'Growth' },
+      { id: 'lifestyle',     name: 'Lifestyle & Environment',      short: 'Lifestyle' }
+    ];
+    var LAYERS = [
+      { id: 'self',      name: 'Layer 1 — Self & Spirit',          short: 'Self & Spirit',        blurb: 'your inner world, personal responsibility, and your deepest values' },
+      { id: 'family',    name: 'Layer 2 — Family & Inner Circle',  short: 'Family & Inner Circle', blurb: 'partner, children, parents, chosen family' },
+      { id: 'community', name: 'Layer 3 — Community & World',      short: 'Community & World',    blurb: 'friends, colleagues, neighbours, society, the planet' }
+    ];
+
+    var D = {
+      'self-health': [
+        ['Body awareness & release', 'tuning into physical signals; moving to process stress'],
+        ['Nutritional choices', 'what you independently choose to fuel your body'],
+        ['Sleep hygiene', 'personal routines that ensure deep, restorative rest'],
+        ['Preventative care', 'owning your medical checkups and health data'],
+        ['Self-image', 'your internal relationship with your body and appearance']
+      ],
+      'self-wealth': [
+        ['Intrinsic motivation', 'a deep personal "why" behind your work'],
+        ['Skill mastery', 'your commitment to sharpening your talents'],
+        ['Financial psychology', 'overcoming scarcity mindsets and spending impulses'],
+        ['Autonomous savings', 'building your personal safety net'],
+        ['Career alignment', 'work that matches your gifts and personality']
+      ],
+      'self-relationships': [
+        ['Relationship with self', 'self-compassion, self-forgiveness, healthy solitude'],
+        ['Boundaries', 'your internal rules for what you will and will not tolerate'],
+        ['Emotional regulation', 'managing triggers so you do not project them outward'],
+        ['Attachment style', 'understanding and healing how you connect'],
+        ['Authenticity', 'showing up as your true self, without a mask']
+      ],
+      'self-growth': [
+        ['Spiritual practice & intuition', 'prayer, meditation or ritual; trusting inner guidance'],
+        ['Intellectual curiosity', 'reading and learning purely for yourself'],
+        ['Core values', 'explicitly naming the principles that guide decisions'],
+        ['Ego awareness', 'noticing when pride, fear or insecurity is driving'],
+        ['Mental resilience', 'talking yourself through failure, grief and hardship']
+      ],
+      'self-lifestyle': [
+        ['Inner sanctuary', 'a private physical space that feels peaceful'],
+        ['Digital boundaries', 'your limits on screens, feeds and information overload'],
+        ['Daily rhythm', 'a morning or evening routine that anchors the day'],
+        ['Personal aesthetic', 'art, music and objects that inspire you'],
+        ['Solitary leisure', 'hobbies you enjoy entirely on your own']
+      ],
+      'family-health': [
+        ['Shared nutrition', 'cooking healthy meals together; a nutritious kitchen'],
+        ['Family play', 'active recreation together: hikes, sports, bike rides'],
+        ['Genetic awareness', 'knowing family medical history and inherited risks'],
+        ['Caregiving', 'nursing sick family members with patience and empathy'],
+        ['Sleep alignment', 'respecting household rhythms so everyone rests well']
+      ],
+      'family-wealth': [
+        ['Shared financial goals', 'aligning on budget, major purchases, investments'],
+        ['Legacy planning', 'wills, insurance and generational wealth'],
+        ['Work-life harmony', 'boundaries so work stress does not bleed home'],
+        ['Financial communication', 'transparent, calm money conversations'],
+        ["Dependents' future", 'funding education or care for aging parents']
+      ],
+      'family-relationships': [
+        ['Partner intimacy', 'romantic, intellectual and emotional closeness'],
+        ['Parental presence', 'undistracted, quality time with children'],
+        ['Repair & psychological safety', 'resolving conflict; a home where feelings are safe'],
+        ['Traditions & rituals', 'holidays, Sunday dinners, annual trips'],
+        ['Extended family ties', 'healthy dynamics with in-laws, siblings, parents']
+      ],
+      'family-growth': [
+        ['Shared values', 'a unified family identity or household mission'],
+        ['Co-learning', 'reading, discussing big ideas, learning together'],
+        ['Spiritual harmony', "navigating faith and life's big questions as a unit"],
+        ['Emotional growth', 'helping each other through grief, failure, transitions'],
+        ['Modeling behavior', 'demonstrating maturity for the next generation']
+      ],
+      'family-lifestyle': [
+        ['Home management', 'fairly sharing chores, cooking and maintenance'],
+        ['Comfort & order', 'a living space that feels clean, welcoming, organised'],
+        ['Family vacations', 'travel that bonds the household and builds memories'],
+        ['Hospitality', 'opening your home to host the people you love'],
+        ['Shared leisure', 'movies, games and hobbies the whole household enjoys']
+      ],
+      'community-health': [
+        ['Public health', 'keeping shared spaces safe, clean and accessible'],
+        ['Group fitness', 'sports leagues, run clubs, fitness classes'],
+        ['Healthcare access', 'supporting or advocating for local medical resources'],
+        ['Wellness openness', 'normalising honest conversations about mental health'],
+        ['Food security', 'community gardens, local farms, food banks']
+      ],
+      'community-wealth': [
+        ['Professional network', 'mutually beneficial relationships in your field'],
+        ['Local economy', 'supporting the businesses in your own community'],
+        ['Mentorship', 'sharing knowledge to lift up juniors and newcomers'],
+        ['Philanthropy', 'giving money and resources to causes you believe in'],
+        ['Ethical work', 'professional choices that do no harm to the public good']
+      ],
+      'community-relationships': [
+        ['Deep friendships', 'a loyal, supportive circle beyond family'],
+        ['Neighborliness', 'being a reliable, helpful presence next door'],
+        ['Belonging & inclusion', 'a "third place" where you feel known'],
+        ['Civic engagement', 'voting, town halls, local participation'],
+        ['Service', 'giving time freely to help vulnerable people near you']
+      ],
+      'community-growth': [
+        ['Collective wisdom', 'book clubs, lectures, workshops, group discussion'],
+        ['Cultural enrichment', 'supporting the arts, museums, libraries'],
+        ['Advocacy', 'standing up for principles, justice and needed change'],
+        ['Open dialogue', 'engaging different faiths and philosophies with respect'],
+        ['Shared hope', 'contributing to a culture of progress and optimism']
+      ],
+      'community-lifestyle': [
+        ['Environmental stewardship', 'conserving, recycling, reducing your footprint'],
+        ['Public spaces', 'enjoying and caring for parks, trails and plazas'],
+        ['Group travel', 'new cultures and retreats with friends or groups'],
+        ['Community events', 'farmers markets, festivals, block parties'],
+        ['Workplace culture', 'contributing to a positive shared environment']
+      ]
+    };
+
+    var DRIVERS = [], BY_ID = {};
+    LAYERS.forEach(function (L) {
+      DOMAINS.forEach(function (M) {
+        (D[L.id + '-' + M.id] || []).forEach(function (row, i) {
+          var d = {
+            id: L.id + '-' + M.id + '-' + (i + 1),
+            layer: L.id, domain: M.id, name: row[0], desc: row[1]
+          };
+          DRIVERS.push(d); BY_ID[d.id] = d;
+        });
+      });
+    });
+
+    var MAX_CIRCLE = 10, MAX_STAR = 3;
+    var LAYER_NAME = {}, LAYER_SHORT = {}, DOMAIN_NAME = {}, DOMAIN_SHORT = {};
+    LAYERS.forEach(function (l) { LAYER_NAME[l.id] = l.name; LAYER_SHORT[l.id] = l.short; });
+    DOMAINS.forEach(function (m) { DOMAIN_NAME[m.id] = m.name; DOMAIN_SHORT[m.id] = m.short; });
+
+    /* ============ STATE ============ */
+    var KEY = 'wlm.v1';
+    var S = { step: 1, circled: [], starred: [], colors: {}, conns: [], commit: {}, src: null };
+
+    function save() {
+      try {
+        localStorage.setItem(KEY, JSON.stringify({
+          step: S.step, circled: S.circled, starred: S.starred,
+          colors: S.colors, conns: S.conns, commit: S.commit
+        }));
+      } catch (e) {}
+    }
+    function load() {
+      try {
+        var raw = localStorage.getItem(KEY);
+        if (!raw) return;
+        var o = JSON.parse(raw);
+        if (!o) return;
+        S.step = o.step || 1;
+        S.circled = (o.circled || []).filter(function (id) { return BY_ID[id]; });
+        S.starred = (o.starred || []).filter(function (id) { return S.circled.indexOf(id) > -1; });
+        S.colors = o.colors || {};
+        S.conns = (o.conns || []).filter(function (c) {
+          return S.circled.indexOf(c.from) > -1 && S.circled.indexOf(c.to) > -1;
+        });
+        S.commit = o.commit || {};
+      } catch (e) {}
+    }
+
+    /* ============ DOM ============ */
+    var $matrix = document.getElementById('wlm-matrix');
+    var $arrows = document.getElementById('wlm-arrows');
+    var $steps = document.getElementById('wlm-steps');
+    var $instruct = document.getElementById('wlm-instruct');
+    var $count = document.getElementById('wlm-count');
+    var $legend = document.getElementById('wlm-legend');
+    var $results = document.getElementById('wlm-results');
+    var $empty = document.getElementById('wlm-empty');
+    var $stats = document.getElementById('wlm-stats');
+    var $assess = document.getElementById('wlm-assessment');
+    var $commit = document.getElementById('wlm-commit');
+    var $pdf = document.getElementById('wlm-pdf');
+
+    var INSTRUCT = {
+      1: 'Circle no more than ten drivers that matter most in this season of your life — then star up to three non-negotiables. The constraint is the point: if everything matters, nothing does.',
+      2: 'Now be honest about each one. Click a swatch on any circled driver: green thriving, yellow slipping, red neglected. Most sheets have more red than green — red means honest, not failing.',
+      3: 'Draw arrows where one driver clearly feeds another. Click the source, then the target. The driver with the most arrows leaving it is your keystone — the highest-leverage place to intervene.',
+      4: 'Read the assessment, write your commitments, and take the PDF with you.'
+    };
+
+    /* ============ BUILD MATRIX ============ */
+    function buildMatrix() {
+      var html = '';
+      LAYERS.forEach(function (L) {
+        html += '<div class="wlm-layer"><div class="wlm-layer-head">' +
+          '<span class="wlm-layer-name">' + L.name + '</span>' +
+          '<span class="wlm-layer-blurb">' + L.blurb + '</span></div><div class="wlm-grid">';
+        DOMAINS.forEach(function (M) {
+          html += '<div class="wlm-cell"><div class="wlm-cell-head">' + M.short + '</div>';
+          DRIVERS.filter(function (d) { return d.layer === L.id && d.domain === M.id; })
+            .forEach(function (d) {
+              html += '<button type="button" class="wlm-chip" data-id="' + d.id + '" title="' +
+                esc(d.desc) + '"><span class="wlm-chip-name">' + esc(d.name) + '</span>' +
+                '<span class="wlm-chip-marks"></span></button>';
+            });
+          html += '</div>';
+        });
+        html += '</div></div>';
+      });
+      $matrix.innerHTML = html;
+    }
+    function esc(s) {
+      return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    /* ============ RENDER ============ */
+    function render() {
+      // stepper
+      Array.prototype.forEach.call($steps.querySelectorAll('.wlm-step'), function (b) {
+        b.classList.toggle('is-active', +b.dataset.step === S.step);
+      });
+      if (Date.now() >= flashUntil) {
+        $instruct.textContent = INSTRUCT[S.step];
+        $instruct.style.color = '';
+      }
+      $legend.hidden = S.step < 2;
+
+      // count
+      if (S.step === 1) {
+        $count.textContent = S.circled.length + ' / ' + MAX_CIRCLE + ' circled · ' +
+          S.starred.length + ' / ' + MAX_STAR + ' starred';
+        $count.classList.toggle('is-full', S.circled.length >= MAX_CIRCLE);
+      } else if (S.step === 2) {
+        var done = S.circled.filter(function (id) { return S.colors[id]; }).length;
+        $count.textContent = done + ' / ' + S.circled.length + ' coloured';
+        $count.classList.toggle('is-full', false);
+      } else if (S.step === 3) {
+        $count.textContent = S.conns.length + ' connection' + (S.conns.length === 1 ? '' : 's');
+        $count.classList.toggle('is-full', false);
+      } else {
+        $count.textContent = '';
+      }
+
+      // chips
+      Array.prototype.forEach.call($matrix.querySelectorAll('.wlm-chip'), function (el) {
+        var id = el.dataset.id;
+        var on = S.circled.indexOf(id) > -1;
+        el.className = 'wlm-chip' + (on ? ' is-on' : '');
+        if (on && S.colors[id]) el.classList.add('c-' + S.colors[id]);
+        if (S.step === 3) {
+          if (!on) el.classList.add('is-dim');
+          if (S.src === id) el.classList.add('is-src');
+        }
+        // marks
+        var marks = el.querySelector('.wlm-chip-marks');
+        marks.innerHTML = (on && S.starred.indexOf(id) > -1) ? '<span class="wlm-star">&#9733;</span>' : '';
+        // controls (step 2 only, circled only)
+        var old = el.querySelector('.wlm-ctl');
+        if (old) old.remove();
+        if (on && S.step === 2) {
+          var ctl = document.createElement('span');
+          ctl.className = 'wlm-ctl';
+          ['green', 'yellow', 'red'].forEach(function (c) {
+            var b = document.createElement('button');
+            b.type = 'button';
+            b.className = 'sw-' + c;
+            b.dataset.color = c; b.dataset.for = id;
+            b.setAttribute('aria-pressed', S.colors[id] === c ? 'true' : 'false');
+            b.setAttribute('aria-label', c);
+            ctl.appendChild(b);
+          });
+          var st = document.createElement('button');
+          st.type = 'button';
+          st.className = 'sw-star' + (S.starred.indexOf(id) > -1 ? ' on' : '');
+          st.dataset.star = id;
+          st.textContent = '★';
+          st.setAttribute('aria-label', 'star');
+          ctl.appendChild(st);
+          el.appendChild(ctl);
+        }
+      });
+
+      drawArrows();
+      renderResults();
+      save();
+    }
+
+    /* ============ ARROWS ============ */
+    function drawArrows() {
+      var wrap = document.getElementById('wlm-wrap');
+      var box = wrap.getBoundingClientRect();
+      $arrows.setAttribute('viewBox', '0 0 ' + box.width + ' ' + box.height);
+      var svg = '<defs><marker id="wlm-ah" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">' +
+        '<path d="M0,0 L7,3 L0,6 z" fill="#2563EB"/></marker></defs>';
+      S.conns.forEach(function (c) {
+        var a = $matrix.querySelector('[data-id="' + c.from + '"]');
+        var b = $matrix.querySelector('[data-id="' + c.to + '"]');
+        if (!a || !b) return;
+        var ra = a.getBoundingClientRect(), rb = b.getBoundingClientRect();
+        var x1 = ra.left + ra.width / 2 - box.left, y1 = ra.top + ra.height / 2 - box.top;
+        var x2 = rb.left + rb.width / 2 - box.left, y2 = rb.top + rb.height / 2 - box.top;
+        var mx = (x1 + x2) / 2, my = (y1 + y2) / 2 - Math.min(90, Math.abs(x2 - x1) * 0.28 + 18);
+        svg += '<path d="M' + x1 + ',' + y1 + ' Q' + mx + ',' + my + ' ' + x2 + ',' + y2 +
+          '" fill="none" stroke="#2563EB" stroke-width="1.6" stroke-opacity=".55" marker-end="url(#wlm-ah)"/>';
+      });
+      $arrows.innerHTML = svg;
+    }
+
+    /* ============ SIGNALS ============ */
+    function signals() {
+      var circled = S.circled.map(function (id) { return BY_ID[id]; });
+      var n = circled.length;
+      var layerCounts = {}, domainCounts = {}, colorCounts = { green: 0, yellow: 0, red: 0, none: 0 };
+      circled.forEach(function (d) {
+        layerCounts[d.layer] = (layerCounts[d.layer] || 0) + 1;
+        domainCounts[d.domain] = (domainCounts[d.domain] || 0) + 1;
+        colorCounts[S.colors[d.id] || 'none']++;
+      });
+      var out = {}, inc = {};
+      S.conns.forEach(function (c) {
+        out[c.from] = (out[c.from] || 0) + 1;
+        inc[c.to] = (inc[c.to] || 0) + 1;
+      });
+      // keystone: most outgoing; tie-break by how many reds it feeds, then by not being red itself
+      var keystone = null, best = -1;
+      S.circled.forEach(function (id) {
+        var o = out[id] || 0;
+        if (o === 0) return;
+        var feedsRed = S.conns.filter(function (c) { return c.from === id && S.colors[c.to] === 'red'; }).length;
+        var score = o * 10 + feedsRed * 3 + (S.colors[id] !== 'red' ? 1 : 0);
+        if (score > best) { best = score; keystone = id; }
+      });
+      // a non-red driver that feeds two or more reds = upstream leverage
+      var upstream = S.circled.filter(function (id) {
+        if (S.colors[id] === 'red' || !out[id]) return false;
+        return S.conns.filter(function (c) { return c.from === id && S.colors[c.to] === 'red'; }).length >= 2;
+      });
+      var topLayer = null, topLayerN = 0;
+      Object.keys(layerCounts).forEach(function (k) { if (layerCounts[k] > topLayerN) { topLayerN = layerCounts[k]; topLayer = k; } });
+      var topDomain = null, topDomainN = 0;
+      Object.keys(domainCounts).forEach(function (k) { if (domainCounts[k] > topDomainN) { topDomainN = domainCounts[k]; topDomain = k; } });
+
+      return {
+        n: n, circled: circled, layerCounts: layerCounts, domainCounts: domainCounts,
+        colorCounts: colorCounts, out: out, inc: inc, keystone: keystone, upstream: upstream,
+        topLayer: topLayer, topLayerN: topLayerN, topDomain: topDomain, topDomainN: topDomainN,
+        layersTouched: Object.keys(layerCounts).length,
+        domainsTouched: Object.keys(domainCounts).length,
+        untouchedDomains: DOMAINS.filter(function (m) { return !domainCounts[m.id]; }),
+        untouchedLayers: LAYERS.filter(function (l) { return !layerCounts[l.id]; }),
+        starvedStars: S.starred.filter(function (id) { return S.colors[id] === 'red'; }),
+        orphans: S.circled.filter(function (id) { return !out[id] && !inc[id]; })
+      };
+    }
+
+    function listify(a) {
+      if (a.length === 0) return '';
+      if (a.length === 1) return a[0];
+      if (a.length === 2) return a[0] + ' and ' + a[1];
+      return a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1];
+    }
+    function nm(id) { return BY_ID[id] ? BY_ID[id].name : ''; }
+
+    /* ============ ASSESSMENT ============ */
+    function assessment(g) {
+      if (!g.n) return '';
+      var p1 = [], p2 = [];
+
+      // --- shape of the selection ---
+      var share = g.topLayerN / g.n;
+      if (g.n < 4) {
+        p1.push('You have circled ' + g.n + ', which is fewer than this exercise needs to show you anything structural — ' +
+          'but what is here already points somewhere: ' + listify(g.circled.map(function (d) { return '**' + d.name + '**'; })) + '.');
+      } else if (share >= 0.55) {
+        p1.push('Your ' + g.n + ' circles cluster hard in **' + LAYER_SHORT[g.topLayer] + '** — ' + g.topLayerN +
+          ' of ' + g.n + '. Read that as a season rather than an imbalance: one relational world is asking for most of you right now, ' +
+          'and clustered circles are more honest than evenly spread ones.');
+      } else if (g.domainsTouched === 5 && g.layersTouched === 3) {
+        p1.push('Your ' + g.n + ' circles touch all five domains and all three layers. That even coverage is worth one hard look — ' +
+          'people often spread their circles to look well-rounded rather than to be accurate. If the spread is real, good; if it is the ' +
+          'balance trap, the sheet will not tell you anything you did not already want to hear.');
+      } else {
+        p1.push('Your ' + g.n + ' circles span ' + g.domainsTouched + ' of five domains across ' + g.layersTouched +
+          ' of three layers — a partial, deliberate shape rather than an attempt at balance.');
+      }
+
+      // --- chosen neglect ---
+      if (g.untouchedDomains.length && g.untouchedDomains.length < 5) {
+        p1.push('You left ' + listify(g.untouchedDomains.map(function (m) { return '**' + m.short + '**'; })) +
+          ' unmarked entirely. That is your chosen neglect, and choosing it on purpose is the whole point — the goal was never balance.');
+      }
+      if (g.untouchedLayers.length === 1) {
+        p1.push('Nothing at all in ' + LAYER_SHORT[g.untouchedLayers[0].id] + ', which is either a clean seasonal decision or a blind spot; only you know which.');
+      }
+
+      // --- colour honesty ---
+      var cc = g.colorCounts;
+      if (cc.none === 0 && g.n >= 4) {
+        if (cc.red > cc.green) {
+          p2.push('More red than green on the sheet (' + cc.red + ' to ' + cc.green + ') — that usually means you marked it honestly, not that you are failing.');
+        } else if (cc.green >= g.n * 0.7) {
+          p2.push('Almost everything is green, which is either a genuinely good season or a sheet marked more generously than honestly — worth a second pass before you trust it.');
+        }
+      }
+
+      // --- keystone (folds in the upstream insight when it is the same driver) ---
+      var keyIsUpstream = g.keystone && g.upstream.indexOf(g.keystone) > -1;
+      if (g.keystone) {
+        var o = g.out[g.keystone];
+        var redsFed = S.conns.filter(function (c) { return c.from === g.keystone && S.colors[c.to] === 'red'; }).length;
+        var line = 'The arrows make **' + nm(g.keystone) + '** your keystone: ' + o + ' connection' + (o === 1 ? '' : 's') +
+          ' lead out of it, so it is the highest-leverage place to intervene.';
+        if (keyIsUpstream) {
+          line += ' And it is marked ' + S.colors[g.keystone] + ' rather than red while feeding ' + redsFed +
+            ' drivers that are red — which makes it the most useful thing on this sheet. Fix what is upstream, because it is starving what is below it.';
+        } else if (S.colors[g.keystone] && S.colors[g.keystone] !== 'red') {
+          line += ' Note that it is marked ' + S.colors[g.keystone] + ' rather than red — the best move is usually upstream of the pain rather than at it.';
+        }
+        p2.push(line);
+      } else if (S.conns.length === 0 && g.n >= 3) {
+        p2.push('You have not drawn any connections yet, so no keystone has emerged — and the keystone is where the leverage hides. ' +
+          'Go back to the Connect pass and look for the one driver that feeds the others.');
+      }
+
+      // --- other upstream feeders (skip the keystone, already covered above) ---
+      var otherUp = g.upstream.filter(function (id) { return id !== g.keystone; });
+      if (otherUp.length) {
+        p2.push('**' + nm(otherUp[0]) + '** is also sitting upstream of trouble: not red itself, but feeding drivers that are.');
+      }
+
+      // --- starved non-negotiables ---
+      if (g.starvedStars.length) {
+        var many = g.starvedStars.length > 1;
+        var names = listify(g.starvedStars.map(function (id) { return '**' + nm(id) + '**'; }));
+        p2.push(names + (many
+          ? ' are starred and red: non-negotiables you are currently starving. Those matter most to you and they are going worst'
+          : ' is starred and red: a non-negotiable you are currently starving. That matters most to you and it is going worst') +
+          ' — of everything on the page, that intersection is the finding to act on.');
+      } else if (S.starred.length && Object.keys(S.colors).length) {
+        p2.push('None of your starred non-negotiables are red, which means the things you refuse to compromise are at least holding. Protect that.');
+      }
+
+      // --- orphans ---
+      if (g.orphans.length >= 3 && S.conns.length > 0) {
+        p2.push(g.orphans.length + ' of your circles have no arrows at all — either they genuinely stand alone, or you have not yet found what they are connected to.');
+      }
+
+      // --- closing question ---
+      var close;
+      if (g.starvedStars.length) {
+        close = 'The question to sit with: what would you have to put down, this month, to stop starving ' + nm(g.starvedStars[0]) + '?';
+      } else if (g.keystone) {
+        close = 'The question to sit with: what is the smallest weekly act that would move ' + nm(g.keystone) + ' — and what are you already doing that works against it?';
+      } else {
+        close = 'The question to sit with: of everything you circled, which one, if it improved, would quietly improve the others?';
+      }
+      p2.push(close);
+
+      return md(p1.join(' ')) + (p2.length ? md(p2.join(' ')) : '');
+    }
+    function md(s) {
+      return '<p>' + esc(s).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>') + '</p>';
+    }
+    function plain(html) {
+      var t = document.createElement('div');
+      t.innerHTML = html;
+      return Array.prototype.map.call(t.querySelectorAll('p'), function (p) { return p.textContent; });
+    }
+
+    /* ============ RESULTS ============ */
+    function renderResults() {
+      var g = signals();
+      var has = g.n > 0;
+      $results.hidden = !has;
+      $empty.hidden = has;
+      if (!has) return;
+
+      // stats
+      var rows = [];
+      rows.push(['Circled', g.n + ' of 75' + (S.starred.length ? ' · ' + S.starred.length + ' starred' : ''), '']);
+      if (g.topLayer) rows.push(['Heaviest layer', LAYER_SHORT[g.topLayer] + ' (' + g.topLayerN + ')', '']);
+      if (g.topDomain) rows.push(['Heaviest domain', DOMAIN_SHORT[g.topDomain] + ' (' + g.topDomainN + ')', '']);
+      if (g.colorCounts.none < g.n) {
+        rows.push(['Colour', g.colorCounts.green + ' green · ' + g.colorCounts.yellow + ' yellow · ' + g.colorCounts.red + ' red', '']);
+      }
+      rows.push(['Connections', String(S.conns.length), '']);
+      if (g.keystone) rows.push(['Keystone', nm(g.keystone), 'is-key']);
+      if (g.starvedStars.length) rows.push(['Starved non-negotiable', listify(g.starvedStars.map(nm)), 'is-warn']);
+      if (g.untouchedDomains.length) rows.push(['Chosen neglect', listify(g.untouchedDomains.map(function (m) { return m.short; })), '']);
+
+      $stats.innerHTML = rows.map(function (r) {
+        return '<div class="wlm-stat ' + r[2] + '"><div class="wlm-stat-k">' + esc(r[0]) +
+          '</div><div class="wlm-stat-v">' + esc(r[1]) + '</div></div>';
+      }).join('');
+
+      $assess.innerHTML = assessment(g);
+
+      // commit rows: keystone + starred reds + remaining stars, max 3
+      var pick = [];
+      if (g.keystone) pick.push(g.keystone);
+      g.starvedStars.forEach(function (id) { if (pick.indexOf(id) < 0) pick.push(id); });
+      S.starred.forEach(function (id) { if (pick.indexOf(id) < 0) pick.push(id); });
+      S.circled.forEach(function (id) { if (pick.indexOf(id) < 0) pick.push(id); });
+      pick = pick.slice(0, 3);
+
+      $commit.innerHTML = pick.map(function (id) {
+        var c = S.commit[id] || {};
+        var star = S.starred.indexOf(id) > -1 ? ' <span class="wlm-star">★</span>' : '';
+        var col = S.colors[id] ? ' <i class="dot dot-' + S.colors[id] + '"></i>' : '';
+        return '<div class="wlm-commit-row">' +
+          '<div class="wlm-commit-name">' + esc(nm(id)) + star + col + '</div>' +
+          '<label>90-day intention — what "better" looks like, as a state not a number</label>' +
+          '<input type="text" data-commit="' + id + '" data-f="intent" value="' + esc(c.intent || '') +
+          '" placeholder="Evenings where my phone is in a drawer and I am on the floor with the kids." />' +
+          '<label>One weekly practice — the smallest repeatable act</label>' +
+          '<input type="text" data-commit="' + id + '" data-f="practice" value="' + esc(c.practice || '') +
+          '" placeholder="Phone in the drawer at 6pm, four nights a week." />' +
+          '</div>';
+      }).join('');
+    }
+
+    /* ============ EVENTS ============ */
+    $steps.addEventListener('click', function (e) {
+      var b = e.target.closest('.wlm-step');
+      if (!b) return;
+      S.step = +b.dataset.step; S.src = null; render();
+    });
+
+    $matrix.addEventListener('click', function (e) {
+      // colour swatch
+      var sw = e.target.closest('[data-color]');
+      if (sw) {
+        e.stopPropagation();
+        var cid = sw.dataset.for;
+        S.colors[cid] = (S.colors[cid] === sw.dataset.color) ? undefined : sw.dataset.color;
+        if (!S.colors[cid]) delete S.colors[cid];
+        render(); return;
+      }
+      // star toggle
+      var st = e.target.closest('[data-star]');
+      if (st) {
+        e.stopPropagation();
+        toggleStar(st.dataset.star); render(); return;
+      }
+      var chip = e.target.closest('.wlm-chip');
+      if (!chip) return;
+      var id = chip.dataset.id;
+
+      if (S.step === 3) {
+        if (S.circled.indexOf(id) < 0) return;
+        if (S.src === null) { S.src = id; }
+        else if (S.src === id) { S.src = null; }
+        else {
+          var i = S.conns.findIndex(function (c) { return c.from === S.src && c.to === id; });
+          var j = S.conns.findIndex(function (c) { return c.from === id && c.to === S.src; });
+          if (i > -1) S.conns.splice(i, 1);
+          else if (j > -1) S.conns.splice(j, 1);
+          else S.conns.push({ from: S.src, to: id });
+          S.src = null;
+        }
+        render(); return;
+      }
+
+      // step 1 / 2 / 4: toggle circle
+      var k = S.circled.indexOf(id);
+      if (k > -1) {
+        S.circled.splice(k, 1);
+        var sk = S.starred.indexOf(id); if (sk > -1) S.starred.splice(sk, 1);
+        delete S.colors[id]; delete S.commit[id];
+        S.conns = S.conns.filter(function (c) { return c.from !== id && c.to !== id; });
+      } else {
+        if (S.circled.length >= MAX_CIRCLE) {
+          flash('Ten is the cap. If everything matters, nothing does — take one off first.');
+          return;
+        }
+        S.circled.push(id);
+      }
+      render();
+    });
+
+    function toggleStar(id) {
+      if (S.circled.indexOf(id) < 0) return;
+      var k = S.starred.indexOf(id);
+      if (k > -1) { S.starred.splice(k, 1); return; }
+      if (S.starred.length >= MAX_STAR) { flash('Three stars maximum — those are the ones that survive any season.'); return; }
+      S.starred.push(id);
+    }
+
+    // flashUntil stops render() from immediately overwriting a cap warning
+    var flashUntil = 0;
+    function flash(msg) {
+      flashUntil = Date.now() + 2600;
+      $instruct.textContent = msg;
+      $instruct.style.color = '#92400E';
+      setTimeout(function () {
+        if (Date.now() >= flashUntil) {
+          $instruct.textContent = INSTRUCT[S.step];
+          $instruct.style.color = '';
+        }
+      }, 2700);
+    }
+
+    $commit.addEventListener('input', function (e) {
+      var el = e.target.closest('[data-commit]');
+      if (!el) return;
+      var id = el.dataset.commit;
+      S.commit[id] = S.commit[id] || {};
+      S.commit[id][el.dataset.f] = el.value;
+      save();
+    });
+
+    document.getElementById('wlm-reset').addEventListener('click', function () {
+      if (!confirm('Clear the whole sheet and start again?')) return;
+      S = { step: 1, circled: [], starred: [], colors: {}, conns: [], commit: {}, src: null };
+      try { localStorage.removeItem(KEY); } catch (e) {}
+      render();
+    });
+
+    var rt;
+    window.addEventListener('resize', function () {
+      clearTimeout(rt); rt = setTimeout(drawArrows, 120);
+    });
+
+    /* ============ PDF ============ */
+    $pdf.addEventListener('click', function () {
+      if (!window.jspdf || !window.jspdf.jsPDF) {
+        alert('The PDF library did not load. Check your connection and reload the page.');
+        return;
+      }
+      var g = signals();
+      var jsPDF = window.jspdf.jsPDF;
+      var doc = new jsPDF({ orientation: 'landscape', unit: 'pt', format: 'letter' });
+      var W = 792, H = 612, M = 34;
+      var RGB = { green: [22, 163, 74], yellow: [202, 138, 4], red: [220, 38, 38], none: [168, 162, 158] };
+      var INK = [28, 25, 23], MUT = [120, 113, 108], ACC = [37, 99, 235], LINE = [231, 229, 228];
+
+      /* ---- page 1: the map ---- */
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(17); doc.setTextColor.apply(doc, INK);
+      doc.text('The Whole Life Matrix', M, M + 4);
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5); doc.setTextColor.apply(doc, MUT);
+      doc.text('A compass, not a scorecard. No one tends all 75 — the goal is not balance, it is choosing your neglect on purpose.', M, M + 19);
+      doc.text(new Date().toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }), W - M, M + 4, { align: 'right' });
+      doc.setFontSize(7.5);
+      doc.text('rondimon.com/about/whole-life-experiment', W - M, M + 19, { align: 'right' });
+
+      var gridTop = M + 40, rowLabelW = 74;
+      var gridH = H - gridTop - 74;
+      var colW = (W - 2 * M - rowLabelW) / 5, rowH = gridH / 3;
+      var pos = {};
+
+      // column headers
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(8); doc.setTextColor.apply(doc, INK);
+      DOMAINS.forEach(function (m, ci) {
+        doc.text(m.short.toUpperCase(), M + rowLabelW + ci * colW + colW / 2, gridTop - 6, { align: 'center' });
+      });
+
+      LAYERS.forEach(function (L, ri) {
+        var y0 = gridTop + ri * rowH;
+        // row label
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(8); doc.setTextColor.apply(doc, ACC);
+        doc.text(doc.splitTextToSize(L.short, rowLabelW - 8), M, y0 + 14);
+        DOMAINS.forEach(function (Mo, ci) {
+          var x0 = M + rowLabelW + ci * colW;
+          var sel = S.circled.filter(function (id) {
+            var d = BY_ID[id]; return d.layer === L.id && d.domain === Mo.id;
+          });
+          // cell frame — empty cells read as chosen neglect
+          doc.setDrawColor.apply(doc, LINE); doc.setLineWidth(0.6);
+          if (!sel.length) { doc.setFillColor(250, 250, 249); doc.rect(x0, y0, colW - 4, rowH - 6, 'FD'); }
+          else { doc.rect(x0, y0, colW - 4, rowH - 6, 'D'); }
+
+          var ty = y0 + 13;
+          sel.forEach(function (id) {
+            var c = S.colors[id] || 'none';
+            doc.setFillColor.apply(doc, RGB[c]);
+            doc.circle(x0 + 7, ty - 2.4, 2.6, 'F');
+            var starred = S.starred.indexOf(id) > -1;
+            doc.setFont('helvetica', starred ? 'bold' : 'normal');
+            doc.setFontSize(7.2); doc.setTextColor.apply(doc, INK);
+            var label = (starred ? '* ' : '') + BY_ID[id].name;
+            var lines = doc.splitTextToSize(label, colW - 22);
+            doc.text(lines, x0 + 13, ty);
+            pos[id] = { x: x0 + 7, y: ty - 2.4 };
+            ty += lines.length * 8 + 3.5;
+          });
+        });
+      });
+
+      // arrows — bowed below the labels so they never strike through the text
+      doc.setDrawColor.apply(doc, ACC); doc.setLineWidth(0.9);
+      S.conns.forEach(function (c) {
+        var a = pos[c.from], b = pos[c.to];
+        if (!a || !b) return;
+        var ax = a.x, ay = a.y + 7, bx = b.x, by = b.y + 7;
+        var dip = Math.min(52, 14 + Math.abs(bx - ax) * 0.12 + Math.abs(by - ay) * 0.10);
+        var cx = (ax + bx) / 2, cy = Math.max(ay, by) + dip;
+        var px = ax, py = ay, lx = ax, ly = ay, N = 16;
+        for (var i = 1; i <= N; i++) {
+          var t = i / N, mt = 1 - t;
+          var qx = mt * mt * ax + 2 * mt * t * cx + t * t * bx;
+          var qy = mt * mt * ay + 2 * mt * t * cy + t * t * by;
+          doc.line(px, py, qx, qy);
+          lx = px; ly = py; px = qx; py = qy;
+        }
+        var ang = Math.atan2(py - ly, px - lx), L2 = 4.5;
+        doc.line(px, py, px - L2 * Math.cos(ang - 0.42), py - L2 * Math.sin(ang - 0.42));
+        doc.line(px, py, px - L2 * Math.cos(ang + 0.42), py - L2 * Math.sin(ang + 0.42));
+      });
+
+      // legend
+      var ly = H - 56;
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(7.5);
+      var lx = M;
+      [['green', 'Thriving'], ['yellow', 'Slipping'], ['red', 'Neglected']].forEach(function (p) {
+        doc.setFillColor.apply(doc, RGB[p[0]]); doc.circle(lx + 3, ly - 2.4, 2.6, 'F');
+        doc.setTextColor.apply(doc, MUT); doc.text(p[1], lx + 9, ly); lx += 62;
+      });
+      doc.setTextColor.apply(doc, MUT);
+      doc.text('*  starred non-negotiable        arrow = drives / feeds        grey cell = not this season', lx + 6, ly);
+
+      /* ---- page 2: assessment + commitments ---- */
+      doc.addPage('letter', 'landscape');
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(15); doc.setTextColor.apply(doc, INK);
+      doc.text('Assessment', M, M + 4);
+
+      var y = M + 28, colWidth = W - 2 * M;
+      // key findings strip
+      var keys = [];
+      if (g.keystone) keys.push(['Keystone', nm(g.keystone)]);
+      if (g.starvedStars.length) keys.push(['Starved non-negotiable', listify(g.starvedStars.map(nm))]);
+      if (g.topLayer) keys.push(['Heaviest layer', LAYER_SHORT[g.topLayer] + ' (' + g.topLayerN + ' of ' + g.n + ')']);
+      if (g.untouchedDomains.length) keys.push(['Chosen neglect', listify(g.untouchedDomains.map(function (m) { return m.short; }))]);
+      if (keys.length) {
+        var kx = M;
+        var kw = colWidth / Math.min(keys.length, 4);
+        keys.slice(0, 4).forEach(function (k) {
+          doc.setDrawColor.apply(doc, ACC); doc.setLineWidth(1.8);
+          doc.line(kx, y - 8, kx, y + 16);
+          doc.setFont('helvetica', 'bold'); doc.setFontSize(6.8); doc.setTextColor.apply(doc, MUT);
+          doc.text(k[0].toUpperCase(), kx + 7, y - 1);
+          doc.setFont('helvetica', 'bold'); doc.setFontSize(9); doc.setTextColor.apply(doc, INK);
+          doc.text(doc.splitTextToSize(k[1], kw - 16), kx + 7, y + 11);
+          kx += kw;
+        });
+        y += 40;
+      }
+
+      // keeps long assessments / many commitments from running off the page
+      function room(need) {
+        if (y + need > H - 46) {
+          doc.addPage('letter', 'landscape');
+          y = M + 10;
+          return true;
+        }
+        return false;
+      }
+
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor.apply(doc, INK);
+      plain(assessment(g)).forEach(function (para) {
+        var lines = doc.splitTextToSize(para, colWidth);
+        room(lines.length * 14);
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor.apply(doc, INK);
+        doc.text(lines, M, y);
+        y += lines.length * 14 + 10;
+      });
+
+      // commitments
+      var cIds = Object.keys(S.commit).filter(function (id) {
+        var c = S.commit[id]; return c && ((c.intent || '').trim() || (c.practice || '').trim());
+      });
+      if (cIds.length) {
+        y += 8;
+        room(40);
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(13); doc.setTextColor.apply(doc, INK);
+        doc.text('Commitments', M, y); y += 18;
+        cIds.forEach(function (id) {
+          var c = S.commit[id];
+          room(48);
+          doc.setFont('helvetica', 'bold'); doc.setFontSize(9.5); doc.setTextColor.apply(doc, ACC);
+          doc.text((S.starred.indexOf(id) > -1 ? '* ' : '') + nm(id), M, y); y += 13;
+          doc.setTextColor.apply(doc, INK); doc.setFontSize(9);
+          if ((c.intent || '').trim()) {
+            doc.setFont('helvetica', 'bold'); doc.text('90-day intention:', M + 10, y);
+            doc.setFont('helvetica', 'normal');
+            var li = doc.splitTextToSize(c.intent, colWidth - 105);
+            doc.text(li, M + 95, y); y += li.length * 12 + 2;
+          }
+          if ((c.practice || '').trim()) {
+            doc.setFont('helvetica', 'bold'); doc.text('Weekly practice:', M + 10, y);
+            doc.setFont('helvetica', 'normal');
+            var lp = doc.splitTextToSize(c.practice, colWidth - 105);
+            doc.text(lp, M + 95, y); y += lp.length * 12 + 2;
+          }
+          y += 8;
+        });
+      }
+
+      // footer
+      doc.setFont('helvetica', 'italic'); doc.setFontSize(7.5); doc.setTextColor.apply(doc, MUT);
+      doc.text('Re-colour this same sheet in 90 days and watch the colours migrate. ' +
+        'The Whole Life Matrix — Ron Dimon · rondimon.com. Not therapy, financial or legal advice.', M, H - 26);
+
+      doc.save('whole-life-matrix.pdf');
+    });
+
+    /* ============ GO ============ */
+    load();
+    buildMatrix();
+    render();
+    // redraw arrows once webfonts settle
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(drawArrows);
+    window.addEventListener('load', drawArrows);
+  })();
+  </script>
+
+</Page>
