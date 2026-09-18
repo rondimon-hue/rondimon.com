@@ -49,7 +49,8 @@ import Page from '../../layouts/Page.astro';
       <p class="wlm-instruct" id="wlm-instruct"></p>
       <div class="wlm-bar-right">
         <span class="wlm-count" id="wlm-count"></span>
-        <button class="wlm-reset" id="wlm-reset" type="button">Reset</button>
+        <button class="wlm-next" id="wlm-next" type="button">Next &rarr;</button>
+        <button class="wlm-reset" id="wlm-reset" type="button">Clear</button>
       </div>
     </div>
     <p class="wlm-scroll-hint">Scroll sideways to see the whole matrix.</p>
@@ -111,9 +112,13 @@ import Page from '../../layouts/Page.astro';
 
       <div class="wlm-actions">
         <button class="wlm-btn" id="wlm-pdf" type="button">Download map + assessment (PDF)</button>
-        <span class="wlm-actions-note">Two pages, landscape. Keep it &mdash; re-colour the same sheet in 90 days and watch the colours migrate.</span>
+        <button class="wlm-btn wlm-btn-out" id="wlm-share" type="button">Share as image</button>
+        <button class="wlm-btn wlm-btn-out" id="wlm-link" type="button">Copy link to my map</button>
+        <button class="wlm-btn wlm-btn-out" id="wlm-ics" type="button">90-day reminder</button>
+        <button class="wlm-btn wlm-btn-out" id="wlm-clear2" type="button">Clear</button>
         <button class="wlm-btn wlm-btn-out wlm-fb" id="wlm-fb" type="button">Send me feedback</button>
       </div>
+      <p class="wlm-actions-msg" id="wlm-msg" aria-live="polite">The PDF is two landscape pages. The link and the image carry your whole map &mdash; send one to the person who should do theirs next. Then re-colour the same sheet in 90 days and watch the colours migrate.</p>
     </div>
 
     <dialog id="wlm-fbd" class="wlm-dlg">
@@ -134,6 +139,7 @@ import Page from '../../layouts/Page.astro';
 
     <div id="wlm-empty" class="wlm-empty">
       Select at least one driver above to begin. The assessment appears once you&rsquo;ve marked the matrix.
+      <div><button class="wlm-btn wlm-btn-out" id="wlm-example" type="button">Or try an example map first</button></div>
     </div>
   </div>
 </section>
@@ -306,6 +312,15 @@ import Page from '../../layouts/Page.astro';
   .wlm-actions-note { font-size: .75rem; color: var(--mut); max-width: 30rem; line-height: 1.5; }
   .wlm-empty { margin-top: 2rem; text-align: center; font-size: .88rem; color: var(--mut); border: 1px dashed var(--rule); border-radius: .9rem; padding: 1.6rem; }
 
+  /* ---------- bar buttons / actions ---------- */
+  .wlm-next, .wlm-reset { font: inherit; font-size: .78rem; font-weight: 600; padding: .38rem .8rem; border-radius: 999px; cursor: pointer; }
+  .wlm-next { background: var(--ink); color: #fff; border: 1px solid var(--ink); }
+  .wlm-next:hover { background: #000; }
+  .wlm-reset { background: #fff; color: var(--mut); border: 1px solid var(--rule); text-decoration: none; }
+  .wlm-reset:hover { color: var(--ink); border-color: var(--ink); }
+  .wlm-actions-msg { margin: .8rem 0 0; font-size: .78rem; color: var(--mut); line-height: 1.5; max-width: 60rem; min-height: 1.2em; }
+  .wlm-empty > div { margin-top: .9rem; }
+
   /* ---------- feedback ---------- */
   .wlm-actions .wlm-fb { margin-left: auto; }
   .wlm-btn-out { background: #fff; color: var(--ink); border: 1px solid var(--ink); }
@@ -420,7 +435,7 @@ import Page from '../../layouts/Page.astro';
     $('wlm-rows').innerHTML = LAYERS.map(function (L) {
       var cells = DOMAINS.map(function (M) {
         return '<div class="wlm-cell">' + DRIVERS.filter(function (d) { return d.layer === L.id && d.domain === M.id; }).map(function (d) {
-          return '<button type="button" class="wlm-chip" data-id="' + d.id + '"><i class="pin"></i>' +
+          return '<button type="button" class="wlm-chip" data-id="' + d.id + '" title="' + esc(d.desc) + '"><i class="pin"></i>' +
             '<span><span class="wlm-nm">' + esc(d.name) + '</span><span class="wlm-ds">' + esc(d.desc) + '</span></span>' +
             '<span class="wlm-mk"></span></button>';
         }).join('') + '</div>';
@@ -461,6 +476,7 @@ import Page from '../../layouts/Page.astro';
         mk.innerHTML = '<span class="wlm-star">★</span>';
       }
     });
+    $('wlm-next').hidden = S.step === 4;
     drawArrows(); renderResults(); save();
   }
 
@@ -686,11 +702,14 @@ import Page from '../../layouts/Page.astro';
     S.commit[el.dataset.commit] = S.commit[el.dataset.commit] || {};
     S.commit[el.dataset.commit][el.dataset.f] = el.value; save();
   });
-  $('wlm-reset').addEventListener('click', function () {
+  function fresh() { return { step: 1, circled: [], starred: [], colors: {}, conns: [], commit: {}, src: null }; }
+  function clearAll() {
     if (!confirm('Clear the whole sheet and start again?')) return;
-    S = { step: 1, circled: [], starred: [], colors: {}, conns: [], commit: {}, src: null };
-    try { localStorage.removeItem(KEY); } catch (e) {} render();
-  });
+    S = fresh(); try { localStorage.removeItem(KEY); } catch (e) {} render();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  $('wlm-reset').addEventListener('click', clearAll);
+  $('wlm-clear2').addEventListener('click', clearAll);
   var rt; window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(drawArrows, 120); });
 
   /* ============ PDF ============ */
@@ -809,6 +828,145 @@ import Page from '../../layouts/Page.astro';
     doc.save('whole-life-matrix.pdf');
   });
 
+  /* ============ NEXT / EXAMPLE ============ */
+  $('wlm-next').addEventListener('click', function () {
+    S.step = Math.min(4, S.step + 1); S.src = null; render();
+    if (S.step === 4) (S.circled.length ? $results : $empty).scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+  var EXAMPLE = {
+    c: ['self-health-3','self-relationships-3','family-relationships-1','family-relationships-2','self-lifestyle-2','self-wealth-5','family-wealth-3','community-relationships-1'],
+    s: ['family-relationships-1','family-relationships-2'],
+    k: { 'self-health-3':'yellow','self-relationships-3':'red','family-relationships-1':'red','family-relationships-2':'red','self-lifestyle-2':'yellow','self-wealth-5':'green','family-wealth-3':'yellow','community-relationships-1':'green' },
+    x: [['self-health-3','self-relationships-3'],['self-health-3','family-relationships-1'],['self-health-3','family-relationships-2'],['self-lifestyle-2','family-relationships-2'],['family-wealth-3','family-relationships-1']]
+  };
+  $('wlm-example').addEventListener('click', function () {
+    S = fresh(); S.circled = EXAMPLE.c.slice(); S.starred = EXAMPLE.s.slice(); S.colors = {};
+    Object.keys(EXAMPLE.k).forEach(function (id) { S.colors[id] = EXAMPLE.k[id]; });
+    S.conns = EXAMPLE.x.map(function (p) { return { from: p[0], to: p[1] }; });
+    S.step = 4; render();
+    note('An example map, not yours. Read the assessment below, then press Clear and do your own.');
+    $results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  /* ============ SHARE: LINK / IMAGE / REMINDER ============ */
+  var IDX = {}; DRIVERS.forEach(function (d, i) { IDX[d.id] = i; });
+  function b64u(str) { return btoa(unescape(encodeURIComponent(str))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); }
+  function ub64u(str) { str = str.replace(/-/g, '+').replace(/_/g, '/'); while (str.length % 4) str += '='; return decodeURIComponent(escape(atob(str))); }
+  function pack() {
+    var o = { c: S.circled.map(function (id) { return IDX[id]; }), s: S.starred.map(function (id) { return IDX[id]; }), k: {}, x: S.conns.map(function (c) { return [IDX[c.from], IDX[c.to]]; }), m: {} };
+    Object.keys(S.colors).forEach(function (id) { if (IDX[id] != null) o.k[IDX[id]] = S.colors[id].charAt(0); });
+    Object.keys(S.commit).forEach(function (id) { var c = S.commit[id]; if (c && (c.intent || c.practice) && IDX[id] != null) o.m[IDX[id]] = [c.intent || '', c.practice || '']; });
+    return b64u(JSON.stringify(o));
+  }
+  function unpack(str) {
+    var o = JSON.parse(ub64u(str)), C = { g: 'green', y: 'yellow', r: 'red' }, st = fresh();
+    var idOf = function (i) { return DRIVERS[+i] ? DRIVERS[+i].id : null; };
+    st.circled = (o.c || []).map(idOf).filter(Boolean).slice(0, MAX_CIRCLE);
+    st.starred = (o.s || []).map(idOf).filter(function (id) { return id && st.circled.indexOf(id) > -1; }).slice(0, MAX_STAR);
+    Object.keys(o.k || {}).forEach(function (i) { var id = idOf(i); if (id && st.circled.indexOf(id) > -1 && C[o.k[i]]) st.colors[id] = C[o.k[i]]; });
+    st.conns = (o.x || []).map(function (p) { return { from: idOf(p[0]), to: idOf(p[1]) }; }).filter(function (c) { return c.from && c.to && st.circled.indexOf(c.from) > -1 && st.circled.indexOf(c.to) > -1; });
+    Object.keys(o.m || {}).forEach(function (i) { var id = idOf(i); if (id && o.m[i]) st.commit[id] = { intent: String(o.m[i][0] || '').slice(0, 300), practice: String(o.m[i][1] || '').slice(0, 300) }; });
+    st.step = st.circled.length ? 4 : 1; return st;
+  }
+  function mapURL() { return location.origin + location.pathname + '#m=' + pack(); }
+  function loadFromHash() {
+    var m = location.hash.match(/[#&]m=([A-Za-z0-9_-]+)/); if (!m) return;
+    try { S = unpack(m[1]); save(); history.replaceState(null, '', location.pathname); } catch (e) {}
+  }
+  function note(t) { $('wlm-msg').textContent = t; }
+  function download(blob, name) {
+    var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 1500);
+  }
+  $('wlm-link').addEventListener('click', function () {
+    var url = mapURL();
+    var done = function () { note('Link copied \u2014 anyone who opens it sees this exact map. Send it to someone who should do theirs.'); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(done, function () { prompt('Copy this link to your map:', url); });
+    else prompt('Copy this link to your map:', url);
+  });
+
+  // --- share image: a square poster-style card drawn on canvas ---
+  function rrect(ctx, x, y, w, h, r, fill, stroke) {
+    ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath();
+    if (fill) { ctx.fillStyle = fill; ctx.fill(); } if (stroke) { ctx.strokeStyle = stroke; ctx.lineWidth = 2; ctx.stroke(); }
+  }
+  function wrapText(ctx, text, x, y, maxW, lh) {
+    var words = String(text).split(' '), line = '', n = 0;
+    for (var i = 0; i < words.length; i++) {
+      var test = line ? line + ' ' + words[i] : words[i];
+      if (ctx.measureText(test).width > maxW && line) { ctx.fillText(line, x, y + n * lh); line = words[i]; n++; } else line = test;
+    }
+    ctx.fillText(line, x, y + n * lh); return n + 1;
+  }
+  function buildCard() {
+    var W = 1200, H = 1200, cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+    var ctx = cv.getContext('2d'), SERIF = 'Georgia, "Playfair Display", "Times New Roman", serif', SANS = 'Helvetica, Arial, sans-serif';
+    ctx.fillStyle = '#FBF7F1'; ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = '#2B2B2B'; ctx.font = 'bold 56px ' + SERIF; ctx.fillText('My Whole Life Map', 70, 108);
+    ctx.fillStyle = '#6B6560'; ctx.font = 'italic 25px ' + SERIF;
+    ctx.fillText(new Date().toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }) + '   \u00b7   ' + S.circled.length + ' of 75 drivers this season', 70, 150);
+    var gx = 70, gy = 214, labelW = 170, cw = (W - 140 - labelW) / 5, rh = 248, LB = { self: '#ECE8F5', family: '#F8ECDD', community: '#E4F0E8' };
+    ctx.font = 'bold 19px ' + SANS;
+    DOMAINS.forEach(function (m, ci) { var x = gx + labelW + ci * cw; ctx.fillStyle = '#2B2B2B'; ctx.fillText(m.short.toUpperCase(), x, gy - 16); ctx.fillRect(x, gy - 8, cw - 12, 3); });
+    LAYERS.forEach(function (L, ri) {
+      var y = gy + ri * rh, lc = LAYER_COLOR[L.id];
+      rrect(ctx, gx, y, labelW - 14, rh - 16, 14, LB[L.id]);
+      ctx.fillStyle = lc; ctx.font = 'bold 21px ' + SERIF; wrapText(ctx, L.short, gx + 16, y + 40, labelW - 44, 26);
+      DOMAINS.forEach(function (M, ci) {
+        var x = gx + labelW + ci * cw;
+        var sel = S.circled.filter(function (id) { var d = BY_ID[id]; return d.layer === L.id && d.domain === M.id; });
+        rrect(ctx, x, y, cw - 12, rh - 16, 12, sel.length ? '#FFFFFF' : '#F4EFE7', '#E3DCD0');
+        var ty = y + 36;
+        sel.forEach(function (id) {
+          var col = { green: '#16A34A', yellow: '#CA8A04', red: '#DC2626' }[S.colors[id]];
+          ctx.beginPath(); ctx.arc(x + 22, ty - 7, 8, 0, Math.PI * 2);
+          if (col) { ctx.fillStyle = col; ctx.fill(); } else { ctx.lineWidth = 3; ctx.strokeStyle = lc; ctx.stroke(); }
+          var star = S.starred.indexOf(id) > -1;
+          ctx.fillStyle = '#2B2B2B'; ctx.font = (star ? 'bold ' : '') + '19px ' + SANS;
+          ty += wrapText(ctx, (star ? '\u2605 ' : '') + BY_ID[id].name, x + 40, ty, cw - 66, 22) * 22 + 9;
+        });
+      });
+    });
+    var g = signals(), fy = gy + 3 * rh + 14, foot = [];
+    if (g.keystone) foot.push('Keystone: ' + nm(g.keystone));
+    if (g.starvedStars.length) foot.push('Starved non-negotiable: ' + listify(g.starvedStars.map(nm)));
+    if (g.untouchedDomains.length && g.untouchedDomains.length < 5) foot.push('Chosen neglect: ' + listify(g.untouchedDomains.map(function (m) { return m.short; })));
+    ctx.fillStyle = '#2B2B2B'; ctx.font = 'bold 22px ' + SANS;
+    foot.slice(0, 3).forEach(function (t, i) { ctx.fillText(t, 70, fy + 24 + i * 32); });
+    ctx.fillStyle = '#6B6560'; ctx.font = '20px ' + SANS; ctx.fillText('Make yours: rondimon.com/design/whole-life-experiment', 70, H - 46);
+    return cv;
+  }
+  $('wlm-share').addEventListener('click', function () {
+    buildCard().toBlob(function (blob) {
+      if (!blob) { note('Could not build the image in this browser.'); return; }
+      var file = null; try { file = new File([blob], 'whole-life-map.png', { type: 'image/png' }); } catch (e) {}
+      if (file && navigator.canShare && navigator.canShare({ files: [file] })) {
+        navigator.share({ files: [file], title: 'My Whole Life Map' }).catch(function () {}); return;
+      }
+      download(blob, 'whole-life-map.png');
+      note('Image saved \u2014 post it, or send it to someone who should do theirs.');
+    }, 'image/png');
+  });
+
+  // --- 90-day re-colour reminder (.ics that links back to this exact map) ---
+  function ymd(d) { return d.getFullYear() + ('0' + (d.getMonth() + 1)).slice(-2) + ('0' + d.getDate()).slice(-2); }
+  function fold(line) { var out = ''; while (line.length > 74) { out += line.slice(0, 74) + '\r\n '; line = line.slice(74); } return out + line; }
+  function buildICS() {
+    var d1 = new Date(); d1.setDate(d1.getDate() + 90); var d2 = new Date(d1); d2.setDate(d2.getDate() + 1);
+    var url = mapURL(), now = new Date();
+    var stamp = ymd(now) + 'T' + ('0' + now.getUTCHours()).slice(-2) + ('0' + now.getUTCMinutes()).slice(-2) + '00Z';
+    return ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//rondimon.com//Whole Life Matrix//EN', 'BEGIN:VEVENT',
+      'UID:wlm-' + Date.now() + '@rondimon.com', 'DTSTAMP:' + stamp, 'DTSTART;VALUE=DATE:' + ymd(d1), 'DTEND;VALUE=DATE:' + ymd(d2),
+      'SUMMARY:Re-colour my Whole Life Matrix',
+      fold('DESCRIPTION:Same sheet\\, new colours. Which of your 10 changed? Open your map: ' + url),
+      fold('URL:' + url), 'END:VEVENT', 'END:VCALENDAR'].join('\r\n');
+  }
+  $('wlm-ics').addEventListener('click', function () {
+    download(new Blob([buildICS()], { type: 'text/calendar' }), 'whole-life-recolour.ics');
+    note('Reminder saved \u2014 open the file to add the 90-day re-colour to your calendar. The event links back to this map.');
+  });
+  window.WLM = { pack: pack, unpack: unpack, card: buildCard, ics: buildICS };   // test hooks
+
   /* ============ FEEDBACK ============ */
   // Direct send needs a form endpoint (e.g. a free Formspree form: paste its URL below).
   // With no endpoint, the visitor's mail app opens with the message prefilled.
@@ -840,7 +998,7 @@ import Page from '../../layouts/Page.astro';
   });
 
   /* ============ GO ============ */
-  load(); buildBoard(); render();
+  load(); loadFromHash(); buildBoard(); render();
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(drawArrows);
   window.addEventListener('load', drawArrows);
 })();
