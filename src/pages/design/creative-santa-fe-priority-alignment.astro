@@ -1,0 +1,910 @@
+<!doctype html>
+<html>
+<head>
+<meta charset=utf8>
+<meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Where State, County &amp; City Priorities Align in Santa Fe — Ron Dimon</title>
+<style>:root{color-scheme:light;box-sizing:border-box}img{max-width:100%}</style>
+</head>
+<body>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style is:global>
+/* Layout: single-column civic report with alignment matrix and expandable issue cards */
+:root {
+  --bg: #FAFAF7;
+  --surface: #FFFFFF;
+  --surface-alt: #F3F1EC;
+  --fg: #1C1917;
+  --fg-muted: #6B6560;
+  --border: #E2DED6;
+  --accent-state: #2563EB;
+  --accent-county: #7C3AED;
+  --accent-city: #0D9488;
+  --accent-bridge: #C2410C;
+  --aligned: #15803D;
+  --partial: #CA8A04;
+  --gap: #9CA3AF;
+  --display: 'Source Serif 4', Georgia, serif;
+  --body: 'Inter', system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #181614;
+    --surface: #231F1C;
+    --surface-alt: #2C2724;
+    --fg: #EDE9E3;
+    --fg-muted: #A09890;
+    --border: #3D3632;
+    --accent-state: #60A5FA;
+    --accent-county: #A78BFA;
+    --accent-city: #5EEAD4;
+    --accent-bridge: #FB923C;
+    --aligned: #4ADE80;
+    --partial: #FACC15;
+    --gap: #6B7280;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #181614;
+  --surface: #231F1C;
+  --surface-alt: #2C2724;
+  --fg: #EDE9E3;
+  --fg-muted: #A09890;
+  --border: #3D3632;
+  --accent-state: #60A5FA;
+  --accent-county: #A78BFA;
+  --accent-city: #5EEAD4;
+  --accent-bridge: #FB923C;
+  --aligned: #4ADE80;
+  --partial: #FACC15;
+  --gap: #6B7280;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--body);
+  line-height: 1.6;
+  padding-inline: 20px;
+  padding-block: 0;
+}
+.wrap { max-width: 960px; margin: 0 auto; }
+
+.back { display: inline-flex; align-items: center; gap: 6px; font-size: .85rem; color: var(--fg-muted); text-decoration: none; margin-top: 24px; }
+.back:hover { color: var(--fg); }
+
+h1 { font-family: var(--display); font-size: clamp(1.75rem, 4vw, 2.5rem); font-weight: 700; line-height: 1.15; margin: 0; text-wrap: balance; }
+h2 { font-family: var(--display); font-size: 1.35rem; font-weight: 600; line-height: 1.25; margin: 0; }
+h3 { font-family: var(--body); font-size: 0.95rem; font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase; margin: 0; }
+
+.header {
+  padding-block: 20px 32px;
+  border-bottom: 2px solid var(--border);
+}
+.header p { color: var(--fg-muted); font-size: 1.05rem; max-width: 680px; margin: 12px 0 0; }
+.dateline { font-size: 0.8rem; color: var(--fg-muted); letter-spacing: 0.04em; text-transform: uppercase; font-weight: 600; margin-bottom: 8px; }
+
+/* Headline-finding preamble */
+.finding {
+  margin-top: 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent-bridge);
+  border-radius: 8px;
+  padding: 18px 22px;
+  max-width: 680px;
+}
+.finding p { margin: 0; color: var(--fg); font-size: 0.98rem; line-height: 1.6; }
+.finding p + p { margin-top: 10px; }
+.finding strong { color: var(--accent-bridge); }
+
+/* Legend */
+.legend {
+  display: flex; flex-wrap: wrap; gap: 16px 28px;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.85rem;
+  color: var(--fg-muted);
+}
+.legend-item { display: flex; align-items: center; gap: 8px; }
+.legend-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+
+/* Summary matrix */
+.matrix-section { padding-block: 28px; }
+.matrix-section > p { font-size: 0.95rem; color: var(--fg-muted); margin: 0 0 20px; }
+
+.matrix {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+.matrix th {
+  font-weight: 600;
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 2px solid var(--border);
+  white-space: nowrap;
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+  color: var(--fg-muted);
+}
+.matrix th:first-child { padding-left: 0; }
+.matrix td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+.matrix td:first-child {
+  font-weight: 600;
+  color: var(--fg);
+  padding-left: 0;
+  min-width: 0;
+}
+.matrix tr:last-child td { border-bottom: none; }
+.matrix .dot-cell { text-align: center; }
+.dot {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}
+.dot.high { background: currentColor; }
+.dot.med { background: currentColor; opacity: 0.45; }
+.dot.low { background: transparent; border: 2px solid currentColor; opacity: 0.35; }
+.dot.none { background: transparent; }
+.state-col { color: var(--accent-state); }
+.county-col { color: var(--accent-county); }
+.city-col { color: var(--accent-city); }
+.alignment-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 0.78rem; font-weight: 600; letter-spacing: 0.01em;
+  padding: 3px 10px; border-radius: 20px;
+  white-space: nowrap;
+}
+.alignment-badge.full { background: color-mix(in srgb, var(--aligned) 15%, transparent); color: var(--aligned); }
+.alignment-badge.partial { background: color-mix(in srgb, var(--partial) 15%, transparent); color: var(--partial); }
+.alignment-badge.limited { background: color-mix(in srgb, var(--gap) 15%, transparent); color: var(--gap); }
+
+/* Issue cards */
+.issues { display: flex; flex-direction: column; gap: 16px; padding-block: 8px 40px; }
+.issue-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.issue-header {
+  display: flex; align-items: center; gap: 14px;
+  padding: 16px 20px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.issue-header:hover { background: var(--surface-alt); }
+.issue-rank {
+  width: 36px; height: 36px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 0.85rem; flex-shrink: 0;
+}
+.issue-rank.full { background: color-mix(in srgb, var(--aligned) 14%, transparent); color: var(--aligned); }
+.issue-rank.partial { background: color-mix(in srgb, var(--partial) 14%, transparent); color: var(--partial); }
+.issue-rank.limited { background: color-mix(in srgb, var(--gap) 14%, transparent); color: var(--gap); }
+.issue-title-area { flex-grow: 1; min-width: 0; }
+.issue-title-area h2 { font-size: 1.1rem; }
+.issue-subtitle { font-size: 0.85rem; color: var(--fg-muted); margin-top: 2px; }
+.chevron {
+  flex-shrink: 0; width: 20px; height: 20px;
+  transition: transform 0.2s ease;
+  color: var(--fg-muted);
+}
+.issue-card.open .chevron { transform: rotate(180deg); }
+.issue-body {
+  display: none;
+  padding: 0 20px 20px;
+}
+.issue-card.open .issue-body { display: block; }
+.govt-columns {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+@media (max-width: 640px) {
+  .govt-columns { grid-template-columns: 1fr; }
+}
+.govt-col {
+  background: var(--surface-alt);
+  border-radius: 8px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.govt-col h3 {
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  display: flex; align-items: center; gap: 6px;
+}
+.govt-col h3 .h-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.govt-col ul { margin: 0; padding-left: 18px; font-size: 0.88rem; line-height: 1.55; }
+.govt-col li { margin-bottom: 4px; }
+.govt-col .source { font-size: 0.75rem; color: var(--fg-muted); margin-top: auto; padding-top: 6px; }
+
+.bridge-box {
+  margin-top: 14px;
+  border: 1.5px dashed var(--accent-bridge);
+  border-radius: 8px;
+  padding: 14px 16px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.bridge-icon { flex-shrink: 0; font-size: 1.1rem; margin-top: 2px; }
+.bridge-text { font-size: 0.88rem; line-height: 1.5; }
+.bridge-text strong { color: var(--accent-bridge); font-weight: 600; }
+
+.footer {
+  padding: 24px 0 48px;
+  border-top: 1px solid var(--border);
+  font-size: 0.8rem;
+  color: var(--fg-muted);
+  line-height: 1.6;
+}
+.footer a { color: var(--fg-muted); }
+
+/* Matrix mobile */
+@media (max-width: 640px) {
+  .matrix { font-size: 0.78rem; }
+  .matrix th, .matrix td { padding: 8px 6px; }
+  .dot { width: 16px; height: 16px; }
+  .alignment-badge { font-size: 0.7rem; padding: 2px 8px; }
+  .issue-header { padding: 14px 16px; gap: 10px; }
+  .issue-body { padding: 0 16px 16px; }
+}
+</style>
+
+<div class="wrap">
+
+<a class="back" href="/design">&larr; Design</a>
+
+<div class="header">
+  <div class="dateline">Prepared October 2026 &middot; Sources as of FY 2026&ndash;27</div>
+  <h1>Where State, County &amp; City Priorities Align in Santa Fe</h1>
+  <p>A map of shared priorities across three levels of government &mdash; and where community listening bridges the gaps that remain.</p>
+
+  <div class="finding">
+    <p><strong>The headline finding:</strong> on five of the ten highest-priority issues facing Santa Fe &mdash; housing &amp; homelessness, behavioral health, public safety, children &amp; families, and the workforce economy &mdash; the State, the County and the City are already aligned, each with dedicated FY2026&ndash;27 funding or legislation behind it. The money and the political will are there.</p>
+    <p>What's missing at every level, on nearly every issue, is the same thing: a structured way to hear from the residents those dollars are meant to serve before the plans are finalized. That gap &mdash; not a lack of government attention &mdash; is where Creative Santa Fe's community listening model has room to work, issue after issue, regardless of how aligned the three governments already are.</p>
+  </div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:var(--accent-state)"></div> NM State</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--accent-county)"></div> Santa Fe County</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--accent-city)"></div> City of Santa Fe</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--aligned)"></div> Strong alignment</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--partial)"></div> Partial overlap</div>
+</div>
+
+<div class="matrix-section">
+  <p>Filled circles indicate a top-tier priority with dedicated funding or legislation. Half-filled circles show meaningful activity short of a flagship initiative. Hollow circles indicate limited or no public activity.</p>
+  <div style="overflow-x:auto">
+  <table class="matrix">
+    <thead>
+      <tr>
+        <th>Issue Area</th>
+        <th style="text-align:center">State</th>
+        <th style="text-align:center">County</th>
+        <th style="text-align:center">City</th>
+        <th>Alignment</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Housing &amp; Homelessness</td>
+        <td class="dot-cell state-col"><span class="dot high"></span></td>
+        <td class="dot-cell county-col"><span class="dot high"></span></td>
+        <td class="dot-cell city-col"><span class="dot high"></span></td>
+        <td><span class="alignment-badge full">All three</span></td>
+      </tr>
+      <tr>
+        <td>Behavioral Health</td>
+        <td class="dot-cell state-col"><span class="dot high"></span></td>
+        <td class="dot-cell county-col"><span class="dot high"></span></td>
+        <td class="dot-cell city-col"><span class="dot high"></span></td>
+        <td><span class="alignment-badge full">All three</span></td>
+      </tr>
+      <tr>
+        <td>Public Safety</td>
+        <td class="dot-cell state-col"><span class="dot high"></span></td>
+        <td class="dot-cell county-col"><span class="dot high"></span></td>
+        <td class="dot-cell city-col"><span class="dot high"></span></td>
+        <td><span class="alignment-badge full">All three</span></td>
+      </tr>
+      <tr>
+        <td>Children, Youth &amp; Families</td>
+        <td class="dot-cell state-col"><span class="dot high"></span></td>
+        <td class="dot-cell county-col"><span class="dot high"></span></td>
+        <td class="dot-cell city-col"><span class="dot high"></span></td>
+        <td><span class="alignment-badge full">All three</span></td>
+      </tr>
+      <tr>
+        <td>Workforce &amp; Economy</td>
+        <td class="dot-cell state-col"><span class="dot high"></span></td>
+        <td class="dot-cell county-col"><span class="dot med"></span></td>
+        <td class="dot-cell city-col"><span class="dot high"></span></td>
+        <td><span class="alignment-badge full">All three</span></td>
+      </tr>
+      <tr>
+        <td>Climate &amp; Environment</td>
+        <td class="dot-cell state-col"><span class="dot high"></span></td>
+        <td class="dot-cell county-col"><span class="dot med"></span></td>
+        <td class="dot-cell city-col"><span class="dot high"></span></td>
+        <td><span class="alignment-badge partial">State + City lead</span></td>
+      </tr>
+      <tr>
+        <td>Healthcare Access</td>
+        <td class="dot-cell state-col"><span class="dot high"></span></td>
+        <td class="dot-cell county-col"><span class="dot high"></span></td>
+        <td class="dot-cell city-col"><span class="dot med"></span></td>
+        <td><span class="alignment-badge partial">State + County lead</span></td>
+      </tr>
+      <tr>
+        <td>Infrastructure &amp; Roads</td>
+        <td class="dot-cell state-col"><span class="dot high"></span></td>
+        <td class="dot-cell county-col"><span class="dot med"></span></td>
+        <td class="dot-cell city-col"><span class="dot high"></span></td>
+        <td><span class="alignment-badge partial">State + City lead</span></td>
+      </tr>
+      <tr>
+        <td>Govt. Transparency</td>
+        <td class="dot-cell state-col"><span class="dot low"></span></td>
+        <td class="dot-cell county-col"><span class="dot high"></span></td>
+        <td class="dot-cell city-col"><span class="dot high"></span></td>
+        <td><span class="alignment-badge partial">County + City lead</span></td>
+      </tr>
+      <tr>
+        <td>Senior Services</td>
+        <td class="dot-cell state-col"><span class="dot low"></span></td>
+        <td class="dot-cell county-col"><span class="dot high"></span></td>
+        <td class="dot-cell city-col"><span class="dot med"></span></td>
+        <td><span class="alignment-badge limited">County leads</span></td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<h3 style="padding-top:8px;color:var(--fg-muted);font-size:0.8rem;letter-spacing:0.06em;margin-bottom:4px">Issue-by-Issue Detail</h3>
+<p style="font-size:0.9rem;color:var(--fg-muted);margin:0 0 16px">Click any issue to see what each level of government is doing and where Creative Santa Fe can bridge.</p>
+
+<div class="issues">
+  <!-- 1. Housing -->
+  <div class="issue-card open" id="housing">
+    <div class="issue-header" onclick="toggle(this)">
+      <div class="issue-rank full">1</div>
+      <div class="issue-title-area">
+        <h2>Housing &amp; Homelessness</h2>
+        <div class="issue-subtitle">Strongest alignment across all three levels</div>
+      </div>
+      <svg class="chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 8l5 5 5-5"/></svg>
+    </div>
+    <div class="issue-body">
+      <div class="govt-columns">
+        <div class="govt-col">
+          <h3><span class="h-dot" style="background:var(--accent-state)"></span> NM State</h3>
+          <ul>
+            <li>$110M for new housing units &amp; homelessness</li>
+            <li>Zoning reform to accelerate production</li>
+            <li>Interest-rate buydown for homeowners</li>
+            <li>State Office of Housing with dedicated funding</li>
+            <li>$50M development subsidies for affordable homebuilding</li>
+          </ul>
+          <div class="source">2025&ndash;26 State of the State</div>
+        </div>
+        <div class="govt-col">
+          <h3><span class="h-dot" style="background:var(--accent-county)"></span> SF County</h3>
+          <ul>
+            <li>$10.35M for permanent supportive housing (FY27)</li>
+            <li>Sustainable Land Development Code revisions</li>
+            <li>Strategic plan top priority</li>
+            <li>Joint working group with City on housing</li>
+            <li>Reentry housing through NM Reentry org</li>
+          </ul>
+          <div class="source">FY27 Budget &amp; Strategic Plan</div>
+        </div>
+        <div class="govt-col">
+          <h3><span class="h-dot" style="background:var(--accent-city)"></span> City of Santa Fe</h3>
+          <ul>
+            <li>$4.7M total housing services (FY27)</li>
+            <li>$3M Affordable Housing Trust Fund</li>
+            <li>Micro-community approach to homelessness</li>
+            <li>$10M legislative request for permanent housing</li>
+            <li>Tenant protections &amp; eviction reform</li>
+          </ul>
+          <div class="source">FY27 Budget &amp; 2026 Leg. Priorities</div>
+        </div>
+      </div>
+      <div class="bridge-box">
+        <div class="bridge-icon">&#9670;</div>
+        <div class="bridge-text"><strong>CrSF bridge opportunity:</strong> All three are funding housing but residents affected by displacement, affordability and homelessness rarely shape the plans. A community listening event could surface where residents actually want housing, what "affordable" means in real terms, and which approaches (micro-communities, supportive housing, vouchers) communities will accept in their neighborhoods.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Behavioral Health -->
+  <div class="issue-card" id="behavioral-health">
+    <div class="issue-header" onclick="toggle(this)">
+      <div class="issue-rank full">2</div>
+      <div class="issue-title-area">
+        <h2>Behavioral Health &amp; Crisis Response</h2>
+        <div class="issue-subtitle">Major investment at every level &mdash; coordination gaps remain</div>
+      </div>
+      <svg class="chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 8l5 5 5-5"/></svg>
+    </div>
+    <div class="issue-body">
+      <div class="govt-columns">
+        <div class="govt-col">
+          <h3><span class="h-dot" style="background:var(--accent-state)"></span> NM State</h3>
+          <ul>
+            <li>$100M behavioral health expansion</li>
+            <li>Certified Community Behavioral Health Clinics</li>
+            <li>Modernized civil commitment law</li>
+            <li>Criminal competency reform (treatment over release)</li>
+            <li>Double UNM School of Medicine enrollment</li>
+          </ul>
+          <div class="source">2025&ndash;26 State of the State</div>
+        </div>
+        <div class="govt-col">
+          <h3><span class="h-dot" style="background:var(--accent-county)"></span> SF County</h3>
+          <ul>
+            <li>Youth Behavioral Health Center (opening 2026)</li>
+            <li>Region 1 behavioral-health lead entity</li>
+            <li>Alternative response &amp; crisis de-escalation</li>
+            <li>HRSA-funded peer support at detention facility</li>
+            <li>Reentry behavioral health &amp; family reunification</li>
+          </ul>
+          <div class="source">FY24&ndash;26 Health Action Plan &amp; Strategic Plan</div>
+        </div>
+        <div class="govt-col">
+          <h3><span class="h-dot" style="background:var(--accent-city)"></span> City of Santa Fe</h3>
+          <ul>
+            <li>Alternative Response Unit for non-violent calls</li>
+            <li>Detox center establishment</li>
+            <li>Fentanyl crisis coordination</li>
+            <li>Violence Intervention Program</li>
+            <li>La Sala Center &amp; CONNECT navigation services</li>
+          </ul>
+          <div class="source">2026 Legislative Priorities</div>
+        </div>
+      </div>
+      <div class="bridge-box">
+        <div class="bridge-icon">&#9670;</div>
+        <div class="bridge-text"><strong>CrSF bridge opportunity:</strong> Billions are moving toward behavioral health, but the people most affected &mdash; families dealing with addiction, communities around crisis facilities, youth in distress &mdash; are rarely part of planning. Community listening can answer: what does access to care actually look like from a resident's doorstep? Where are the gaps between what's funded and what people can reach?</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Public Safety -->
+  <div class="issue-card" id="public-safety">
+    <div class="issue-header" onclick="toggle(this)">
+      <div class="issue-rank full">3</div>
+      <div class="issue-title-area">
+        <h2>Public Safety</h2>
+        <div class="issue-subtitle">Shared urgency &mdash; divergent approaches between enforcement and prevention</div>
+      </div>
+      <svg class="chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 8l5 5 5-5"/></svg>
+    </div>
+    <div class="issue-body">
+      <div class="govt-columns">
+        <div class="govt-col">
+          <h3><span class="h-dot" style="background:var(--accent-state)"></span> NM State</h3>
+          <ul>
+            <li>Juvenile justice code amendments</li>
+            <li>Assault weapons ban &amp; gun dealer accountability</li>
+            <li>Enhanced penalties for armed felons</li>
+            <li>Pretrial detention for violent suspects</li>
+            <li>Tighter fentanyl trafficking sentences</li>
+          </ul>
+          <div class="source">2025&ndash;26 State of the State</div>
+        </div>
+        <div class="govt-col">
+          <h3><span class="h-dot" style="background:var(--accent-county)"></span> SF County</h3>
+          <ul>
+            <li>New deputy and fire positions (FY27 budget)</li>
+            <li>Behavioral-health first responders alongside dispatch</li>
+            <li>Reducing law enforcement in BH incidents</li>
+            <li>Frontline staff wellness programs</li>
+          </ul>
+          <div class="source">FY27 Budget &amp; Strategic Plan</div>
+        </div>
+        <div class="govt-col">
+          <h3><span class="h-dot" style="background:var(--accent-city)"></span> City of Santa Fe</h3>
+          <ul>
+            <li>Police budget up 13.6%; new cadets</li>
+            <li>Gun Violence Prevention Office</li>
+            <li>Youth gun violence intervention</li>
+            <li>Alternative Response Unit</li>
+            <li>Domestic violence &amp; human trafficking intervention</li>
+          </ul>
+          <div class="source">FY27 Budget &amp; 2026 Leg. Priorities</div>
+        </div>
+      </div>
+      <div class="bridge-box">
+        <div class="bridge-icon">&#9670;</div>
+        <div class="bridge-text"><strong>CrSF bridge opportunity:</strong> The state leans toward enforcement; the city and county are also investing in alternative response. Residents have strong views on this tension but few forums to express them. A listening event can help policymakers understand what "safety" means to different neighborhoods &mdash; and build legitimacy for whichever approach a community supports.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Children, Youth & Families -->
+  <div class="issue-card" id="youth">
+    <div class="issue-header" onclick="toggle(this)">
+      <div class="issue-rank full">4</div>
+      <div class="issue-title-area">
+        <h2>Children, Youth &amp; Families</h2>
+        <div class="issue-subtitle">Universal childcare and youth crisis services converge</div>
+      </div>
+      <svg class="chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 8l5 5 5-5"/></svg>
+    </div>
+    <div class="issue-body">
+      <div class="govt-columns">
+        <div class="govt-col">
+          <h3><span class="h-dot" style="background:var(--accent-state)"></span> NM State</h3>
+          <ul>
+            <li>$160M+ for universal child care (infant&ndash;age 12)</li>
+            <li>Independent Child Protection Authority</li>
+            <li>Double foster/kinship stipends to $900/mo</li>
+            <li>$50M/yr Indian Education Fund</li>
+            <li>180-day school year funding; cell phone ban</li>
+          </ul>
+          <div class="source">2025&ndash;26 State of the State</div>
+        </div>
+        <div class="govt-col">
+          <h3><span class="h-dot" style="background:var(--accent-county)"></span> SF County</h3>
+          <ul>
+            <li>Youth Behavioral Health Center development</li>
+            <li>Youth crisis services &amp; case management</li>
+            <li>Services targeting young girls &amp; LGBTQ youth</li>
+            <li>Joint working group on childcare with City</li>
+          </ul>
+          <div class="source">FY24&ndash;26 Health Action Plan</div>
+        </div>
+        <div class="govt-col">
+          <h3><span class="h-dot" style="background:var(--accent-city)"></span> City of Santa Fe</h3>
+          <ul>
+            <li>Childcare as a guaranteed right (legislative)</li>
+            <li>Early childhood education expansion</li>
+            <li>Youth gun violence intervention</li>
+            <li>Family Navigator (FFN) stipends &amp; apprenticeships</li>
+            <li>Fresh food for school &amp; senior meals</li>
+          </ul>
+          <div class="source">2026 Legislative Priorities</div>
+        </div>
+      </div>
+      <div class="bridge-box">
+        <div class="bridge-icon">&#9670;</div>
+        <div class="bridge-text"><strong>CrSF bridge opportunity:</strong> Parents and caregivers know where the system breaks &mdash; which neighborhoods have no childcare, which youth are falling through the cracks, what "accessible" really means for working families. Community listening here gives policymakers the on-the-ground picture that data alone can't provide.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. Workforce & Economy -->
+  <div class="issue-card" id="economy">
+    <div class="issue-header" onclick="toggle(this)">
+      <div class="issue-rank full">5</div>
+      <div class="issue-title-area">
+        <h2>Workforce &amp; Economic Development</h2>
+        <div class="issue-subtitle">State goes big-ticket; city and county focus on local workforce</div>
+      </div>
+      <svg class="chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 8l5 5 5-5"/></svg>
+    </div>
+    <div class="issue-body">
+      <div class="govt-columns">
+        <div class="govt-col">
+          <h3><span class="h-dot" style="background:var(--accent-state)"></span> NM State</h3>
+          <ul>
+            <li>$150M tax credits for quantum computing &amp; fusion</li>
+            <li>150,000 jobs added over 7 years</li>
+            <li>3rd nationally in new business applications</li>
+            <li>$20M for business expansion/relocation</li>
+          </ul>
+          <div class="source">2026 State of the State</div>
+        </div>
+        <div class="govt-col">
+          <h3><span class="h-dot" style="background:var(--accent-county)"></span> SF County</h3>
+          <ul>
+            <li>Workforce development via reentry programs</li>
+            <li>SF Community College training partnerships</li>
+            <li>Broadband expansion (federal grant pursuit)</li>
+            <li>On-site job placement at detention facility</li>
+          </ul>
+          <div class="source">Strategic Plan &amp; BH Reform Plan</div>
+        </div>
+        <div class="govt-col">
+          <h3><span class="h-dot" style="background:var(--accent-city)"></span> City of Santa Fe</h3>
+          <ul>
+            <li>7-area economic development strategy</li>
+            <li>Phase 2 strategic plan launch (2025)</li>
+            <li>Broadband &amp; WiFi access expansion</li>
+            <li>Economic mobility programs</li>
+            <li>Midtown Redevelopment ($10M infrastructure)</li>
+          </ul>
+          <div class="source">Economic Development Office &amp; Leg. Priorities</div>
+        </div>
+      </div>
+      <div class="bridge-box">
+        <div class="bridge-icon">&#9670;</div>
+        <div class="bridge-text"><strong>CrSF bridge opportunity:</strong> The state's big bets (quantum, fusion, tech credits) may not connect to what Santa Feans need for economic stability. Community listening can surface what workforce training, business support, and broadband access look like for residents who aren't in the tech pipeline &mdash; and whether growth strategies match the community they serve.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. Climate & Environment -->
+  <div class="issue-card" id="climate">
+    <div class="issue-header" onclick="toggle(this)">
+      <div class="issue-rank partial">6</div>
+      <div class="issue-title-area">
+        <h2>Climate &amp; Environment</h2>
+        <div class="issue-subtitle">State and City leading; County focused on fleet electrification</div>
+      </div>
+      <svg class="chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 8l5 5 5-5"/></svg>
+    </div>
+    <div class="issue-body">
+      <div class="govt-columns">
+        <div class="govt-col">
+          <h3><span class="h-dot" style="background:var(--accent-state)"></span> NM State</h3>
+          <ul>
+            <li>Codify Climate Action Plan (45% cut by 2030)</li>
+            <li>Net-zero emissions by 2050</li>
+            <li>Affordability commission for clean energy transition</li>
+            <li>Forest management &amp; strategic water supply</li>
+            <li>State fire insurance program</li>
+          </ul>
+          <div class="source">2025&ndash;26 State of the State</div>
+        </div>
+        <div class="govt-col">
+          <h3><span class="h-dot" style="background:var(--accent-county)"></span> SF County</h3>
+          <ul>
+            <li>EV fleet policy &amp; charger installation</li>
+            <li>Climate health awareness campaigns</li>
+            <li>Humanitarian Action Plan for heat events</li>
+            <li>Cooling centers for vulnerable residents</li>
+          </ul>
+          <div class="source">Health Action Plan &amp; Strategic Plan</div>
+        </div>
+        <div class="govt-col">
+          <h3><span class="h-dot" style="background:var(--accent-city)"></span> City of Santa Fe</h3>
+          <ul>
+            <li>Building electrification &amp; renewable energy</li>
+            <li>Forest fire mitigation &amp; watershed restoration</li>
+            <li>Complete streets &amp; emissions inspection</li>
+            <li>Extended producer responsibility &amp; recycling</li>
+            <li>Water reuse legislation</li>
+          </ul>
+          <div class="source">2026 Legislative Priorities</div>
+        </div>
+      </div>
+      <div class="bridge-box">
+        <div class="bridge-icon">&#9670;</div>
+        <div class="bridge-text"><strong>CrSF bridge opportunity:</strong> Climate policy often splits along economic lines &mdash; clean energy transition and affordability are real tensions in a state that depends on oil and gas revenue. Listening events can surface what residents need to feel confident in the transition: job retraining, energy cost protections, wildfire preparedness in their neighborhood.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. Healthcare Access -->
+  <div class="issue-card" id="healthcare">
+    <div class="issue-header" onclick="toggle(this)">
+      <div class="issue-rank partial">7</div>
+      <div class="issue-title-area">
+        <h2>Healthcare Access</h2>
+        <div class="issue-subtitle">State and County investing heavily; City less directly involved</div>
+      </div>
+      <svg class="chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 8l5 5 5-5"/></svg>
+    </div>
+    <div class="issue-body">
+      <div class="govt-columns">
+        <div class="govt-col">
+          <h3><span class="h-dot" style="background:var(--accent-state)"></span> NM State</h3>
+          <ul>
+            <li>Double UNM med school enrollment</li>
+            <li>$50M Rural Health Care Delivery Fund</li>
+            <li>Eliminate gross receipts tax on medical services</li>
+            <li>Medical licensing compacts for provider staffing</li>
+            <li>2,700 new Medicaid providers since July 2024</li>
+          </ul>
+          <div class="source">2025 State of the State</div>
+        </div>
+        <div class="govt-col">
+          <h3><span class="h-dot" style="background:var(--accent-county)"></span> SF County</h3>
+          <ul>
+            <li>FY24&ndash;26 Health Action Plan adopted</li>
+            <li>Expanded MAT at county jail</li>
+            <li>Senior services &amp; transportation expansion</li>
+            <li>CONNECT navigation for food, housing, transport</li>
+            <li>Health Policy &amp; Planning Commission active</li>
+          </ul>
+          <div class="source">Health Action Plan</div>
+        </div>
+        <div class="govt-col">
+          <h3><span class="h-dot" style="background:var(--accent-city)"></span> City of Santa Fe</h3>
+          <ul>
+            <li>First responder recruitment &amp; housing support</li>
+            <li>Guaranteed income pilot program (legislative)</li>
+            <li>Paid family and medical leave support</li>
+            <li>Fresh food programs for schools &amp; seniors</li>
+          </ul>
+          <div class="source">2026 Legislative Priorities</div>
+        </div>
+      </div>
+      <div class="bridge-box">
+        <div class="bridge-icon">&#9670;</div>
+        <div class="bridge-text"><strong>CrSF bridge opportunity:</strong> Healthcare access in rural parts of the county and on the city's south side looks very different from the headlines. Community listening can map where care actually exists, what getting to it costs in time and money, and what residents need the system to do differently.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. Infrastructure -->
+  <div class="issue-card" id="infrastructure">
+    <div class="issue-header" onclick="toggle(this)">
+      <div class="issue-rank partial">8</div>
+      <div class="issue-title-area">
+        <h2>Infrastructure &amp; Roads</h2>
+        <div class="issue-subtitle">State and City have large capital plans; County more modest</div>
+      </div>
+      <svg class="chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 8l5 5 5-5"/></svg>
+    </div>
+    <div class="issue-body">
+      <div class="govt-columns">
+        <div class="govt-col">
+          <h3><span class="h-dot" style="background:var(--accent-state)"></span> NM State</h3>
+          <ul>
+            <li>$1.5B transportation bonding package</li>
+            <li>State-managed road improvements</li>
+            <li>Bond rating upgraded to Aa1 (lower borrowing costs)</li>
+          </ul>
+          <div class="source">2026 State of the State</div>
+        </div>
+        <div class="govt-col">
+          <h3><span class="h-dot" style="background:var(--accent-county)"></span> SF County</h3>
+          <ul>
+            <li>Asset renewal emphasis in FY27 budget</li>
+            <li>Public-safety radio projects</li>
+            <li>Federal broadband grant pursuit</li>
+          </ul>
+          <div class="source">FY27 Budget</div>
+        </div>
+        <div class="govt-col">
+          <h3><span class="h-dot" style="background:var(--accent-city)"></span> City of Santa Fe</h3>
+          <ul>
+            <li>Decades of deferred road maintenance (top priority)</li>
+            <li>Cerrillos Road Phase III &amp; St. Francis improvements</li>
+            <li>Airport Terminal Expansion Phase II ($5M)</li>
+            <li>Water/wastewater facility replacement ($5M)</li>
+          </ul>
+          <div class="source">FY27 Budget &amp; Leg. Priorities</div>
+        </div>
+      </div>
+      <div class="bridge-box">
+        <div class="bridge-icon">&#9670;</div>
+        <div class="bridge-text"><strong>CrSF bridge opportunity:</strong> Infrastructure decisions determine which neighborhoods get investment. Community listening can help prioritize where the deferred maintenance hurts most, and ensure road and transit improvements reflect how residents actually move through the city &mdash; especially those without cars.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. Govt Transparency -->
+  <div class="issue-card" id="transparency">
+    <div class="issue-header" onclick="toggle(this)">
+      <div class="issue-rank partial">9</div>
+      <div class="issue-title-area">
+        <h2>Government Transparency &amp; Accountability</h2>
+        <div class="issue-subtitle">County and City driving this; not a state-level flagship</div>
+      </div>
+      <svg class="chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 8l5 5 5-5"/></svg>
+    </div>
+    <div class="issue-body">
+      <div class="govt-columns">
+        <div class="govt-col">
+          <h3><span class="h-dot" style="background:var(--accent-state)"></span> NM State</h3>
+          <ul>
+            <li>Not a headline legislative priority</li>
+            <li>Bond rating upgrade reflects fiscal management</li>
+          </ul>
+          <div class="source">2026 State of the State</div>
+        </div>
+        <div class="govt-col">
+          <h3><span class="h-dot" style="background:var(--accent-county)"></span> SF County</h3>
+          <ul>
+            <li>Department-level 3-year customer service plans</li>
+            <li>KPIs on public dashboards</li>
+            <li>Standardized performance reporting</li>
+            <li>Past-accomplishment visibility push</li>
+          </ul>
+          <div class="source">Strategic Plan</div>
+        </div>
+        <div class="govt-col">
+          <h3><span class="h-dot" style="background:var(--accent-city)"></span> City of Santa Fe</h3>
+          <ul>
+            <li>Independent Inspector General (new office)</li>
+            <li>"Make government work better" strategic goal</li>
+            <li>Data-driven decision-making emphasis</li>
+            <li>Southside mayoral office (geographic access)</li>
+          </ul>
+          <div class="source">Mayor Garcia Inauguration &amp; FY27 Budget</div>
+        </div>
+      </div>
+      <div class="bridge-box">
+        <div class="bridge-icon">&#9670;</div>
+        <div class="bridge-text"><strong>CrSF bridge opportunity:</strong> Transparency initiatives only matter if residents know about them and trust them. Community listening can test whether accountability measures are reaching the people they're meant to serve &mdash; and surface what "government working for me" actually means in different parts of the community.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10. Senior Services -->
+  <div class="issue-card" id="seniors">
+    <div class="issue-header" onclick="toggle(this)">
+      <div class="issue-rank limited">10</div>
+      <div class="issue-title-area">
+        <h2>Senior Services</h2>
+        <div class="issue-subtitle">County leads; City collaborating; State less visible</div>
+      </div>
+      <svg class="chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 8l5 5 5-5"/></svg>
+    </div>
+    <div class="issue-body">
+      <div class="govt-columns">
+        <div class="govt-col">
+          <h3><span class="h-dot" style="background:var(--accent-state)"></span> NM State</h3>
+          <ul>
+            <li>Not a headline priority in recent sessions</li>
+            <li>Pension funding fully secured since 2019</li>
+            <li>Medicaid provider expansion benefits seniors</li>
+          </ul>
+          <div class="source">2025&ndash;26 State of the State</div>
+        </div>
+        <div class="govt-col">
+          <h3><span class="h-dot" style="background:var(--accent-county)"></span> SF County</h3>
+          <ul>
+            <li>New Senior Center in Cerrillos</li>
+            <li>Enhanced transportation in southern county</li>
+            <li>Cognitive &amp; behavioral health funding for seniors</li>
+            <li>Joint working group with City on senior services</li>
+          </ul>
+          <div class="source">Health Action Plan</div>
+        </div>
+        <div class="govt-col">
+          <h3><span class="h-dot" style="background:var(--accent-city)"></span> City of Santa Fe</h3>
+          <ul>
+            <li>Senior services identified as community priority</li>
+            <li>Fresh food programs for senior meals</li>
+            <li>Joint working group with County</li>
+          </ul>
+          <div class="source">Joint Meeting &amp; FY27 Budget</div>
+        </div>
+      </div>
+      <div class="bridge-box">
+        <div class="bridge-icon">&#9670;</div>
+        <div class="bridge-text"><strong>CrSF bridge opportunity:</strong> Seniors in rural parts of the county often can't access the services that exist. A listening event designed for older residents &mdash; accessible location, unhurried format, possibly in-home or mobile &mdash; can surface isolation, transportation, and care needs that surveys miss.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <strong>Sources:</strong> NM Governor's Office, 2025 &amp; 2026 State of the State addresses &middot; Santa Fe County Strategic Plan, FY27 Budget, FY24&ndash;26 Health Action Plan &middot; City of Santa Fe FY27 Adopted Budget, 2026 Legislative Priorities (Resolution 2025-65), Mayor Garcia inauguration remarks &middot; City&ndash;County Joint Governing Body Meeting (2026) &middot; Santa Fe New Mexican, Source New Mexico, KSFR reporting.<br><br>
+  Prepared for Creative Santa Fe board use. Priority levels reflect publicly stated commitments, budget allocations, and legislative action as of October 2026. Not an official Creative Santa Fe property &mdash; a working tool by Ron Dimon. <a href="/design">Back to Design</a>
+</div>
+
+</div>
+
+<script is:inline>
+function toggle(header) {
+  header.closest('.issue-card').classList.toggle('open');
+}
+</script>
+
+</body>
+</html>
