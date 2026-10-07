@@ -9,6 +9,7 @@ export default defineConfig({
   redirects: {
     '/about/whole-life-experiment': '/design/whole-life-experiment',
     '/talent-lab.html': '/design/talent-lab',
+    '/design/santa-fe-homelessness-network': '/design/the-santa-fe-unhoused-network',
   },
   // /design is an unlisted working area — keep it out of the sitemap
   integrations: [sitemap({ filter: (page) => !page.includes('/design') })],

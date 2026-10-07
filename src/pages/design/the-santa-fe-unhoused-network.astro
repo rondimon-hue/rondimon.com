@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>The Santa Fe Unhoused Network — Ron Dimon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style is:global>
+:root{color-scheme:light;box-sizing:border-box}
+body{margin:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}
+</style>
+<style is:global>
+/* Layout: header and filters on top, network canvas with a detail panel beside it, reading notes and sources below. */
+:root{
+  --bg:#F2F4F5; --surface:#FFFFFF; --ink:#1B2A33; --muted:#586872; --line:#C9D2D8; --soft:#E6EBEE; --focus:#0B5FA5;
+  --coord:#0B5FA5; --gov:#6B5B95; --fund:#8F6F00; --shelter:#C2570C; --health:#138A5E; --needs:#2F82A8; --reentry:#B83A2E; --init:#A23B8C;
+  --font:'Public Sans',system-ui,-apple-system,'Segoe UI',sans-serif; --mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#12181C; --surface:#1B242A; --ink:#E6ECEF; --muted:#9AA9B2; --line:#33424B; --soft:#232F36; --focus:#7DB9EE;
+  --coord:#5BA7E6; --gov:#A99BD6; --fund:#D4B84A; --shelter:#F0894A; --health:#4CC79A; --needs:#6EBBE0; --reentry:#F0786B; --init:#E07BC8; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12181C; --surface:#1B242A; --ink:#E6ECEF; --muted:#9AA9B2; --line:#33424B; --soft:#232F36; --focus:#7DB9EE;
+  --coord:#5BA7E6; --gov:#A99BD6; --fund:#D4B84A; --shelter:#F0894A; --health:#4CC79A; --needs:#6EBBE0; --reentry:#F0786B; --init:#E07BC8; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:15px;line-height:1.5;padding-inline:24px;padding-block:24px 48px}
+.wrap{max-width:1320px;margin-inline:auto;display:flex;flex-direction:column;gap:20px}
+h1{font-size:clamp(1.6rem,3.2vw,2.3rem);line-height:1.1;margin:0;font-weight:700;letter-spacing:-.02em;text-wrap:balance}
+.sub{margin:6px 0 0;color:var(--muted);max-width:70ch}
+.meta{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:8px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:5px 12px 5px 10px;font:500 13px var(--font);cursor:pointer}
+.chip i{width:10px;height:10px;border-radius:50%;background:var(--c)}
+.chip[aria-pressed="false"]{opacity:.45}
+.node:focus:not(:focus-visible){outline:none}
+.chip:focus-visible,.node:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.main{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:16px;align-items:start}
+.stage{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow-x:auto}
+svg{display:block;min-width:900px;width:100%;height:auto}
+.zone{fill:var(--c);fill-opacity:.07;stroke:var(--c);stroke-opacity:.35;stroke-width:1;stroke-dasharray:3 4}
+.zlabel{font:600 12px var(--font);letter-spacing:.08em;text-transform:uppercase;fill:var(--c)}
+.edge{stroke:var(--muted);stroke-opacity:.5;stroke-width:1}
+.edge.ces{stroke:var(--coord);stroke-opacity:.8;stroke-width:2.2}
+.edge.fund{stroke:var(--fund);stroke-opacity:.6;stroke-width:1.4}
+.edge.plan{stroke:var(--init);stroke-opacity:.9;stroke-width:1.8;stroke-dasharray:6 5}
+.node{cursor:pointer}
+.node circle{fill:var(--c);stroke:var(--surface);stroke-width:2}
+.node .ring{fill:none;stroke:var(--c);stroke-width:2;opacity:0}
+.node.sel .ring{opacity:1}
+.nlabel{font:500 13px var(--font);fill:var(--ink);paint-order:stroke;stroke:var(--surface);stroke-width:3.5px;stroke-linejoin:round;text-anchor:middle;pointer-events:none}
+.hub .nlabel{font-weight:700;font-size:14px}
+.dim{opacity:.1}
+.edge.dim{opacity:.05}
+.off{opacity:.12}
+aside{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px;min-height:200px;position:sticky;top:12px}
+aside h2{margin:0 0 4px;font-size:1.1rem;line-height:1.25}
+.tag{display:inline-flex;align-items:center;gap:6px;font:600 11px var(--font);letter-spacing:.06em;text-transform:uppercase;color:var(--c)}
+.tag i{width:8px;height:8px;border-radius:50%;background:var(--c)}
+aside p{margin:10px 0}
+aside h3{font:600 11px var(--font);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:16px 0 6px}
+.rel{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:13.5px}
+.rel button{all:unset;cursor:pointer;color:var(--focus);font-weight:600}
+.rel button:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.rel span{color:var(--muted)}
+.srcs{margin:0;padding-left:0;list-style:none;font-size:13px;display:flex;flex-direction:column;gap:4px}
+.srcs a{color:var(--focus)}
+.srcs b{font-family:var(--mono);font-weight:500;color:var(--muted)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 22px;font-size:13px;color:var(--muted);align-items:center}
+.legend svg{min-width:0;width:34px;height:10px;display:inline-block;vertical-align:middle;margin-right:6px}
+.legend span{display:inline-flex;align-items:center}
+.notes{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.note{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px}
+.note h2{font-size:1rem;margin:0 0 6px;line-height:1.3}
+.note p{margin:0;font-size:14px;color:var(--ink)}
+.foot h2{font-size:1rem;margin:0 0 8px}
+.foot ol{margin:0;padding-left:0;list-style:none;columns:2 340px;column-gap:28px;font-size:13.5px}
+.foot li{break-inside:avoid;margin-bottom:6px}
+.foot a{color:var(--focus)}
+.foot .fine{color:var(--muted);font-size:13px;margin-top:12px;max-width:80ch}
+@media (max-width:900px){.main{grid-template-columns:minmax(0,1fr)}aside{position:static}}
+@media (prefers-reduced-motion:no-preference){.node circle,.edge,.node{transition:opacity .15s}}
+
+.back{font-size:13px;color:var(--muted);text-decoration:none;align-self:flex-start}
+.back:hover{color:var(--ink)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="/design">&larr; Design</a>
+  <header>
+    <h1>The Santa Fe Unhoused Network</h1>
+    <p class="sub">Who works on homelessness in Santa Fe city and county, how they connect, and where reentry and job training fit in. Select an organization to see its documented links.</p>
+    <div class="meta" id="meta"></div>
+  </header>
+  <div class="chips" id="chips" role="group" aria-label="Show or hide groups"></div>
+  <div class="legend" aria-label="Line key">
+    <span><svg viewBox="0 0 34 10"><line x1="0" y1="5" x2="34" y2="5" class="edge ces"/></svg>Coordinated entry access point</span>
+    <span><svg viewBox="0 0 34 10"><line x1="0" y1="5" x2="34" y2="5" class="edge fund"/></svg>Funds or contracts</span>
+    <span><svg viewBox="0 0 34 10"><line x1="0" y1="5" x2="34" y2="5" class="edge"/></svg>Named partner or participant</span>
+    <span><svg viewBox="0 0 34 10"><line x1="0" y1="5" x2="34" y2="5" class="edge plan"/></svg>From your project notes</span>
+  </div>
+  <div class="main">
+    <div class="stage"><svg id="net" viewBox="0 0 1240 940" role="img" aria-label="Network diagram of Santa Fe homelessness and reentry organizations"></svg></div>
+    <aside id="panel" aria-live="polite"></aside>
+  </div>
+  <section class="notes" id="notes"></section>
+  <section class="foot">
+    <h2>Sources</h2>
+    <ol id="srclist"></ol>
+    <p class="fine">A line means two organizations are named together in a source: partner lists, funder lists, access-point lists or event participation. It does not show a contract amount or how strong the relationship is. Several lists were cut off or gave names without roles, so organizations missing here may still belong. Last checked 6 Oct 2026.</p>
+  </section>
+</div>
+<script is:inline>
+const D = {"nodes":[{"id":"nmceh","label":"NM Coalition to End Homelessness","group":"coord","hub":1,"desc":"Statewide coalition with 80+ member and partner agencies. Coordinates the Albuquerque and Balance of State Continuums of Care (Santa Fe is in the Balance of State). Collaborative applicant, HMIS lead and coordinated entry lead, administering about $14M a year in federal funds.","src":[1,2,3],"x":545,"y":150},{"id":"s3","label":"S3 Santa Fe Housing Initiative","group":"coord","hub":1,"desc":"Local collaborative using the Built for Zero method, aiming to make homelessness rare, brief and non-recurring in Santa Fe. Brings together shelters, housing providers, government, philanthropy and advocates.","src":[6],"x":705,"y":150},{"id":"ila","label":"Interfaith Leadership Alliance","group":"coord","hub":0,"desc":"Named as a partner on the City's homelessness response page. That page does not describe its role.","src":[4],"x":510,"y":230},{"id":"cia","label":"Community Investment Alliance","group":"coord","hub":0,"desc":"Named as a partner on the City's homelessness response page. That page does not describe its role.","src":[4],"x":625,"y":230},{"id":"hugs","label":"HUGS","group":"coord","hub":0,"desc":"Named as a partner on the City's homelessness response page. That page does not describe its role.","src":[4],"x":740,"y":230},{"id":"city","label":"City of Santa Fe","group":"gov","hub":1,"desc":"Runs a multi-part homelessness response and lists 20+ community partners. Funds S3 and coordinates with the shelter providers. Also the employer for the job descriptions you reviewed.","src":[4,5,6],"x":225,"y":205},{"id":"county","label":"Santa Fe County","group":"gov","hub":0,"desc":"Listed as a City partner and as an S3 funder.","src":[4,6],"x":95,"y":105},{"id":"mfa","label":"NM Mortgage Finance Authority","group":"gov","hub":0,"desc":"One of two contract holders for NMCEH's coordinating role (the other is the City of Albuquerque).","src":[2],"x":225,"y":105},{"id":"hud","label":"HUD","group":"gov","hub":0,"desc":"Federal funder of The Life Link's permanent supportive housing vouchers.","src":[9],"x":355,"y":105},{"id":"civic","label":"Santa Fe Civic Housing Authority","group":"gov","hub":0,"desc":"Public housing support and self-sufficiency programs. Listed as a City partner.","src":[4,7],"x":95,"y":215},{"id":"cha","label":"Santa Fe County Housing Authority","group":"gov","hub":0,"desc":"Public housing and housing choice vouchers.","src":[7],"x":355,"y":215},{"id":"anchorum","label":"Anchorum Health Foundation","group":"fund","hub":0,"desc":"S3 funder; also on the City's partner list. Gives to Christus St. Vincent, and takes part in the CHHP fund with the Santa Fe Community Foundation, Thornburg and the Annie E. Casey Foundation.","src":[4,6,18,19],"x":915,"y":120},{"id":"sfcf","label":"Santa Fe Community Foundation","group":"fund","hub":0,"desc":"S3 funder; also on the City's partner list. Holds the Community Housing & Homelessness Prevention Fund (CHHP), managed with Anchorum, Thornburg and the Annie E. Casey Foundation.","src":[4,6,19],"x":915,"y":215},{"id":"thorn","label":"Thornburg Foundation","group":"fund","hub":0,"desc":"S3 funder; also on the City's partner list. Manages the CHHP fund in partnership with the Santa Fe Community Foundation, Anchorum and the Annie E. Casey Foundation.","src":[4,6,19],"x":1105,"y":120},{"id":"casey","label":"Annie E. Casey Foundation","group":"fund","hub":0,"desc":"S3 funder; also on the City's partner list. Manages the CHHP fund in partnership with the Santa Fe Community Foundation, Anchorum and Thornburg.","src":[4,6,19],"x":1105,"y":215},{"id":"ics","label":"Interfaith Community Shelter","group":"shelter","hub":1,"desc":"Pete's Place and The ROCk. Seasonal shelter November to May with meals, beds, showers and case management. The ROCk combines emergency shelter, day services, partner support and housing navigation. A coordinated entry access point.","src":[3,5,15],"x":100,"y":385},{"id":"stelz","label":"St. Elizabeth Shelter","group":"shelter","hub":1,"desc":"28 year-round emergency beds for men, plus Casa Familia, Casa Cerrillos (28 efficiency apartments) and Sonrisa Family Shelter. A coordinated entry access point.","src":[3,5],"x":270,"y":385},{"id":"consuelo","label":"Consuelo's Place","group":"shelter","hub":0,"desc":"Emergency shelter with supportive services. A coordinated entry access point.","src":[3,7],"x":100,"y":475},{"id":"ysfs","label":"Youth Shelters & Family Services","group":"shelter","hub":0,"desc":"Emergency shelter (up to 30 days) and 18-month transitional apartments for youth, plus a Workforce Development Initiative. A coordinated entry access point for ages 18 to 24.","src":[3,5],"x":270,"y":475},{"id":"esperanza","label":"Esperanza Shelter","group":"shelter","hub":0,"desc":"Shelter and transitional beds for survivors of domestic violence.","src":[5],"x":440,"y":475},{"id":"lifelink","label":"The Life Link","group":"shelter","hub":1,"desc":"Licensed community mental health center and HUD-approved housing agency. Runs La Luz and Linkages supportive housing, Casa Milagro, and rental and utility assistance. A coordinated entry access point.","src":[3,5,9],"x":440,"y":385},{"id":"trust","label":"Santa Fe Community Housing Trust","group":"shelter","hub":0,"desc":"S3 partner.","src":[6],"x":100,"y":565},{"id":"nmih","label":"New Mexico Interfaith Housing","group":"shelter","hub":0,"desc":"S3 partner.","src":[6],"x":270,"y":565},{"id":"chain","label":"Chainbreaker","group":"shelter","hub":0,"desc":"S3 partner; also on the City's partner list. Neither page describes its role.","src":[4,6],"x":440,"y":565},{"id":"sfrc","label":"Santa Fe Recovery Center","group":"health","hub":1,"desc":"S3 partner. Runs transitional housing with reentry and recovery support. Took part in the jail reentry fair. One of the few organizations documented in both the homelessness network and the reentry network.","src":[6,10,11],"x":625,"y":410},{"id":"swcare","label":"Southwest CARE Center","group":"health","hub":0,"desc":"Named as a partner on the City's homelessness response page. That page does not describe its role.","src":[4],"x":745,"y":410},{"id":"christus","label":"Christus St. Vincent","group":"health","hub":0,"desc":"Named as a partner on the City's homelessness response page. That page does not describe its role. Anchorum Health Foundation has given to Christus St. Vincent. Christus St. Vincent is reported to give to Homewise (not yet confirmed in a public source).","src":[4,18,17],"x":625,"y":520},{"id":"nami","label":"NAMI","group":"health","hub":0,"desc":"Took part in the Santa Fe jail reentry fair.","src":[10],"x":745,"y":520},{"id":"fooddepot","label":"The Food Depot","group":"needs","hub":0,"desc":"Food 4 Kids, Mobile Food Pantry and Food 4 Pets.","src":[7],"x":90,"y":810},{"id":"salvarmy","label":"The Salvation Army","group":"needs","hub":0,"desc":"Food pantry, meals and thrift store. Also on the City's partner list.","src":[4,7],"x":230,"y":810},{"id":"bienvenidos","label":"Bienvenidos Outreach","group":"needs","hub":0,"desc":"Food pantry.","src":[7],"x":370,"y":810},{"id":"kitchen","label":"Kitchen Angels","group":"needs","hub":0,"desc":"Meal delivery for homebound people with chronic illness.","src":[7],"x":510,"y":810},{"id":"sfic","label":"Santa Fe Indigenous Center","group":"needs","hub":0,"desc":"Food, clothing and personal care kits, plus emergency rent and utility aid.","src":[7],"x":650,"y":810},{"id":"adelante","label":"SFPS Adelante Program","group":"needs","hub":0,"desc":"Food pantry and emergency funds for homeless children and families in Santa Fe Public Schools.","src":[7],"x":770,"y":810},{"id":"nmrc","label":"NM Reentry Center","group":"reentry","hub":1,"desc":"Peer-led nonprofit in Albuquerque and Santa Fe working to stop the cycle of re-incarceration. Offers transitional sober living for people released from jail and helps with ID documents. Not named on the S3, City or coordinated entry pages I read.","src":[8,10],"x":910,"y":405},{"id":"jail","label":"Santa Fe jail reentry program","group":"reentry","hub":1,"desc":"Men's and women's reentry program run with formerly incarcerated reentry specialists. Weekly literacy and reentry classes, a reentry fair, and referrals to housing and recovery partners.","src":[10],"x":1030,"y":595},{"id":"sfcc","label":"Santa Fe Community College, Adult Education","group":"reentry","hub":0,"desc":"Weekly literacy classes in the jail reentry program, including résumé building and mock interviews.","src":[10],"x":910,"y":595},{"id":"connect","label":"CONNECT","group":"reentry","hub":0,"desc":"Took part in the jail reentry fair.","src":[10],"x":1150,"y":595},{"id":"nmsol","label":"New Mexico Solutions","group":"reentry","hub":0,"desc":"Took part in the jail reentry fair.","src":[10],"x":910,"y":690},{"id":"dws","label":"NM Dept. of Workforce Solutions","group":"reentry","hub":0,"desc":"Took part in the jail reentry fair.","src":[10],"x":1030,"y":690},{"id":"workready","label":"NM WorkReady (America's Job Center)","group":"reentry","hub":0,"desc":"WIOA career services at 1505 Llano St., Santa Fe: assessments, on-the-job training, apprenticeship placement and vocational education. Free to low-income adults, dislocated workers and youth.","src":[11,14],"x":1150,"y":690},{"id":"nmcd","label":"NM Corrections Dept., Reentry","group":"reentry","hub":0,"desc":"Pre-release case planning, vocational training, peer support and life skills, statewide.","src":[11,12],"x":1030,"y":500},{"id":"goodwill","label":"Goodwill NM, Next Steps","group":"reentry","hub":0,"desc":"Pre- and post-release employment skills training, by referral.","src":[11,12],"x":910,"y":500},{"id":"legalaid","label":"NM Legal Aid","group":"reentry","hub":0,"desc":"Free civil legal services in every county.","src":[11],"x":1150,"y":500},{"id":"cnm","label":"Central New Mexico Community College","group":"reentry","hub":0,"desc":"Trade certifications, CDL and healthcare training. Based in Albuquerque.","src":[11],"x":1030,"y":785},{"id":"youthworks","label":"Santa Fe YouthWorks","group":"reentry","hub":0,"desc":"Paid job-skills training with GED coursework for ages 15 to 24, plus case management. Named on the City's partner page.","src":[4,13],"x":1030,"y":405},{"id":"ncnmedd","label":"NCNMEDD Workforce Integration Network","group":"reentry","hub":0,"desc":"Federally funded Good Jobs Challenge program, one of the partner options you researched.","src":[16],"x":1150,"y":405},{"id":"homewise","label":"Homewise","group":"shelter","hub":0,"desc":"Nonprofit homeownership organization, founded in 1986. Describes itself as a one-stop resource that has helped thousands of New Mexicans become successful homeowners; its mission is to help create successful homeowners and strengthen New Mexico neighborhoods.","src":[20,17],"x":440,"y":655},{"id":"chhp","label":"Community Housing & Homelessness Prevention Fund (CHHP)","short":"CHHP","group":"fund","hub":0,"desc":"Collaborative philanthropic fund established in 2021 to reduce homelessness and expand affordable and transitional housing in Santa Fe County. Held at the Santa Fe Community Foundation and managed in partnership with Anchorum Health Foundation, the Annie E. Casey Foundation and Thornburg Foundation.","src":[19],"x":1010,"y":168},{"id":"init","label":"Potential NewOrg","group":"init","hub":1,"desc":"Connecting job-seekers with open City positions. Exploring a partnership with an existing nonprofit rather than forming a new one.","src":[16],"x":700,"y":330}],"edges":[{"a":"nmceh","b":"ics","type":"ces","src":[3],"label":"Coordinated entry access point"},{"a":"nmceh","b":"stelz","type":"ces","src":[3],"label":"Coordinated entry access point"},{"a":"nmceh","b":"consuelo","type":"ces","src":[3],"label":"Coordinated entry access point"},{"a":"nmceh","b":"ysfs","type":"ces","src":[3],"label":"Coordinated entry access point (ages 18 to 24)"},{"a":"nmceh","b":"lifelink","type":"ces","src":[3],"label":"Coordinated entry access point"},{"a":"mfa","b":"nmceh","type":"fund","src":[2],"label":"Contract for coordinating role"},{"a":"nmceh","b":"s3","type":"fund","src":[6],"label":"Listed among S3 funders"},{"a":"hud","b":"lifelink","type":"fund","src":[9],"label":"Funds supportive housing vouchers"},{"a":"s3","b":"ics","type":"partner","src":[6],"label":"S3 partner"},{"a":"s3","b":"trust","type":"partner","src":[6],"label":"S3 partner"},{"a":"s3","b":"lifelink","type":"partner","src":[6],"label":"S3 lists Casa Milagro, a Life Link program"},{"a":"s3","b":"stelz","type":"partner","src":[6],"label":"S3 partner"},{"a":"s3","b":"chain","type":"partner","src":[6],"label":"S3 partner"},{"a":"s3","b":"sfrc","type":"partner","src":[6],"label":"S3 partner"},{"a":"s3","b":"ysfs","type":"partner","src":[6],"label":"S3 partner"},{"a":"s3","b":"nmih","type":"partner","src":[6],"label":"S3 partner"},{"a":"anchorum","b":"s3","type":"fund","src":[6],"label":"S3 funder"},{"a":"sfcf","b":"s3","type":"fund","src":[6],"label":"S3 funder"},{"a":"thorn","b":"s3","type":"fund","src":[6],"label":"S3 funder"},{"a":"casey","b":"s3","type":"fund","src":[6],"label":"S3 funder"},{"a":"county","b":"s3","type":"fund","src":[6],"label":"S3 funder"},{"a":"city","b":"s3","type":"fund","src":[6],"label":"S3 funder"},{"a":"city","b":"nmceh","type":"partner","src":[4],"label":"City partner"},{"a":"city","b":"s3","type":"partner","src":[4],"label":"City partner"},{"a":"city","b":"ics","type":"partner","src":[4,5],"label":"City partner"},{"a":"city","b":"stelz","type":"partner","src":[4,5],"label":"City partner"},{"a":"city","b":"lifelink","type":"partner","src":[4,5],"label":"City partner"},{"a":"city","b":"consuelo","type":"partner","src":[4],"label":"City partner"},{"a":"city","b":"esperanza","type":"partner","src":[4,5],"label":"City partner"},{"a":"city","b":"ysfs","type":"partner","src":[5],"label":"City partner"},{"a":"city","b":"chain","type":"partner","src":[4],"label":"City partner"},{"a":"city","b":"salvarmy","type":"partner","src":[4],"label":"City partner"},{"a":"city","b":"youthworks","type":"partner","src":[4],"label":"City partner"},{"a":"city","b":"civic","type":"partner","src":[4],"label":"City partner"},{"a":"city","b":"county","type":"partner","src":[4],"label":"City partner"},{"a":"city","b":"swcare","type":"partner","src":[4],"label":"City partner"},{"a":"city","b":"christus","type":"partner","src":[4],"label":"City partner"},{"a":"city","b":"ila","type":"partner","src":[4],"label":"City partner"},{"a":"city","b":"cia","type":"partner","src":[4],"label":"City partner"},{"a":"city","b":"hugs","type":"partner","src":[4],"label":"City partner"},{"a":"city","b":"anchorum","type":"partner","src":[4],"label":"City partner"},{"a":"city","b":"sfcf","type":"partner","src":[4],"label":"City partner"},{"a":"city","b":"thorn","type":"partner","src":[4],"label":"City partner"},{"a":"city","b":"casey","type":"partner","src":[4],"label":"City partner"},{"a":"nmrc","b":"jail","type":"partner","src":[10],"label":"Transitional sober living and ID help for released participants"},{"a":"sfcc","b":"jail","type":"partner","src":[10],"label":"Weekly literacy and reentry classes"},{"a":"nami","b":"jail","type":"partner","src":[10],"label":"Reentry fair participant"},{"a":"sfrc","b":"jail","type":"partner","src":[10],"label":"Reentry fair participant"},{"a":"connect","b":"jail","type":"partner","src":[10],"label":"Reentry fair participant"},{"a":"nmsol","b":"jail","type":"partner","src":[10],"label":"Reentry fair participant"},{"a":"dws","b":"jail","type":"partner","src":[10],"label":"Reentry fair participant"},{"a":"anchorum","b":"christus","type":"fund","src":[18],"label":"Anchorum gives to Christus St. Vincent"},{"a":"christus","b":"homewise","type":"fund","src":[17],"label":"Christus St. Vincent gives to Homewise"},{"a":"anchorum","b":"chhp","type":"partner","src":[19],"label":"Collaborator in CHHP"},{"a":"sfcf","b":"chhp","type":"partner","src":[19],"label":"Holds CHHP and collaborates in it"},{"a":"thorn","b":"chhp","type":"partner","src":[19],"label":"Collaborator in CHHP"},{"a":"casey","b":"chhp","type":"partner","src":[19],"label":"Collaborator in CHHP"},{"a":"init","b":"nmrc","type":"plan","src":[16],"label":"Recommended top candidate for partnership or fiscal sponsorship"},{"a":"init","b":"city","type":"plan","src":[16],"label":"Placing job-seekers in open City jobs"},{"a":"init","b":"ncnmedd","type":"plan","src":[16],"label":"Researched as a partner option"},{"a":"init","b":"stelz","type":"plan","src":[16],"label":"Researched as relevant if the initiative extends to unhoused people"}],"srcs":{"1":{"t":"NMCEH home page","u":"https://www.nmceh.org"},"2":{"t":"NMCEH Continuum of Care and federal funding","u":"https://www.nmceh.org/cocfederalfunding"},"3":{"t":"NMCEH Coordinated Entry System","u":"https://www.nmceh.org/coordinated-entry-system"},"4":{"t":"City of Santa Fe: Get Involved, Community & Partnerships","u":"https://santafenm.gov/homelessness/santa-fe-homelessness-response-resources/get-involved-community-partnerships"},"5":{"t":"City of Santa Fe: Shelter/Emergency Housing","u":"https://santafenm.gov/affordable-housing/shelteremergency-housing"},"6":{"t":"S3 Santa Fe Housing Initiative: About Us","u":"https://s3santafe.org/about-us/"},"7":{"t":"Santa Fe Chamber of Commerce: Food, Shelter & Basic Needs","u":"https://www.santafechamber.com/food-shelter-basic-needs.html"},"8":{"t":"New Mexico Reentry Center","u":"https://nmreentrycenter.org"},"9":{"t":"The Life Link: Housing Support","u":"https://www.thelifelink.org/housing-support"},"10":{"t":"Santa Fe New Mexican: women's jail reentry program","u":"https://www.santafenewmexican.com/news/education/santa-fe-womens-jail-reentry-program-hopes-to-replicate-mens-program-success/article_511bbf5a-321f-4dd5-abc6-9a0a6f0cf8ac.html"},"11":{"t":"Second Chance Guide: NM reentry directory","u":"https://secondchanceguide.com/directory/new-mexico/"},"12":{"t":"NM State Library: resources for people who have experienced incarceration","u":"https://libguides.nmstatelibrary.org/c.php?g=1394566"},"13":{"t":"Santa Fe YouthWorks (SHARE NM listing)","u":"https://sharenm.org/organization/print/youthworks/santa-fe-youthworks"},"14":{"t":"NM WorkReady, America's Job Center","u":"https://directory.100nm.org/?p=1550"},"15":{"t":"Interfaith Community Services: The ROCk","u":"https://therocksantafe.org/about-ics/"},"16":{"t":"Your project notes (workforce placement initiative)","u":null},"17":{"t":"Information provided by Ron Dimon, 7 Oct 2026 (not yet confirmed in a public source)","u":null},"18":{"t":"Santa Fe New Mexican: Anchorum gives $20M to Christus St. Vincent efforts as part of multi-year plan to boost health","u":"https://www.santafenewmexican.com/news/local_news/anchorum-gives-20m-to-christus-st-vincent-efforts-as-part-of-multi-year-plan-to/article_ef329798-7d26-11ef-837b-275aa73c0dea.html"},"19":{"t":"Santa Fe Community Foundation: Responding to a Growing Housing Crisis (Community Housing & Homelessness Prevention Fund)","u":"https://www.santafecf.org/news-stories/chhp-2026"},"20":{"t":"Homewise","u":"https://homewise.org"}},"groups":{"coord":"Coordination","gov":"Government & housing authorities","fund":"Funders","shelter":"Shelter & housing providers","health":"Health & recovery","needs":"Basic needs","reentry":"Reentry & workforce","init":"Your initiative"},"zr":{"gov":[20,45,415,255],"coord":[450,45,365,255],"fund":[840,45,380,255],"shelter":[20,345,525,365],"health":[565,345,265,235],"reentry":[845,345,380,500],"needs":[20,732,820,150]}};
+const NS = 'http://www.w3.org/2000/svg';
+const byId = Object.fromEntries(D.nodes.map(n => [n.id, n]));
+const gKeys = Object.keys(D.groups);
+const state = { sel: null, hidden: new Set() };
+const el = (t, a = {}, p) => { const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); if (p) p.appendChild(e); return e; };
+const svg = document.getElementById('net');
+
+document.getElementById('meta').textContent = D.nodes.length + ' organizations · ' + D.edges.filter(e => e.type !== 'plan').length + ' documented links · ' + D.edges.filter(e => e.type === 'plan').length + ' from your notes';
+
+// zones
+const zg = el('g', {}, svg);
+gKeys.forEach(k => {
+  const r = D.zr[k]; if (!r) return;
+  const g = el('g', { 'data-g': k, style: '--c:var(--' + k + ')' }, zg);
+  el('rect', { class: 'zone', x: r[0], y: r[1], width: r[2], height: r[3], rx: 14 }, g);
+  const t = el('text', { class: 'zlabel', x: r[0] + 12, y: r[1] + 18 }, g); t.textContent = D.groups[k];
+});
+// edges
+const eg = el('g', {}, svg);
+D.edges.forEach((e, i) => {
+  const a = byId[e.a], b = byId[e.b];
+  e.el = el('line', { class: 'edge ' + e.type, x1: a.x, y1: a.y, x2: b.x, y2: b.y }, eg);
+});
+// nodes
+const ng = el('g', {}, svg);
+function wrap(s, n) { const w = s.split(' '); const L = []; let c = ''; w.forEach(x => { if ((c + ' ' + x).trim().length > n && c) { L.push(c); c = x; } else c = (c + ' ' + x).trim(); }); if (c) L.push(c); return L; }
+D.nodes.forEach(n => {
+  const r = n.hub ? 13 : 8;
+  const g = el('g', { class: 'node' + (n.hub ? ' hub' : ''), tabindex: 0, role: 'button', 'aria-label': n.label + ', ' + D.groups[n.group], style: '--c:var(--' + n.group + ')', transform: 'translate(' + n.x + ',' + n.y + ')' }, ng);
+  el('circle', { class: 'ring', r: r + 5 }, g);
+  el('circle', { r }, g);
+  const side = n.id === 'init'; const t = el('text', side ? { class: 'nlabel', x: r + 12, y: 4, style: 'text-anchor:start' } : { class: 'nlabel', y: r + 14 }, g);
+  wrap(n.short || n.label, n.hub ? 18 : 15).forEach((ln, i) => { const s = el('tspan', { x: side ? r + 12 : 0, dy: i ? 15 : 0 }, t); s.textContent = ln; });
+  g.addEventListener('click', () => select(n.id));
+  g.addEventListener('keydown', ev => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); select(n.id); } });
+  n.el = g;
+});
+
+function links(id) { return D.edges.filter(e => e.a === id || e.b === id); }
+function apply() {
+  const sel = state.sel; const nb = new Set(); if (sel) { nb.add(sel); links(sel).forEach(e => { nb.add(e.a); nb.add(e.b); }); }
+  D.nodes.forEach(n => {
+    n.el.classList.toggle('sel', n.id === sel);
+    n.el.classList.toggle('dim', !!sel && !nb.has(n.id));
+    n.el.classList.toggle('off', state.hidden.has(n.group));
+  });
+  D.edges.forEach(e => {
+    const inc = sel && (e.a === sel || e.b === sel);
+    e.el.classList.toggle('dim', !!sel && !inc);
+    e.el.classList.toggle('off', state.hidden.has(byId[e.a].group) || state.hidden.has(byId[e.b].group));
+  });
+  zg.querySelectorAll('[data-g]').forEach(g => g.classList.toggle('off', state.hidden.has(g.dataset.g)));
+}
+function srcLinks(ids) {
+  return ids.map(i => { const s = D.srcs[i]; return '<li><b>[' + i + ']</b> ' + (s.u ? '<a href="' + s.u + '" target="_blank" rel="noopener">' + s.t + '</a>' : s.t) + '</li>'; }).join('');
+}
+function overview() {
+  const nm = byId.nmrc, hubs = ['nmceh', 's3', 'city', 'nmrc'];
+  document.getElementById('panel').innerHTML =
+    '<h2>How to read this</h2><p>Each dot is an organization, grouped by what it does. Larger dots are hubs with many links. Select any dot to isolate its connections and see what the sources say about it.</p>' +
+    '<h3>Start with</h3><ul class="rel">' + hubs.map(h => '<li><button data-go="' + h + '">' + byId[h].label + '</button></li>').join('') + '</ul>';
+  bindGo();
+}
+function select(id) {
+  state.sel = id; apply();
+  const n = byId[id], L = links(id);
+  const rel = L.map(e => { const o = byId[e.a === id ? e.b : e.a]; return '<li><button data-go="' + o.id + '">' + o.label + '</button><br><span>' + e.label + ' [' + e.src.join(', ') + ']</span></li>'; }).join('');
+  document.getElementById('panel').innerHTML =
+    '<span class="tag" style="--c:var(--' + n.group + ')"><i></i>' + D.groups[n.group] + '</span><h2>' + n.label + '</h2><p>' + n.desc + '</p>' +
+    (L.length ? '<h3>Links (' + L.length + ')</h3><ul class="rel">' + rel + '</ul>' : '<h3>Links</h3><p>No link to another organization on this map is documented in the sources read.</p>') +
+    '<h3>Sources</h3><ul class="srcs">' + srcLinks(n.src) + '</ul><p><button class="chip" id="clr" style="--c:var(--muted)">Clear selection</button></p>';
+  bindGo(); document.getElementById('clr').onclick = () => { state.sel = null; apply(); overview(); };
+}
+function bindGo() { document.querySelectorAll('[data-go]').forEach(b => b.onclick = () => select(b.dataset.go)); }
+svg.addEventListener('click', ev => { if (ev.target === svg) { state.sel = null; apply(); overview(); } });
+
+// chips
+const cw = document.getElementById('chips');
+gKeys.forEach(k => {
+  const c = document.createElement('button'); c.className = 'chip'; c.setAttribute('aria-pressed', 'true'); c.style.setProperty('--c', 'var(--' + k + ')');
+  c.innerHTML = '<i></i>' + D.groups[k] + ' <span style="color:var(--muted)">' + D.nodes.filter(n => n.group === k).length + '</span>';
+  c.onclick = () => { const on = c.getAttribute('aria-pressed') === 'true'; c.setAttribute('aria-pressed', String(!on)); on ? state.hidden.add(k) : state.hidden.delete(k); apply(); };
+  cw.appendChild(c);
+});
+
+// reading notes
+const notes = [
+  ['Two networks, one documented bridge', 'The homelessness side (S3, coordinated entry, the City list) and the jail reentry side meet at one organization in the sources read: Santa Fe Recovery Center. It is an S3 partner and also took part in the jail reentry fair.'],
+  ['NM Reentry Center sits outside the main lists', 'It provides transitional sober living and ID help for people leaving jail, yet it is not named on the City partner list, the coordinated entry access points, or the part of the S3 partner list I could read. Asking whether it should be a coordinated entry access point or S3 partner is a practical first conversation.'],
+  ['Job training has no documented tie to the shelters', 'WorkReady, Goodwill Next Steps and Workforce Solutions show up on the reentry side only. Youth Shelters & Family Services has its own workforce initiative, and YouthWorks is on the City list. Potential NewOrg links the City and the reentry network.'],
+  ['Five front doors for housing', 'Coordinated entry assessments in Santa Fe happen at Pete\'s Place, Consuelo\'s Place, St. Elizabeth\'s, Youth Shelters & Family Services and The Life Link. Anyone referred from reentry programs for housing would be assessed at one of these.']
+];
+document.getElementById('notes').innerHTML = notes.map(n => '<div class="note"><h2>' + n[0] + '</h2><p>' + n[1] + '</p></div>').join('');
+document.getElementById('srclist').innerHTML = Object.entries(D.srcs).map(([i, s]) => '<li><b style="font-family:var(--mono);color:var(--muted)">[' + i + ']</b> ' + (s.u ? '<a href="' + s.u + '" target="_blank" rel="noopener">' + s.t + '</a>' : s.t) + '</li>').join('');
+overview(); apply();
+</script>
+</body>
+</html>
