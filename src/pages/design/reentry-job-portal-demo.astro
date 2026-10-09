@@ -1,0 +1,712 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Reentry Job Portal: Santa Fe demo | Ron Dimon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Public+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap" rel="stylesheet">
+<style is:global>
+:root{
+  --bg:#F6F3EE;--surface:#FFFFFF;--ink:#1E2A32;--muted:#5B6A74;--line:#DED7CC;--soft:#EFEAE2;
+  --cand:#5B3FA8;--cand-ink:#47308A;--cand-soft:#EEE8FA;
+  --sys:#0E7470;--sys-ink:#0A5A57;--sys-soft:#DFF2F0;
+  --ok:#157347;--ok-soft:#E1F3E8;--warn:#8A5200;--warn-soft:#FBEBCB;--bad:#B42318;--bad-soft:#FBE4E1;
+  --focus:#1D4ED8;
+  --display:'Source Serif 4',Georgia,serif;--body:'Public Sans',system-ui,-apple-system,'Segoe UI',sans-serif;--mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#14181B;--surface:#1D2327;--ink:#E8EDF0;--muted:#9FB0BA;--line:#34404A;--soft:#252D33;
+  --cand:#B7A2F2;--cand-ink:#CDBEF7;--cand-soft:#2B2543;
+  --sys:#5CCFC8;--sys-ink:#8FE0DA;--sys-soft:#153533;
+  --ok:#6BD39B;--ok-soft:#17321F;--warn:#F0B955;--warn-soft:#3B2C0E;--bad:#FF8A7D;--bad-soft:#3E1A16;--focus:#8AB4FF;color-scheme:dark}}
+*{box-sizing:border-box}
+html{scroll-padding-top:12px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+a{color:var(--cand-ink)}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:4px}
+.skip{position:absolute;left:-999px;top:8px;background:var(--surface);padding:8px 12px;border-radius:6px;z-index:50}
+.skip:focus{left:8px}
+.wrap{max-width:1240px;margin-inline:auto;padding-inline:20px}
+
+/* demo banner + header */
+.demo{background:var(--warn-soft);color:var(--warn);border-bottom:1px solid color-mix(in srgb,var(--warn) 30%,transparent);font-size:13.5px}
+.demo .wrap{padding-block:10px;display:flex;gap:10px;align-items:flex-start}
+.demo b{letter-spacing:.06em;text-transform:uppercase;font-size:12px;background:var(--warn);color:var(--warn-soft);padding:2px 8px;border-radius:4px;flex:none;margin-top:1px}
+.hd{padding-block:22px 8px}
+.back{font-size:13px;color:var(--muted);text-decoration:none}
+.back:hover{color:var(--ink)}
+h1{font-family:var(--display);font-size:clamp(1.7rem,3.6vw,2.5rem);line-height:1.1;margin:8px 0 6px;letter-spacing:-.01em}
+.lede{margin:0;color:var(--muted);max-width:72ch}
+
+/* tabs */
+.tabs{display:flex;gap:6px;margin-top:18px;border-bottom:2px solid var(--line);overflow-x:auto}
+.tab{background:none;border:0;border-bottom:4px solid transparent;margin-bottom:-2px;padding:12px 18px;font-weight:600;color:var(--muted);white-space:nowrap;min-height:48px}
+.tab small{display:block;font-weight:400;font-size:12px;color:var(--muted)}
+.tab[aria-selected=true]{color:var(--ink);border-bottom-color:var(--cand)}
+.tab:hover{color:var(--ink)}
+.panel{padding-block:22px 40px}
+.panel[hidden]{display:none}
+
+/* generic */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px}
+.h2{font-family:var(--display);font-size:1.35rem;margin:0 0 4px;line-height:1.2}
+.h3{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 8px;font-weight:700}
+.muted{color:var(--muted)}
+.mono{font-family:var(--mono);font-size:12.5px}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:10px 16px;font-weight:600;min-height:44px}
+.btn:hover{border-color:var(--ink)}
+.btn.primary{background:var(--cand);border-color:var(--cand);color:#fff}
+.btn.primary:hover{background:var(--cand-ink)}
+.btn.sys{background:var(--sys);border-color:var(--sys);color:#fff}
+.btn.sm{padding:6px 12px;min-height:36px;font-size:13.5px}
+.btn.danger{color:var(--bad);border-color:color-mix(in srgb,var(--bad) 40%,var(--line))}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;padding:2px 9px;border-radius:999px;background:var(--soft);color:var(--muted);white-space:nowrap}
+.chip.gov{background:var(--sys-soft);color:var(--sys-ink)}
+.chip.sample{background:var(--warn-soft);color:var(--warn)}
+.chip.ok{background:var(--ok-soft);color:var(--ok)}
+.chip.warn{background:var(--warn-soft);color:var(--warn)}
+.chip.bad{background:var(--bad-soft);color:var(--bad)}
+.chip.cand{background:var(--cand-soft);color:var(--cand-ink)}
+.chip.sys{background:var(--sys-soft);color:var(--sys-ink)}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.spread{justify-content:space-between}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.scroll-x{overflow-x:auto}
+svg.ic{width:1.05em;height:1.05em;vertical-align:-.15em;flex:none}
+
+/* step bar */
+.steps{display:flex;gap:8px;list-style:none;margin:0 0 14px;padding:0;overflow-x:auto}
+.steps li{flex:1 0 auto}
+.stepbtn{width:100%;display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:9px 12px;text-align:left;min-height:48px;white-space:nowrap}
+.stepbtn .n{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:var(--soft);font-weight:700;font-size:13px;flex:none}
+.stepbtn[aria-current=step]{border-color:var(--cand);background:var(--cand-soft)}
+.stepbtn[aria-current=step] .n{background:var(--cand);color:#fff}
+.stepbtn.done .n{background:var(--ok);color:#fff}
+.stepbtn[disabled]{opacity:.5;cursor:not-allowed}
+.sysnote{display:flex;gap:12px;background:var(--sys-soft);color:var(--sys-ink);border:1px solid color-mix(in srgb,var(--sys) 30%,transparent);border-radius:12px;padding:12px 14px;margin-bottom:16px;font-size:14px}
+.sysnote .tag{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--sys);color:#fff;border-radius:4px;padding:2px 7px;height:fit-content;flex:none;margin-top:2px}
+.actionbar{position:sticky;bottom:0;background:var(--surface);border:1px solid var(--line);border-radius:12px;margin-top:16px;padding:12px 14px;display:flex;gap:10px;justify-content:space-between;align-items:center;flex-wrap:wrap;box-shadow:0 -6px 18px rgba(0,0,0,.06);z-index:5}
+
+/* step 1: jobs */
+.filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.pill{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:7px 14px;font-weight:600;font-size:13.5px;min-height:38px}
+.pill[aria-pressed=true]{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+.search{flex:1;min-width:180px;max-width:320px;border:1px solid var(--line);border-radius:999px;padding:8px 14px;background:var(--surface);min-height:38px}
+.jobs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.job{position:relative;display:flex;gap:12px;background:var(--surface);border:2px solid var(--line);border-radius:12px;padding:14px;cursor:pointer}
+.job:hover{border-color:color-mix(in srgb,var(--cand) 50%,var(--line))}
+.job input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}
+.job .box{width:26px;height:26px;border-radius:7px;border:2px solid var(--muted);display:grid;place-items:center;flex:none;margin-top:2px;background:var(--surface)}
+.job .box svg{opacity:0;color:#fff;width:16px;height:16px}
+.job:has(input:checked){border-color:var(--cand);background:var(--cand-soft)}
+.job:has(input:checked) .box{background:var(--cand);border-color:var(--cand)}
+.job:has(input:checked) .box svg{opacity:1}
+.job:has(input:focus-visible){outline:3px solid var(--focus);outline-offset:2px}
+.job .t{font-weight:700;font-size:16px;line-height:1.25}
+.job .emp{color:var(--muted);font-size:13.5px}
+.job .meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+
+/* step 2: skills */
+.skgroup{margin-bottom:18px}
+.skill{display:flex;gap:14px;justify-content:space-between;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:8px;flex-wrap:wrap}
+.skill .l{font-weight:600;min-width:220px;flex:1}
+.skill .for{font-size:12.5px;color:var(--muted);margin-top:3px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;flex:none}
+.seg button{background:var(--surface);border:0;border-right:1px solid var(--line);padding:9px 14px;font-weight:600;font-size:13.5px;min-height:44px;color:var(--muted)}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed=true].have{background:var(--ok);color:#fff}
+.seg button[aria-pressed=true].get{background:var(--warn);color:#fff}
+.seg button[aria-pressed=true].no{background:var(--ink);color:var(--surface)}
+
+/* step 3: fit */
+.fit{margin-bottom:14px}
+.fit .top{display:flex;gap:14px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap}
+.meter{height:10px;background:var(--soft);border-radius:999px;overflow:hidden;min-width:140px}
+.meter i{display:block;height:100%;border-radius:999px;background:var(--ok)}
+.meter.mid i{background:var(--warn)}.meter.low i{background:var(--bad)}
+.req{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-top:1px solid var(--line);font-size:14px}
+.req:first-child{border-top:0}
+.req .s{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;flex:none;font-size:13px;margin-top:1px}
+.req .s.have{background:var(--ok-soft);color:var(--ok)}
+.req .s.get{background:var(--warn-soft);color:var(--warn)}
+.req .s.gap{background:var(--bad-soft);color:var(--bad)}
+.req .s.after{background:var(--soft);color:var(--muted)}
+.req .note{color:var(--muted);font-size:13px}
+.lvl{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.help{background:var(--soft);border-radius:8px;padding:10px 12px;font-size:13.5px;margin-top:10px}
+.cond{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.switch{display:flex;align-items:center;gap:10px;font-weight:600;cursor:pointer;min-height:44px}
+.switch input{width:22px;height:22px;accent-color:var(--cand)}
+
+/* step 4/5 */
+.cols{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:16px}
+.list{margin:0;padding-left:20px}.list li{margin-bottom:4px}
+.no{color:var(--bad)}
+.radio{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border:1px solid var(--line);border-radius:10px;margin-bottom:8px;cursor:pointer;background:var(--surface)}
+.radio input{margin-top:4px;width:18px;height:18px;accent-color:var(--cand)}
+.radio:has(input:checked){border-color:var(--cand);background:var(--cand-soft)}
+.consent{display:flex;gap:12px;align-items:flex-start;padding:14px;border:2px solid var(--cand);border-radius:12px;background:var(--cand-soft);cursor:pointer}
+.consent input{width:24px;height:24px;margin-top:2px;accent-color:var(--cand);flex:none}
+.tl{display:flex;gap:0;margin:12px 0 4px;align-items:flex-start}
+.tl .st{flex:1;text-align:center;font-size:12px;color:var(--muted);position:relative;padding-top:22px}
+.tl .st::before{content:"";position:absolute;top:6px;left:0;right:0;height:3px;background:var(--line)}
+.tl .st::after{content:"";position:absolute;top:0;left:50%;width:15px;height:15px;margin-left:-7px;border-radius:50%;background:var(--surface);border:3px solid var(--line)}
+.tl .st:first-child::before{left:50%}.tl .st:last-child::before{right:50%}
+.tl .st.on{color:var(--ink);font-weight:600}
+.tl .st.on::before{background:var(--cand)}
+.tl .st.on::after{background:var(--cand);border-color:var(--cand)}
+.tl .st.cur::after{box-shadow:0 0 0 4px color-mix(in srgb,var(--cand) 25%,transparent)}
+.phone{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:14px;max-width:340px}
+.bubble{background:var(--soft);border-radius:16px 16px 16px 4px;padding:10px 12px;margin-bottom:10px;font-size:14px}
+.bubble time{display:block;font-size:11px;color:var(--muted);margin-top:4px}
+.empty{border:2px dashed var(--line);border-radius:12px;padding:22px;text-align:center;color:var(--muted)}
+
+/* employers */
+.emp-layout{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:16px;align-items:start}
+.openings{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;margin-bottom:16px}
+.opening{text-align:left;background:var(--surface);border:2px solid var(--line);border-radius:12px;padding:12px 14px}
+.opening[aria-pressed=true]{border-color:var(--sys);background:var(--sys-soft)}
+.opening .t{font-weight:700}
+.rank{display:grid;grid-template-columns:34px minmax(0,1.3fr) minmax(0,1.1fr) minmax(0,.9fr) 92px;gap:12px;align-items:center;padding:12px 14px;border-top:1px solid var(--line);width:100%;background:none;border-left:0;border-right:0;border-bottom:0;text-align:left}
+.rank:hover{background:var(--soft)}
+.rank[aria-pressed=true]{background:var(--sys-soft)}
+.rank .no1{width:30px;height:30px;border-radius:50%;background:var(--ink);color:var(--surface);display:grid;place-items:center;font-weight:700;font-size:13px}
+.rank .name{font-weight:700}
+.rank .you{color:var(--cand-ink);font-size:12px;font-weight:700}
+.rank .pct{font-family:var(--mono);font-weight:500}
+.detail{position:sticky;top:12px}
+.avatar{width:44px;height:44px;border-radius:50%;background:var(--sys-soft);color:var(--sys-ink);display:grid;place-items:center;font-weight:700;flex:none}
+.decide{display:grid;gap:8px;margin-top:14px}
+.note-box{font-size:13px;color:var(--muted);background:var(--soft);padding:10px 12px;border-radius:8px;margin-top:10px}
+
+/* data */
+.stat{display:flex;gap:6px;flex-direction:column}
+.stat b{font-family:var(--display);font-size:1.9rem;line-height:1}
+.bars{display:grid;gap:8px}
+.bar{display:grid;grid-template-columns:minmax(120px,210px) minmax(0,1fr) 54px;gap:10px;align-items:center;font-size:14px}
+.bar .trk{height:22px;background:var(--soft);border-radius:6px;overflow:hidden}
+.bar .trk i{display:block;height:100%;border-radius:6px}
+.tbl{width:100%;border-collapse:collapse;font-size:14px}
+.tbl th{text-align:left;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:8px 10px;border-bottom:2px solid var(--line);white-space:nowrap}
+.tbl td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+.tbl tr.sel td{background:var(--sys-soft)}
+.tbl tbody tr[data-act]{cursor:pointer}.tbl tbody tr[data-act]:hover td{background:var(--soft)}
+.src{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.extract{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px}
+.quote{border-left:4px solid var(--line);padding:2px 0 2px 12px;margin:0 0 12px;font-size:14px}
+.quote b{display:block;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+mark.hl{background:color-mix(in srgb,var(--sys) 25%,transparent);color:inherit;padding:0 2px;border-radius:3px}
+.prog{height:8px;background:var(--soft);border-radius:999px;overflow:hidden;margin-top:8px}.prog i{display:block;height:100%;background:var(--sys);width:0;transition:width .5s}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:var(--surface);padding:12px 18px;border-radius:12px;font-weight:600;z-index:60;box-shadow:0 8px 28px rgba(0,0,0,.3);max-width:calc(100vw - 32px)}
+.toast[hidden]{display:none}
+details.dd{margin-top:28px}
+details.dd summary{cursor:pointer;font-weight:700;padding:12px 0}
+.foot{border-top:1px solid var(--line);padding-block:24px 40px;color:var(--muted);font-size:13px}
+
+@media (max-width:980px){
+  .emp-layout,.cols,.extract{grid-template-columns:minmax(0,1fr)}
+  .detail{position:static}
+  .grid3{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:700px){
+  .wrap{padding-inline:14px}
+  .jobs,.grid2{grid-template-columns:minmax(0,1fr)}
+  .rank{grid-template-columns:30px minmax(0,1fr) 84px;gap:8px 10px}
+  .rank .c3,.rank .c4{grid-column:2 / -1}
+  .bar{grid-template-columns:minmax(0,1fr) 54px}.bar .trk{grid-column:1 / -1;order:3}
+  .seg{width:100%}.seg button{flex:1;padding-inline:6px}
+  .stepbtn .lbl{display:none}.stepbtn[aria-current=step] .lbl{display:inline}
+  .tab{padding:10px 4px;flex:1;text-align:center;font-size:14px}
+  .tab small{display:none}
+  .sysnote{flex-direction:column;gap:6px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<div class="demo" role="note"><div class="wrap">
+  <b>Demo</b>
+  <span>Sample data only. City of Santa Fe roles, vacancy counts, requirements and re-entry fit tiers come from City HR files (vacancies as of Aug 14, 2026; 45 job descriptions, Oct 2026). Business postings and every applicant except the demo profile are made up; brand names are used only as realistic examples. Nothing here is saved or sent.</span>
+</div></div>
+
+<header class="wrap hd">
+  <a class="back" href="/design">&larr; Design</a>
+  <h1>Reentry Job Portal: Santa Fe demo</h1>
+  <p class="lede">One place for a job seeker to pick jobs, check their skills against what each job asks for, and apply. One place for employers to review who applied. One place to see the data behind both.</p>
+  <div class="tabs wrap" role="tablist" aria-label="Portal views" style="padding-inline:0">
+    <button class="tab" role="tab" id="tab-applicants" aria-controls="panel-applicants" aria-selected="true" data-act="tab" data-v="applicants">Applicants<small>Find jobs, check fit, apply</small></button>
+    <button class="tab" role="tab" id="tab-employers" aria-controls="panel-employers" aria-selected="false" data-act="tab" data-v="employers" tabindex="-1">Employers<small>Review and rank applicants</small></button>
+    <button class="tab" role="tab" id="tab-data" aria-controls="panel-data" aria-selected="false" data-act="tab" data-v="data" tabindex="-1">Data<small>Openings, requirements, skills</small></button>
+  </div>
+</header>
+
+<main id="main" class="wrap">
+  <section class="panel" id="panel-applicants" role="tabpanel" aria-labelledby="tab-applicants"></section>
+  <section class="panel" id="panel-employers" role="tabpanel" aria-labelledby="tab-employers" hidden></section>
+  <section class="panel" id="panel-data" role="tabpanel" aria-labelledby="tab-data" hidden></section>
+
+  <details class="dd card">
+    <summary>Design choices behind this demo</summary>
+    <ol class="list">
+      <li><b>Jobs first, then skills.</b> The skills checklist is built from the descriptions of the jobs the person picked, so it can only exist after they choose.</li>
+      <li><b>The fit check advises; it never blocks.</b> "You meet 3 of 4" helps someone focus. Many entry-level "requirements" are really preferences, so the person can always apply anyway.</li>
+      <li><b>"One-shot" depends on the employer.</b> The demo shows three routes: a direct connection (City pilot), an application packet emailed to a named contact, and a pre-filled hand-off to the employer's own site.</li>
+      <li><b>Status is the hard part.</b> Most employers will not report back on their own. The demo mixes employer decisions, a named contact, and the applicant reporting their own progress.</li>
+      <li><b>Records stay out.</b> The portal does not collect conviction history, Social Security numbers or medical details. Postings that state a background check are flagged so a navigator can talk it through first.</li>
+      <li><b>Built for phones and shared devices.</b> Text-message updates, big tap targets, and a navigator who can see status with the applicant's consent.</li>
+    </ol>
+  </details>
+</main>
+
+<footer class="wrap foot">
+  A working demo by Ron Dimon. City data: City of Santa Fe Human Resources. Business postings and applicants are fictional. <a href="/design">Back to Design</a>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<script is:inline>
+const DATA = {"asOf":"Oct 9, 2026","cats":{"cred":"Credentials & licenses","exp":"Experience","skill":"Skills & abilities","avail":"Availability"},"skills":[{"id":"hsged","label":"High school diploma or GED","cat":"cred"},{"id":"dl","label":"Valid driver's license","cat":"cred"},{"id":"cityperm","label":"City of Santa Fe driving permit","cat":"cred"},{"id":"cdl","label":"New Mexico commercial driver's license (CDL)","cat":"cred"},{"id":"cpr","label":"CPR / First Aid certification","cat":"cred"},{"id":"food","label":"Food handler card","cat":"cred"},{"id":"x_custodial","label":"Custodial or housekeeping experience","cat":"exp"},{"id":"x_food","label":"Food preparation or kitchen experience","cat":"exp"},{"id":"x_grounds","label":"Grounds, building or equipment maintenance experience","cat":"exp"},{"id":"x_labor","label":"General construction or labor experience","cat":"exp"},{"id":"x_cs","label":"Customer service / working with the public","cat":"exp"},{"id":"x_clerical","label":"Office or clerical experience","cat":"exp"},{"id":"x_enforce","label":"Public enforcement or security experience","cat":"exp"},{"id":"x_equip","label":"Operating vehicles or equipment","cat":"exp"},{"id":"x_cash","label":"Cash handling / register","cat":"exp"},{"id":"x_stock","label":"Stocking, inventory or warehouse work","cat":"exp"},{"id":"s_lift","label":"Lift and carry heavy items (physical stamina)","cat":"skill"},{"id":"s_tools","label":"Use hand and power tools safely","cat":"skill"},{"id":"s_comp","label":"Basic computer and data entry","cat":"skill"},{"id":"s_comm","label":"Clear communication (phone, radio, writing)","cat":"skill"},{"id":"s_team","label":"Work as part of a team","cat":"skill"},{"id":"s_detail","label":"Attention to detail; follow written procedures","cat":"skill"},{"id":"a_shifts","label":"Available for shifts, weekends or on-call","cat":"avail"},{"id":"a_early","label":"Available for early-morning or overnight shifts","cat":"avail"}],"jobs":[{"id":"custodian","gov":true,"sample":false,"employer":"City of Santa Fe","title":"Custodian","dept":"Public Works · Tourism · Public Utilities","openings":8,"pay":"Pay grade 101","tier":1,"training":"Basic Safety/OSHA Orientation + On-the-Job Training","rationale":"Physical, task-based manual labor. Minimal reading/writing, no degree, learned by doing. Very common re-entry placement nationally (custodial, grounds, facilities).","channel":"direct","contact":"City of Santa Fe Human Resources","verified":"Aug 14, 2026","vdays":56,"reviewed":true,"reqs":[["x_custodial","R","1 year of custodial or housekeeping experience"],["dl","R","Valid driver's license"],["s_lift","R","Exerts up to 50 lbs of force"],["cityperm","H","Within 3 months of hire"],["s_detail","P","Keeps areas clean and orderly; reports safety conditions"],["s_comp","P","Basic office technology"]],"conditions":["Union: AFSCME"],"jd":{"exp":"One (1) year of custodian experience and/or in housekeeping functions.","lic":"· Must possess a valid driver's license.","spec":"· Obtain and maintain a City of Santa Fe driving permit within three (3) months of hire.","edu":"None / below HS","src":"City Wide-Custodian - Final Draft"}},{"id":"parks","gov":true,"sample":false,"employer":"City of Santa Fe","title":"Parks Maintenance Worker","dept":"Public Works","openings":5,"pay":"Pay grade 103","tier":1,"training":"Basic Safety/OSHA Orientation + On-the-Job Training","rationale":"Physical, task-based manual labor. Minimal reading/writing, no degree, learned by doing. Very common re-entry placement nationally (custodial, grounds, facilities).","channel":"direct","contact":"City of Santa Fe Human Resources","verified":"Aug 14, 2026","vdays":56,"reviewed":true,"reqs":[["hsged","R","HS diploma or GED"],["x_grounds","R","1 year in the area of assignment"],["dl","R","Valid driver's license"],["s_tools","R","Hand and power tools, mowers, light equipment"],["s_lift","R","Exerts up to 50 lbs of force"],["a_shifts","R","On-call or shift work stated"],["cityperm","H","Within 3 months of hire"],["x_cs","P","Friendly, professional with the public"],["s_detail","P","Daily safety checks on equipment"]],"conditions":["Union: AFSCME"],"jd":{"exp":"One (1) year of experience in appropriate area of assignment.","lic":"· Must possess a valid driver's license.","spec":"· Obtain and maintain a City of Santa Fe driving permit within three (3) months of hire. · May require a JMS-6 (Plumber’s License) and Herbicide/Pesticide certification. · Must be willing to work flexible hours including evenings, holidays, and weekends. · Must have a telephone in the residence or be available by another…","edu":"HS/GED","src":"Parks Maintenance Worker-Final Draft"}},{"id":"streets","gov":true,"sample":false,"employer":"City of Santa Fe","title":"Streets Maintenance Worker","dept":"Public Works","openings":3,"pay":"Pay grade 103","tier":1,"training":"Basic Safety/OSHA Orientation + On-the-Job Training","rationale":"Physical, task-based manual labor. Minimal reading/writing, no degree, learned by doing. Very common re-entry placement nationally (custodial, grounds, facilities).","channel":"direct","contact":"City of Santa Fe Human Resources","verified":"Aug 14, 2026","vdays":56,"reviewed":true,"reqs":[["hsged","R","HS diploma or GED"],["x_labor","R","6 months of related work"],["dl","R","Valid driver's license"],["s_tools","R","Safely operate tools, equipment, vehicles"],["s_lift","R","Exerts up to 35 lbs of force"],["a_shifts","R","On-call, standby or shift work"],["cdl","H","NM CDL-B within 6 months of employment"],["cpr","H","CPR and First Aid certification"],["cityperm","H","Within 3 months of hire"],["s_team","P","Crew-based work"]],"conditions":["Safety-sensitive position","Assists with bio-hazard cleaning of homeless camps (stated in the job description)","Union: AFSCME"],"jd":{"exp":"At least 6-month experience performing related work.","lic":"· Must possess a valid driver's license. · Must obtain and maintain a NM Commercial Driver’s License (CDL- B) within six (6) months of employment. · Must become certified in CPR and First Aid","spec":"· Obtain and maintain a City of Santa Fe driving permit within three (3) months of hire. · Requires regular ability to work overtime, weekends, nights, and holidays.","edu":"HS/GED","src":"Public Works-Streets Maintenance Worker-Final Draft"}},{"id":"laborer","gov":true,"sample":false,"employer":"City of Santa Fe","title":"Laborer","dept":"Public Utilities · Public Works","openings":2,"pay":"Pay grade 101","tier":1,"training":"Basic Safety/OSHA Orientation + On-the-Job Training","rationale":"Physical, task-based manual labor. Minimal reading/writing, no degree, learned by doing. Very common re-entry placement nationally (custodial, grounds, facilities).","channel":"direct","contact":"City of Santa Fe Human Resources","verified":"Aug 14, 2026","vdays":56,"reviewed":true,"reqs":[["dl","R","Valid driver's license"],["a_shifts","R","On-call or standby work stated"],["x_labor","P","Construction, grounds, painting and repair tasks"],["s_tools","P","Power tools and light equipment, as qualified"],["s_team","P","Works under an assigned supervisor"],["cpr","H","CPR and First Aid within 6 months of hire"],["cityperm","H","Within 3 months of hire"]],"conditions":["Union: AFSCME"],"jd":{"exp":"None","lic":"· Must possess a valid driver's license.","spec":"· Obtain and maintain a City of Santa Fe driving permit within three (3) months of hire. · Must be certified in CPR and First Aid within six (6) months of hire. · Employee may be called out in emergency situations. When contacted, the employee is expected to report to work unless there are special non-recurring circumstances,…","edu":"None / below HS","src":"Public Works-Laborer-Final Draft"}},{"id":"parkingtech","gov":true,"sample":false,"employer":"City of Santa Fe","title":"Parking Technician","dept":"Public Works","openings":3,"pay":"Pay grade 105","tier":1,"training":"Customer Service Skills + Basic MS Office/Data Entry","rationale":"Front-counter/phone customer contact and basic record processing. Requires soft-skills and basic computer literacy training, not a credential.","channel":"direct","contact":"City of Santa Fe Human Resources","verified":"Aug 14, 2026","vdays":56,"reviewed":true,"reqs":[["hsged","R","HS diploma or GED"],["x_grounds","R","1 year in equipment or building maintenance"],["dl","R","Valid driver's license"],["s_tools","R","Repair equipment and small mechanical devices"],["s_lift","R","Strenuous work; up to 100 lbs of force"],["cityperm","H","Within 3 months of hire"],["s_comp","P","Data entry and report generation"],["x_cs","P","Deal with the public professionally"]],"conditions":["A criminal background check is stated in the posting","Must be willing to pass a criminal background check","Pre-employment physical exam","Union: AFSCME"],"jd":{"exp":"One (1) year experience in equipment maintenance operations, building maintenance services, mechanical/equipment repair, custodial and/or ground maintenance. Experience operating equipment such as hydraulic or electric lifts, scissor lifts, jack hammers, snow removal ploughs and motorized sweepers will be favorably considered…","lic":"· Must possess a valid driver's license. · Must obtain certification in Parking Meters Technology and certification as a Work Zone Safety Specialist from the International Municipal Signal Association within twelve (12) months of hire.","spec":"· Must obtain and maintain a City of Santa Fe driving permit within three (3) months of hire. · Must be willing to submit to and pass a criminal background check. · Must pass a pre-employment physical exam prior to employment.","edu":"HS/GED","src":"Public Works-Parking Technician- Final Draft"}},{"id":"csr","gov":true,"sample":false,"employer":"City of Santa Fe","title":"Customer Service Representative","dept":"Public Utilities · Public Works","openings":3,"pay":"Pay grade 101","tier":1,"training":"Customer Service Skills + Basic MS Office/Data Entry","rationale":"Front-counter/phone customer contact and basic record processing. Requires soft-skills and basic computer literacy training, not a credential.","channel":"direct","contact":"City of Santa Fe Human Resources","verified":"Aug 14, 2026","vdays":56,"reviewed":true,"reqs":[["hsged","R","HS diploma or GED"],["x_cs","R","2 years of customer service or public relations"],["s_comp","R","MS Word, Excel, Outlook; billing systems"],["s_comm","R","Multi-line phone system and walk-in customers"],["dl","R","Valid driver's license"],["cpr","H","CPR and First Aid within 3 months of hire"],["s_detail","P","Accurate data entry and records"],["x_clerical","P","Administrative support work"]],"conditions":["Union: AFSCME"],"jd":{"exp":"Two (2) years of experience in customer service or public relations.","lic":"Must possess a valid driver's license. Special Requirements for Assignment in the Public Works/Transit Division: · Must become certified in CPR and First Aid within three (3) months of hire. · Must complete an ADA Sensitivity Training within the first thirty (30) days of hire.","spec":"","edu":"HS/GED","src":"Public Utilities-Customer Service Representative- Final Draft"}},{"id":"cook","gov":true,"sample":false,"employer":"City of Santa Fe","title":"Cook","dept":"Community Services","openings":1,"pay":"Pay grade 102","tier":1,"training":"Basic Safety/OSHA Orientation + On-the-Job Training","rationale":"Physical, task-based manual labor. Minimal reading/writing, no degree, learned by doing. Very common re-entry placement nationally (custodial, grounds, facilities).","channel":"direct","contact":"City of Santa Fe Human Resources","verified":"Aug 14, 2026","vdays":56,"reviewed":true,"reqs":[["x_food","R","1 year of food preparation and cooking"],["dl","R","Valid driver's license"],["s_lift","R","Lift or move up to 50 lbs"],["s_detail","R","Follow food quality, temperature and safety standards"],["food","H","Food Handlers card within 30 days of hire"],["cpr","H","CPR and First Aid within 6 months of hire"],["cityperm","H","Within 3 months of hire"],["s_team","P","Serves a City-sponsored food program"]],"conditions":["Union: AFSCME"],"jd":{"exp":"One (1) year of experience in food preparation and cooking.","lic":"· Must possess a valid driver's license. · Food Manger Food Handlers Certification preferred. · Basic First Aid and CPR Certifications preferred.","spec":"· Obtain and maintain a City of Santa Fe driving permit and defensive driving certificate within three (3) months of hire. · Must obtain and maintain a Food Handlers Certification within thirty (30) days of hire. · Must obtain and maintain Basic First Aid and CPR Certifications within six (6) months of hire.","edu":"None / below HS","src":"CHS-Cook-Final Draft updated 08192026"}},{"id":"utility","gov":true,"sample":false,"employer":"City of Santa Fe","title":"Utility Operator Entry","dept":"Public Utilities","openings":2,"pay":"Pay grade 101","tier":2,"training":"NM Environment Dept. Water/Wastewater Operator Certification (state exam, city typically trains/sponsors while working)","rationale":"Entry point (Utility Operator Entry) requires no license at hire; city trains staff up through certification levels on the job, a well-established internal career ladder well suited to a motivated new hire.","channel":"direct","contact":"City of Santa Fe Human Resources","verified":"Aug 14, 2026","vdays":56,"reviewed":true,"reqs":[["hsged","R","HS diploma or GED"],["dl","R","Valid driver's license"],["s_lift","R","Exerts up to 50 lbs of force"],["s_detail","R","Keep accurate records; observe operating conditions"],["s_team","R","Collaborative team environment"],["cpr","H","CPR certification within 3 months of hire"],["cityperm","H","Within 3 months of hire"],["s_comp","P","Use computer application software"]],"conditions":["Pre-employment physical exam","Union: AFSCME"],"jd":{"exp":"None.","lic":"· Must possess a valid driver's license. · Must obtain CPR certification within three (3) months of hire. ·","spec":"· Obtain and maintain a City of Santa Fe driving permit within three (3) months of hire. · Must pass a pre-employment physical exam prior to employment. · Must be able to comply with a respirator and other PPE requirements.","edu":"HS/GED","src":"Utility Operator Entry (from Ladder file)"}},{"id":"cdltrainee","gov":true,"sample":false,"employer":"City of Santa Fe","title":"CDL Transit Driver Trainee","dept":"Public Works","openings":2,"pay":"Pay grade 101","tier":2,"training":"CDL Permit/Training Program (state-licensed, often city- or workforce-board sponsored)","rationale":"Commercial driving requires a CDL, obtainable post-release for most non-driving-related felonies. City already runs a Trainee->I->II->III ladder, a natural re-entry career path.","channel":"direct","contact":"City of Santa Fe Human Resources","verified":"Aug 14, 2026","vdays":56,"reviewed":true,"reqs":[["hsged","R","HS diploma or GED"],["x_cs","R","Experience in customer service or dealing with the public"],["a_shifts","R","Transit shift schedules"],["dl","P","A valid license helps you start CDL training"],["s_comm","P","Courteous with passengers"],["s_detail","P","Safety and security attention"],["cdl","H","NM CDL (A or B, P endorsement, airbrake) within 8 weeks of hire"],["cityperm","H","Within 3 months of hire"]],"conditions":["A criminal background check is stated in the posting","Drug and alcohol testing is stated","Safety-sensitive position","DOT medical certificate for the duration of employment","Random drug and alcohol testing","Union: AFSCME"],"jd":{"exp":"Experience in customer service and/or dealing with the general public.","lic":"· Must obtain and maintain a NM Commercial Driver’s License (CDL-A or B) with a P endorsement and airbrake certification through the City of Santa Fe within eight (8) weeks of hire date. Requirement to obtain CDL in eight (8) weeks of hire is a mandatory condition of employment.","spec":"· Must successfully pass a drug and alcohol screening prior to employment. Subject to random drug and alcohol testing during employment. · Must successfully pass a background check. · Must obtain DOT medical certificate for the duration of employment as a Transit Driver Trainee. · Must obtain and maintain a City of Santa Fe…","edu":"HS/GED","src":"CITY WIDE-CDL Transit Driver Trainee-Final (1)"}},{"id":"noncdl","gov":true,"sample":false,"employer":"City of Santa Fe","title":"Non-CDL Transit Driver","dept":"Public Works","openings":8,"pay":"Pay grade 102","tier":2,"training":"Defensive Driving Course + DOT Physical/Drug Screen + Clean MVR","rationale":"Driving job requiring a valid license and clean record, not a felony bar itself, but a DUI/vehicular history could disqualify. Otherwise very trainable.","channel":"direct","contact":"City of Santa Fe Human Resources","verified":"Aug 14, 2026","vdays":56,"reviewed":true,"reqs":[["hsged","R","HS diploma or GED"],["x_cs","R","2 years of customer service or dealing with the public"],["dl","R","Valid license and a good driving record"],["s_comm","R","Two-way radio communication"],["x_equip","P","Driving experience"],["s_lift","P","Operates wheelchair lift and tie-downs"],["cityperm","H","Within 3 months of hire"]],"conditions":["A criminal background check is stated in the posting","Safety-sensitive position","Regular exposure to physical harm (stated in the job description)","Union: AFSCME"],"jd":{"exp":"Two (2) years’ experience in customer service and/or dealing with the public.","lic":"Must possess a valid driver's license.","spec":"· Must have a good driving record, as documented by a copy of DMV records. · Must obtain and maintain a City of Santa Fe driving permit within three (3) months of hire. · Must complete ADA Sensitivity Training within thirty (30) days of hire. · Must successfully pass a background investigation.","edu":"HS/GED","src":"CITY WIDE- Non-CDL Transit Driver - Final (1)"}},{"id":"peo","gov":true,"sample":false,"employer":"City of Santa Fe","title":"Parking Enforcement Officer","dept":"Public Works","openings":1,"pay":"Pay grade 105","tier":2,"training":"Customer Service + Basic MS Office + Short Agency-Specific Orientation","rationale":"Public-contact/enforcement-support roles with department-provided training; background check likely but not usually statutorily barred for non-sworn civilian roles.","channel":"direct","contact":"City of Santa Fe Human Resources","verified":"Aug 14, 2026","vdays":56,"reviewed":true,"reqs":[["hsged","R","HS diploma or GED"],["x_enforce","R","1 year of public enforcement or security"],["dl","R","Valid driver's license"],["s_comm","R","Speak clearly; write notices and reports"],["a_shifts","R","On-call, standby or shift work"],["cpr","H","First Aid and CPR within 3 months of hire"],["cityperm","H","Within 3 months of hire"],["s_comp","P","Office technology"],["x_cs","P","Provide information to the public"],["s_lift","P","Exerts up to 70 lbs of force"]],"conditions":["A criminal background check is stated in the posting","Must be eligible for bonding","Union: AFSCME"],"jd":{"exp":"(1) year of experience in public enforcement and/or security.","lic":"Must possess a valid driver's license.","spec":"· Must obtain and maintain a City of Santa Fe driving permit within three (3) months of hire. · Must hold a valid certification in First Aid and CPR or obtain such within three (3) months of hire. · Must obtain Bicycle Safety Certification if opting to use a bicycle for routes. · Must be willing to submit to and pass a criminal…","edu":"HS/GED","src":"Public Works-Parking Enforcement Officer- Final Draft"}},{"id":"wg_cash","gov":false,"sample":true,"employer":"Walgreens","title":"Cashier / Front-Store Associate","dept":"Santa Fe","openings":3,"pay":"$16.00–$17.50/hr (sample)","tier":0,"training":"Employer trains on the job","rationale":"Entry-level role at a participating employer.","channel":"handoff","contact":"Online application (employer careers site)","verified":"Oct 5, 2026","vdays":4,"reviewed":true,"reqs":[["x_cs","R","Friendly and helpful with customers"],["s_comm","R","Clear communication at the counter"],["s_team","R","Works with a shift team"],["a_shifts","R","Evenings and weekends"],["x_cash","P","Register experience helpful; trained on the job"],["s_comp","P","Point-of-sale system"],["hsged","P","Diploma or GED preferred"]],"conditions":["Hiring decisions made by the employer"],"jd":{"exp":"Sample posting: front-store cashier. Register training provided.","lic":"","spec":"","edu":"Not required","src":"Sample posting written for this demo"}},{"id":"wg_stock","gov":false,"sample":true,"employer":"Walgreens","title":"Stock Clerk (overnight)","dept":"Santa Fe","openings":2,"pay":"$17.00–$18.50/hr (sample)","tier":0,"training":"Employer trains on the job","rationale":"Entry-level role at a participating employer.","channel":"handoff","contact":"Online application (employer careers site)","verified":"Oct 5, 2026","vdays":4,"reviewed":true,"reqs":[["s_lift","R","Lift and move up to 40 lbs"],["a_early","R","Overnight or early-morning shifts"],["s_team","R","Works with a small overnight crew"],["x_stock","P","Stocking or inventory experience"],["s_detail","P","Match product to shelf labels"]],"conditions":["Hiring decisions made by the employer"],"jd":{"exp":"Sample posting: overnight shelf stocking.","lic":"","spec":"","edu":"Not required","src":"Sample posting written for this demo"}},{"id":"cvs_cash","gov":false,"sample":true,"employer":"CVS","title":"Cashier / Front Store Associate","dept":"Santa Fe","openings":2,"pay":"$16.00–$17.00/hr (sample)","tier":0,"training":"Employer trains on the job","rationale":"Entry-level role at a participating employer.","channel":"handoff","contact":"Online application (employer careers site)","verified":"Oct 5, 2026","vdays":4,"reviewed":true,"reqs":[["x_cs","R","Greets and helps customers"],["s_comm","R","Clear communication"],["a_shifts","R","Rotating shifts including weekends"],["s_team","R","Works with a shift team"],["x_cash","P","Register experience helpful"],["s_comp","P","Point-of-sale system"]],"conditions":["Hiring decisions made by the employer"],"jd":{"exp":"Sample posting: front store.","lic":"","spec":"","edu":"Not required","src":"Sample posting written for this demo"}},{"id":"cvs_stock","gov":false,"sample":true,"employer":"CVS","title":"Stock Associate","dept":"Santa Fe","openings":2,"pay":"$16.50–$18.00/hr (sample)","tier":0,"training":"Employer trains on the job","rationale":"Entry-level role at a participating employer.","channel":"handoff","contact":"Online application (employer careers site)","verified":"Oct 5, 2026","vdays":4,"reviewed":true,"reqs":[["s_lift","R","Lift and move up to 40 lbs"],["a_shifts","R","Early-morning shifts and some weekends"],["s_team","R","Works with the store team"],["x_stock","P","Stocking or inventory experience"],["s_detail","P","Check dates and labels"]],"conditions":["Hiring decisions made by the employer"],"jd":{"exp":"Sample posting: receiving and stocking.","lic":"","spec":"","edu":"Not required","src":"Sample posting written for this demo"}},{"id":"market","gov":false,"sample":true,"employer":"Canyon Road Market","title":"Deli / Produce Clerk","dept":"Santa Fe","openings":2,"pay":"$15.50–$17.00/hr (sample)","tier":0,"training":"Employer trains on the job","rationale":"Entry-level role at a participating employer.","channel":"packet","contact":"Store manager (named contact on file)","verified":"Oct 5, 2026","vdays":4,"reviewed":true,"reqs":[["s_lift","R","Lift up to 30 lbs"],["a_shifts","R","Mornings and weekends"],["s_team","R","Team of 6 on shift"],["food","H","Food handler card within 30 days of hire"],["x_cs","P","Serves customers at the counter"],["x_cash","P","Occasional register coverage"]],"conditions":["Application packet is emailed to the store manager"],"jd":{"exp":"Sample posting: local grocer.","lic":"","spec":"","edu":"Not required","src":"Sample posting written for this demo"}},{"id":"kitchen","gov":false,"sample":true,"employer":"Plaza Kitchen Group","title":"Dishwasher / Prep Cook","dept":"Santa Fe","openings":3,"pay":"$16.00–$18.00/hr (sample)","tier":0,"training":"Employer trains on the job","rationale":"Entry-level role at a participating employer.","channel":"packet","contact":"Kitchen manager (named contact on file)","verified":"Oct 5, 2026","vdays":4,"reviewed":true,"reqs":[["s_lift","R","Lift up to 40 lbs; on your feet for a full shift"],["a_shifts","R","Evenings and weekends"],["s_team","R","Fast-paced team kitchen"],["food","H","Food handler card within 30 days of hire"],["x_food","P","Kitchen experience a plus; will train"],["s_detail","P","Follow prep lists and sanitation steps"]],"conditions":["Application packet is emailed to the kitchen manager"],"jd":{"exp":"Sample posting: local restaurant group, entry level.","lic":"","spec":"","edu":"Not required","src":"Sample posting written for this demo"}},{"id":"hotel","gov":false,"sample":true,"employer":"Adobe Springs Hotel","title":"Housekeeper","dept":"Santa Fe","openings":4,"pay":"$16.00–$17.50/hr (sample)","tier":0,"training":"Employer trains on the job","rationale":"Entry-level role at a participating employer.","channel":"packet","contact":"Executive housekeeper (named contact on file)","verified":"Oct 5, 2026","vdays":4,"reviewed":true,"reqs":[["s_lift","R","Lift up to 35 lbs; push carts"],["s_detail","R","Room standards checklist"],["a_shifts","R","Weekend availability"],["x_custodial","P","Housekeeping or custodial experience"],["s_team","P","Works with a housekeeping team"]],"conditions":["Application packet is emailed to the executive housekeeper"],"jd":{"exp":"Sample posting: hotel housekeeping.","lic":"","spec":"","edu":"Not required","src":"Sample posting written for this demo"}},{"id":"warehouse","gov":false,"sample":true,"employer":"Rail Yard Distribution","title":"Order Picker","dept":"Santa Fe","openings":3,"pay":"$17.00–$19.00/hr (sample)","tier":0,"training":"Employer trains on the job","rationale":"Entry-level role at a participating employer.","channel":"packet","contact":"Warehouse supervisor (named contact on file)","verified":"Oct 5, 2026","vdays":4,"reviewed":true,"reqs":[["s_lift","R","Lift up to 50 lbs"],["s_detail","R","Pick the right item and quantity"],["s_team","R","Works with the pick team"],["a_shifts","R","Day shift, some overtime"],["x_stock","P","Warehouse experience"],["s_comp","P","Handheld scanner"]],"conditions":["Application packet is emailed to the warehouse supervisor"],"jd":{"exp":"Sample posting: warehouse picking.","lic":"","spec":"","edu":"Not required","src":"Sample posting written for this demo"}}],"upload":{"id":"landscape","gov":false,"sample":true,"employer":"Santa Fe Landscape Co.","title":"Landscape Crew Member","dept":"Santa Fe","openings":3,"pay":"$16.50–$18.00/hr (sample)","tier":0,"training":"Employer trains on the job","rationale":"Entry-level role at a participating employer.","channel":"packet","contact":"Crew supervisor (named contact on file)","verified":"Oct 5, 2026","vdays":4,"reviewed":false,"reqs":[["s_lift","R","Lift up to 50 lbs; outdoor work in all weather"],["a_early","R","Starts at 6:30 a.m."],["s_team","R","Works in a 4-person crew"],["x_grounds","P","Grounds or landscaping experience"],["s_tools","P","Mowers, trimmers and hand tools"],["dl","P","Valid license helps; crew van provided"]],"conditions":["Application packet is emailed to the crew supervisor"],"jd":{"exp":"Sample upload used to show requirement extraction.","lic":"","spec":"","edu":"Not required","src":"Sample posting written for this demo","raw":"Landscape Crew Member. Crew members maintain commercial and residential grounds across Santa Fe. Work begins at 6:30 a.m., outdoors in all weather. Must be able to lift up to 50 lbs and work as part of a four-person crew. Experience with mowers, trimmers and hand tools is preferred but we will train the right person. A valid driver's license is a plus; a crew van is provided."}},"applicants":[{"id":"a1","name":"Marcus T.","summary":"4 years of kitchen work and 1 year on a grounds crew. Reliable early riser.","avail":"Any shift","skills":{"hsged":"have","dl":"have","x_food":"have","x_grounds":"have","s_lift":"have","s_tools":"have","s_team":"have","s_detail":"have","a_shifts":"have","a_early":"have","food":"get","cpr":"get"}},{"id":"a2","name":"Denise R.","summary":"3 years as a retail cashier and front-end lead. Strong with customers.","avail":"Days and weekends","skills":{"hsged":"have","dl":"have","x_cs":"have","x_cash":"have","s_comm":"have","s_comp":"have","s_team":"have","s_detail":"have","a_shifts":"have","x_clerical":"have","cpr":"get"}},{"id":"a3","name":"Luis G.","summary":"5 years of construction and general labor. Working toward his CDL permit.","avail":"Any shift","skills":{"dl":"have","x_labor":"have","x_equip":"have","s_tools":"have","s_lift":"have","s_team":"have","a_shifts":"have","a_early":"have","x_grounds":"have","hsged":"get","cdl":"get","cpr":"get"}},{"id":"a4","name":"Tanya B.","summary":"2 years of custodial work. CPR certified.","avail":"Days","skills":{"hsged":"have","dl":"have","x_custodial":"have","s_lift":"have","s_detail":"have","cpr":"have","s_team":"have","a_shifts":"have","s_comp":"get"}},{"id":"a5","name":"Chris M.","summary":"2 years in a distribution warehouse. Forklift trained.","avail":"Any shift, overnight OK","skills":{"hsged":"have","dl":"have","x_stock":"have","x_equip":"have","s_lift":"have","s_comp":"have","s_team":"have","s_detail":"have","a_early":"have","a_shifts":"have","cpr":"get"}},{"id":"a6","name":"Andre W.","summary":"3 years driving delivery vans with a clean driving record.","avail":"Days and evenings","skills":{"hsged":"have","dl":"have","x_equip":"have","x_cs":"have","s_comm":"have","s_lift":"have","s_detail":"have","a_shifts":"have","cdl":"get"}},{"id":"a7","name":"Priya S.","summary":"4 years as an office assistant. Strong on phones and computers.","avail":"Weekdays","skills":{"hsged":"have","dl":"have","x_clerical":"have","x_cs":"have","s_comp":"have","s_comm":"have","s_detail":"have","s_team":"have","cpr":"get"}},{"id":"a8","name":"Jorge L.","summary":"2 years as a dishwasher, then prep cook. Has a food handler card.","avail":"Evenings and weekends","skills":{"hsged":"have","x_food":"have","food":"have","s_lift":"have","s_team":"have","s_detail":"have","a_shifts":"have","dl":"get"}},{"id":"a9","name":"Kim N.","summary":"3 years of hotel housekeeping. Reliable; weekends are fine.","avail":"Weekends and days","skills":{"hsged":"have","dl":"have","x_custodial":"have","x_cs":"have","s_lift":"have","s_detail":"have","s_team":"have","a_shifts":"have"}},{"id":"a10","name":"Sam O.","summary":"1 year as a parking attendant and event security.","avail":"Evenings and weekends","skills":{"hsged":"have","dl":"have","x_enforce":"have","x_cs":"have","s_comm":"have","s_lift":"have","a_shifts":"have","cpr":"get","s_comp":"get"}}],"apps":[{"id":"ap0","job":"custodian","who":"a4","status":"interview","date":"Oct 3","reason":""},{"id":"ap1","job":"custodian","who":"a9","status":"review","date":"Oct 4","reason":""},{"id":"ap2","job":"custodian","who":"a5","status":"received","date":"Oct 6","reason":""},{"id":"ap3","job":"parks","who":"a1","status":"received","date":"Oct 5","reason":""},{"id":"ap4","job":"parks","who":"a3","status":"received","date":"Oct 6","reason":""},{"id":"ap5","job":"streets","who":"a3","status":"review","date":"Oct 2","reason":""},{"id":"ap6","job":"streets","who":"a6","status":"received","date":"Oct 7","reason":""},{"id":"ap7","job":"laborer","who":"a3","status":"received","date":"Oct 6","reason":""},{"id":"ap8","job":"laborer","who":"a4","status":"received","date":"Oct 4","reason":""},{"id":"ap9","job":"laborer","who":"a5","status":"received","date":"Oct 6","reason":""},{"id":"ap10","job":"parkingtech","who":"a10","status":"received","date":"Oct 7","reason":""},{"id":"ap11","job":"parkingtech","who":"a6","status":"received","date":"Oct 7","reason":""},{"id":"ap12","job":"csr","who":"a2","status":"received","date":"Oct 3","reason":""},{"id":"ap13","job":"csr","who":"a7","status":"review","date":"Oct 5","reason":""},{"id":"ap14","job":"cook","who":"a1","status":"received","date":"Oct 5","reason":""},{"id":"ap15","job":"cook","who":"a8","status":"review","date":"Oct 4","reason":""},{"id":"ap16","job":"utility","who":"a5","status":"received","date":"Oct 6","reason":""},{"id":"ap17","job":"utility","who":"a1","status":"received","date":"Oct 7","reason":""},{"id":"ap18","job":"cdltrainee","who":"a3","status":"received","date":"Oct 3","reason":""},{"id":"ap19","job":"cdltrainee","who":"a6","status":"review","date":"Oct 2","reason":""},{"id":"ap20","job":"cdltrainee","who":"a2","status":"received","date":"Oct 7","reason":""},{"id":"ap21","job":"noncdl","who":"a6","status":"review","date":"Oct 3","reason":""},{"id":"ap22","job":"noncdl","who":"a7","status":"received","date":"Oct 6","reason":""},{"id":"ap23","job":"noncdl","who":"a10","status":"received","date":"Oct 7","reason":""},{"id":"ap24","job":"peo","who":"a10","status":"received","date":"Oct 6","reason":""},{"id":"ap25","job":"peo","who":"a7","status":"received","date":"Oct 8","reason":""},{"id":"ap26","job":"wg_cash","who":"a2","status":"interview","date":"Oct 2","reason":""},{"id":"ap27","job":"wg_cash","who":"a7","status":"received","date":"Oct 5","reason":""},{"id":"ap28","job":"wg_cash","who":"a9","status":"received","date":"Oct 6","reason":""},{"id":"ap29","job":"wg_stock","who":"a5","status":"review","date":"Oct 3","reason":""},{"id":"ap30","job":"wg_stock","who":"a3","status":"received","date":"Oct 6","reason":""},{"id":"ap31","job":"cvs_cash","who":"a2","status":"received","date":"Oct 4","reason":""},{"id":"ap32","job":"cvs_cash","who":"a10","status":"received","date":"Oct 7","reason":""},{"id":"ap33","job":"cvs_stock","who":"a5","status":"received","date":"Oct 4","reason":""},{"id":"ap34","job":"cvs_stock","who":"a3","status":"received","date":"Oct 6","reason":""},{"id":"ap35","job":"market","who":"a8","status":"received","date":"Oct 4","reason":""},{"id":"ap36","job":"market","who":"a1","status":"closed","date":"Oct 1","reason":"Position filled"},{"id":"ap37","job":"market","who":"a2","status":"received","date":"Oct 5","reason":""},{"id":"ap38","job":"kitchen","who":"a8","status":"interview","date":"Oct 3","reason":""},{"id":"ap39","job":"kitchen","who":"a1","status":"received","date":"Oct 5","reason":""},{"id":"ap40","job":"hotel","who":"a9","status":"received","date":"Oct 4","reason":""},{"id":"ap41","job":"hotel","who":"a4","status":"received","date":"Oct 5","reason":""},{"id":"ap42","job":"warehouse","who":"a5","status":"review","date":"Oct 2","reason":""},{"id":"ap43","job":"warehouse","who":"a3","status":"received","date":"Oct 6","reason":""}],"upApps":[{"id":"up0","job":"landscape","who":"a1","status":"received","date":"Oct 8","reason":""},{"id":"up1","job":"landscape","who":"a3","status":"received","date":"Oct 8","reason":""}],"profile":{"name":"Alex R.","phone":"(505) 555-0142","navigator":"Dana K., shelter navigator","skills":{"hsged":"have","dl":"have","x_cs":"have","x_food":"have","s_lift":"have","s_comm":"have","s_team":"have","s_detail":"have","a_shifts":"have","cpr":"get","food":"get","s_comp":"get"},"fromResume":["hsged","dl","x_cs","x_food","s_lift","s_comm","s_team","s_detail","a_shifts","cpr","food","s_comp"]},"funnel":[{"t":1,"label":"Ready now","detail":"Entry-level; learn by doing","n":39},{"t":2,"label":"Needs a certification","detail":"Defined, fundable training path","n":94},{"t":3,"label":"Conditional","detail":"Works with youth or vulnerable adults, or a civilian role inside Police","n":48},{"t":4,"label":"Not suitable","detail":"Statutory bar (sworn fire and police roles)","n":11},{"t":5,"label":"Not a fit now","detail":"Degree, license or years of experience required","n":101}],"depts":[{"name":"Public Works","n":96},{"name":"Public Utilities","n":69},{"name":"Community Services","n":35},{"name":"Police","n":17},{"name":"Fire","n":15},{"name":"Finance","n":11},{"name":"Planning And Land Use","n":11},{"name":"Tourism","n":10}],"training":[{"path":"Basic Safety/OSHA Orientation + On-the-Job Training","n":29,"ex":"COOK, CUSTODIAN, CUSTODIAN LEAD WORKER, EQUIPMENT SERVICE WORKER, KEEP SANTA FE BEAUTIFUL PROGRA, LABORER"},{"path":"Customer Service Skills + Basic MS Office/Data Entry","n":10,"ex":"CUSTOMER SERVICE REP, INFORMATION SPECIALIST, PARKING TECHNICIAN, PERMIT TECHNICIAN, RECORDS MANAGEMENT TECHNICIAN, REGISTRATION RECORDS SPEC"},{"path":"Basic Wildland/Chainsaw Safety Certification + On-the-Job Training","n":1,"ex":"FORESTRY TECH LEAD WORKER"},{"path":"CDL Permit/Training Program (state-licensed, often city- or workforce-board sponsored)","n":23,"ex":"CDL TRANSIT DRIVER I, CDL TRANSIT DRIVER II, CDL TRANSIT DRIVER III, CDL TRANSIT DRIVER TRAINEE"},{"path":"Customer Service + Basic MS Office + Short Agency-Specific Orientation","n":6,"ex":"DISPATCHER, PARK RANGER, PARKING ENFORCEMENT OFFICER"},{"path":"Defensive Driving Course + DOT Physical/Drug Screen + Clean MVR","n":8,"ex":"NON-CDL TRANSIT DRIVER"},{"path":"NM Environment Dept. Water/Wastewater Operator Certification (state exam, city typically trains/sponsors while working)","n":35,"ex":"ESD COLLECTIONS EQUIPMENT OPER, UTILITY OPERATOR ADVANCED, UTILITY OPERATOR ADVANCED CDL, UTILITY OPERATOR BASIC, UTILITY OPERATOR ENTRY, UTILITY OPERATOR INTERMEDIATE"},{"path":"Trade/Vocational Certificate (welding, auto/diesel mechanics, electrical) via community college or union apprenticeship","n":21,"ex":"AUTO AND SECURITY SYS ADMIN, AUTO MECHANIC, HEAVY EQUIPMENT MECHANIC, JOURNEYMAN ELECTRICIAN, JOURNEYMAN MECHANICAL, PAINT AND SIGN OPERATOR"},{"path":"Basic MS Office/Data Entry + Customer Service; department discretion on background standard","n":14,"ex":"ADMINISTRATIVE ASSISTANT, CRIME SCENE TECHNICIAN, CRIMINAL INFORMATION ANALYST, EVIDENCE/PROPERTY TECHNICIAN, POLICE PUBLIC INFORMATION OFC, PUBLIC RECORDS SPECIALIST"},{"path":"Customer Service + Basic MS Office + Enhanced Background Screening (adult/elder-care rules)","n":10,"ex":"CASE MANAGER, MEALS ON WHEELS SUPERVISOR, NAVIGATOR, RESPITE CARE PROVIDER, SENIOR SERVICES PROGRAM COORD"},{"path":"Customer Service + CPR/First Aid/Lifeguard Cert (Red Cross) + Enhanced Background Screening","n":24,"ex":"ICE ARENA MANAGER, RECREATION COMPLEX MANAGER, RECREATION SUPERVISOR, RECREATION TECHNICIAN, SWIM INSTRUCTOR, SWIM POOL LIFEGUARD"},{"path":"N/A - Could be a longer-term (2-5 yr) advancement goal after entry-level placement, not initial placement","n":101,"ex":"ACCOUNT SPECIALIST, ACCOUNT TECHNICIAN, ACCOUNTING FINANCIAL ANALYST, ACCOUNTING MANAGER, ACCOUNTING SUPERVISOR, ADMINISTRATIVE MANAGER"}],"sources":[{"name":"Vacancy Report as of 8.14.26","kind":"City of Santa Fe HR","detail":"293 vacancies · 152 job classes · 15 departments","state":"Loaded","real":true},{"name":"SF HR Job Descriptions, Oct 2026","kind":"City of Santa Fe HR","detail":"45 job descriptions (PDF)","state":"Extracted","real":true},{"name":"Requirements Matrix","kind":"Built from the 45 job descriptions","detail":"45 roles · education, experience, licenses, screening, shifts","state":"Extracted","real":true},{"name":"Re-entry Fit Analysis","kind":"Prepared for this project","detail":"293 vacancies placed in 5 fit tiers, each with a training path","state":"Loaded","real":true},{"name":"Participating-employer postings","kind":"Illustrative sample","detail":"8 entry-level postings from Walgreens, CVS and local employers","state":"Sample","real":false}],"totals":{"vacancies":293,"classes":152,"depts":15,"jds":45}};
+
+/* ---------- helpers ---------- */
+const $ = (s, r=document) => r.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const SK = Object.fromEntries(DATA.skills.map(s => [s.id, s]));
+const TODAY = DATA.asOf;
+const IC = {
+  check:'<svg class="ic" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5l4 4 8-9"/></svg>',
+  half:'<svg class="ic" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="M10 3a7 7 0 010 14z" fill="currentColor"/></svg>',
+  x:'<svg class="ic" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15"/></svg>',
+  clock:'<svg class="ic" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="M10 6v4l3 2"/></svg>',
+  arrow:'<svg class="ic" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5"/></svg>'
+};
+const CH = {
+  direct:{short:'Sent directly to City HR', how:'Direct connection (pilot): the application lands in the City’s own system.'},
+  packet:{short:'Packet emailed to a named contact', how:'A standard application packet goes to the hiring contact on file.'},
+  handoff:{short:'Pre-filled, you finish on their site', how:'We pre-fill what we can, then you finish on the employer’s own application site.'}
+};
+const TIER = {1:['Entry-level door','ok'],2:['Needs a certification','warn']};
+const STAT = {
+  handoff:['Finish on employer site','warn'], received:['Received','sys'], review:['Under review','cand'],
+  interview:['Interview','ok'], closed:['Closed','bad']
+};
+const STAGES = ['Submitted','Received','Under review','Interview','Decision'];
+const STAGE_IDX = {handoff:0, received:1, review:2, interview:3, closed:4};
+
+/* ---------- state ---------- */
+const S = {
+  tab:'applicants', step:1, filter:'all', q:'',
+  picked:new Set(), skills:{...DATA.profile.skills}, fromResume:new Set(DATA.profile.fromResume),
+  apply:{}, consent:false, share:true, notify:'text',
+  msgs:[], mineApps:[],
+  jobs:DATA.jobs.slice(), apps:DATA.apps.map(a => ({...a})),
+  emp:'City of Santa Fe', empJob:null, selApp:null, sort:'fit', readyOnly:false, declining:false,
+  dsub:'overview', dsel:null, dfilter:'all', dq:'', uploaded:false, uploadStage:0
+};
+const job = id => S.jobs.find(j => j.id === id);
+const person = id => id === 'you'
+  ? {id:'you', name:'Alex R. (you, demo)', summary:'The sample profile from the Applicants tab.', avail:'Any shift', skills:S.skills}
+  : DATA.applicants.find(a => a.id === id);
+
+/* ---------- fit: the same function powers the applicant's fit check and the employer's ranking ---------- */
+function fit(j, sk){
+  let rt=0, rm=0, pt=0, pm=0, num=0, den=0; const items=[];
+  for(const [id,lvl,note] of j.reqs){
+    const v = sk[id]; let st;
+    if(lvl==='H') st = v==='have' ? 'have' : 'after';
+    else st = v==='have' ? 'have' : v==='get' ? 'get' : 'gap';
+    items.push({id,lvl,note,st});
+    if(lvl==='R'){ rt++; if(st==='have') rm++; den+=2; num += st==='have'?2 : st==='get'?1 : 0; }
+    if(lvl==='P'){ pt++; if(st==='have') pm++; den+=1; num += st==='have'?1 : st==='get'?.5 : 0; }
+  }
+  const score = den ? Math.round(100*num/den) : 100;
+  const gaps = rt - rm;
+  return {items, rt, rm, pt, pm, score, gaps, ready: gaps===0 ? 'ready' : gaps===1 ? 'close' : 'train'};
+}
+const READY = {ready:['Ready now','ok'], close:['1 requirement to go','warn'], train:['Needs training','bad']};
+const lvlName = l => l==='R' ? 'Required' : l==='P' ? 'Preferred' : 'Earn after hire';
+const pick = () => [...S.picked].map(job).filter(Boolean);
+const chip = (txt, cls='') => `<span class="chip ${cls}">${txt}</span>`;
+
+/* ---------- toast + messages ---------- */
+let toastT;
+function toast(msg){ const t=$('#toast'); t.textContent=msg; t.hidden=false; clearTimeout(toastT); toastT=setTimeout(()=>t.hidden=true,3200); }
+function sms(text){ S.msgs.unshift({text, time:'Today ' + ['9:41','9:42','9:44','9:47','9:52','10:03','10:15','10:30'][Math.min(S.msgs.length,7)] + ' AM'}); }
+
+/* =====================================================================
+   TAB 1: APPLICANTS
+   ===================================================================== */
+const STEPS = ['Pick jobs','Confirm skills','Fit check','Review & consent','My applications'];
+const SYSNOTE = [
+  'The opportunity feed. A curated list of employers that accept re-entry candidates, plus City postings. Every posting carries its requirements, how to apply, and a “last verified” date.',
+  'Requirement extraction. The skills below were pulled from the descriptions of the jobs you picked, and your resume pre-fills what it can. You confirm or change every answer.',
+  'The fit check is advisory. It counts what you meet and shows what to work on, but it never blocks you. Many listed requirements are really preferences.',
+  'The application engine. Each employer takes applications differently, so the system picks the right route for each one. Your records stay out of it.',
+  'Status tracking. Updates come from employer decisions, a named contact at each employer, and you. You get a text message each time something changes.'
+];
+function maxStep(){ return S.mineApps.length ? 5 : (S.picked.size ? 4 : 1); }
+
+function renderApplicants(){
+  const p = $('#panel-applicants');
+  const stepper = `<ol class="steps" aria-label="Steps">${STEPS.map((l,i)=>{
+    const n=i+1, locked = n>maxStep() && n!==S.step;
+    return `<li><button class="stepbtn ${n<S.step?'done':''}" data-act="step" data-v="${n}" ${n===S.step?'aria-current="step"':''} ${locked?'disabled':''}><span class="n">${n<S.step?IC.check:n}</span><span class="lbl">${l}</span></button></li>`;}).join('')}</ol>`;
+  const note = `<div class="sysnote"><span class="tag">Behind the scenes</span><span>${SYSNOTE[S.step-1]}</span></div>`;
+  const body = [stepJobs, stepSkills, stepFit, stepReview, stepApps][S.step-1]();
+  p.innerHTML = `<div class="row spread" style="margin-bottom:12px"><div><h2 class="h2">Alex R. <span class="muted" style="font-family:var(--body);font-size:.9rem;font-weight:400">· demo applicant, Santa Fe</span></h2><div class="muted" style="font-size:14px">Working with ${esc(DATA.profile.navigator)} on a shared shelter computer. Sample profile, built from a resume.</div></div></div>${stepper}${note}${body}`;
+}
+
+function stepJobs(){
+  const q = S.q.trim().toLowerCase();
+  const list = S.jobs.filter(j => (S.filter==='all' || (S.filter==='gov') === j.gov) && (!q || (j.title+' '+j.employer).toLowerCase().includes(q)));
+  const nGov = S.jobs.filter(j=>j.gov).length, nBiz = S.jobs.length - nGov;
+  const cards = list.map(j => {
+    const tier = TIER[j.tier];
+    return `<label class="job"><input type="checkbox" data-act="pick" data-id="${j.id}" ${S.picked.has(j.id)?'checked':''} aria-label="Select ${esc(j.title)} at ${esc(j.employer)}">
+      <span class="box">${IC.check}</span>
+      <span style="min-width:0"><span class="t">${esc(j.title)}</span><br><span class="emp">${esc(j.employer)} · ${esc(j.dept)}</span>
+      <span class="meta">${j.gov?chip('City HR posting','gov'):chip('Sample posting','sample')}${tier?chip(tier[0],tier[1]):''}${chip(j.openings+' opening'+(j.openings>1?'s':''))}${chip(esc(j.pay))}${j.vdays>45?chip('Verified '+esc(j.verified)+' · re-verify soon','warn'):chip('Verified '+esc(j.verified))}</span></span></label>`;
+  }).join('');
+  const sel = S.picked.size;
+  return `<div class="filters">
+      <button class="pill" data-act="filter" data-v="all" aria-pressed="${S.filter==='all'}">All jobs (${S.jobs.length})</button>
+      <button class="pill" data-act="filter" data-v="gov" aria-pressed="${S.filter==='gov'}">City of Santa Fe (${nGov})</button>
+      <button class="pill" data-act="filter" data-v="biz" aria-pressed="${S.filter==='biz'}">Employers (${nBiz})</button>
+      <input class="search" type="search" placeholder="Search jobs" value="${esc(S.q)}" data-act="search" aria-label="Search jobs"></div>
+    <p class="muted" style="margin:0 0 12px">Check every job you want to go after. You can pick as many as you like.</p>
+    <div class="jobs">${cards || '<div class="empty">No jobs match.</div>'}</div>
+    <div class="actionbar"><span><b>${sel}</b> job${sel===1?'':'s'} selected</span>
+      <button class="btn primary" data-act="next" ${sel?'':'disabled'}>Continue to skills ${IC.arrow}</button></div>`;
+}
+
+function neededFor(id){
+  return pick().flatMap(j => j.reqs.filter(r => r[0]===id).map(r => ({j, lvl:r[1], note:r[2]})));
+}
+function stepSkills(){
+  const jobs = pick();
+  if(!jobs.length) return `<div class="empty">Pick at least one job first.</div>`;
+  const ids = [...new Set(jobs.flatMap(j => j.reqs.map(r => r[0])))];
+  const groups = Object.entries(DATA.cats).map(([c,label]) => {
+    const rows = ids.filter(id => SK[id].cat===c).map(id => {
+      const nf = neededFor(id), only = nf.every(x => x.lvl==='H');
+      const v = S.skills[id] || 'no';
+      const tags = nf.map(x => `${esc(x.j.title)} <span class="lvl">(${x.lvl==='R'?'required':x.lvl==='P'?'preferred':'after hire'})</span>`).join(' · ');
+      const notes = [...new Set(nf.filter(x=>x.note).map(x=>x.note))].slice(0,2).join(' / ');
+      return `<div class="skill"><div class="l">${esc(SK[id].label)}${S.fromResume.has(id)?' '+chip('from your resume','cand'):''}${only?' '+chip('can be earned after hire','sys'):''}
+        <div class="for">Needed for: ${tags}</div>${notes?`<div class="for">${esc(notes)}</div>`:''}</div>
+        <div class="seg" role="group" aria-label="${esc(SK[id].label)}">
+          <button class="have" data-act="skill" data-id="${id}" data-v="have" aria-pressed="${v==='have'}">Have it</button>
+          <button class="get" data-act="skill" data-id="${id}" data-v="get" aria-pressed="${v==='get'}">Can get it</button>
+          <button class="no" data-act="skill" data-id="${id}" data-v="no" aria-pressed="${v==='no'}">Not yet</button></div></div>`;
+    }).join('');
+    return rows ? `<div class="skgroup"><h3 class="h3">${label}</h3>${rows}</div>` : '';
+  }).join('');
+  return `<p class="muted" style="margin:0 0 12px">${ids.length} things come up across your ${jobs.length} job${jobs.length>1?'s':''}. Choose <b>Have it</b> if you meet the amount shown, <b>Can get it</b> if you could earn it, or <b>Not yet</b>.</p>${groups}
+    <div class="actionbar"><button class="btn" data-act="prev">Back</button><button class="btn primary" data-act="next">See how you fit ${IC.arrow}</button></div>`;
+}
+
+function stepFit(){
+  const jobs = pick();
+  if(!jobs.length) return `<div class="empty">Pick at least one job first.</div>`;
+  const cards = jobs.map(j => {
+    const f = fit(j, S.skills); const [rl,rc] = READY[f.ready];
+    const cls = f.score>=75?'':f.score>=45?'mid':'low';
+    const applyOn = S.apply[j.id] !== false;
+    const items = f.items.slice().sort((a,b)=>'RPH'.indexOf(a.lvl)-'RPH'.indexOf(b.lvl)).map(i => {
+      const sym = i.st==='have' ? IC.check : i.st==='get' ? IC.half : i.st==='gap' ? IC.x : IC.clock;
+      const word = i.st==='have'?'You have this': i.st==='get'?'You can get this': i.st==='gap'?'Not yet': 'You can earn this after hire';
+      return `<div class="req"><span class="s ${i.st}" title="${word}" role="img" aria-label="${word}">${sym}</span><div><b>${esc(SK[i.id].label)}</b> <span class="lvl">${lvlName(i.lvl)}</span><div class="note">${esc(i.note||'')}${i.note?' · ':''}${word}</div></div></div>`;
+    }).join('');
+    const conds = j.conditions.map(c => chip(esc(c), /background/i.test(c)?'warn':'')).join('');
+    const bg = j.conditions.some(c=>/background/i.test(c));
+    const help = f.gaps ? `<div class="help"><b>Close the gap:</b> ${j.gov ? esc(j.training) : 'The employer trains on the job. Mention any related experience.'} ${j.gov?'':''}</div>` : '';
+    const bgnote = bg ? `<div class="help" style="background:var(--warn-soft);color:var(--warn)"><b>Talk with your navigator first.</b> This posting states a background check. ${esc(DATA.profile.navigator.split(',')[0])} can walk you through how it applies before you apply. The portal never asks about your record.</div>` : '';
+    return `<div class="card fit"><div class="top"><div style="min-width:0"><div class="t" style="font-weight:700;font-size:17px">${esc(j.title)}</div><div class="muted">${esc(j.employer)} ${j.gov?chip('City HR posting','gov'):chip('Sample','sample')}</div></div>
+      <div style="min-width:200px;flex:1;max-width:320px"><div class="row spread"><b>Meets ${f.rm} of ${f.rt} required</b>${chip(rl,rc)}</div><div class="meter ${cls}" style="margin-top:6px" role="img" aria-label="Fit ${f.score} percent"><i style="width:${f.score}%"></i></div></div></div>
+      <div style="margin-top:10px">${items}</div>${help}${bgnote}<div class="cond">${conds}</div>
+      <div class="row spread" style="margin-top:12px"><label class="switch"><input type="checkbox" data-act="apply" data-id="${j.id}" ${applyOn?'checked':''}> ${f.gaps?'Apply anyway':'Apply to this job'}</label>
+      <button class="btn sm danger" data-act="drop" data-id="${j.id}">Remove from my list</button></div></div>`;
+  }).join('');
+  const nApply = jobs.filter(j => S.apply[j.id] !== false).length;
+  return `<p class="muted" style="margin:0 0 12px"><b>This is a guide, not a gate.</b> A gap does not stop you from applying. Many requirements in entry-level postings are really preferences.</p>${cards}
+    <div class="actionbar"><button class="btn" data-act="prev">Back</button><span><b>${nApply}</b> of ${jobs.length} will be sent</span><button class="btn primary" data-act="next" ${nApply?'':'disabled'}>Review and consent ${IC.arrow}</button></div>`;
+}
+
+function stepReview(){
+  const jobs = pick().filter(j => S.apply[j.id] !== false);
+  const already = new Set(S.mineApps.map(a=>a.job));
+  const fresh = jobs.filter(j => !already.has(j.id));
+  const rows = jobs.map(j => `<tr><td><b>${esc(j.title)}</b><br><span class="muted">${esc(j.employer)}</span></td><td>${esc(CH[j.channel].short)}<br><span class="muted">${esc(CH[j.channel].how)}</span></td><td>${already.has(j.id)?chip('Already sent','ok'):''}</td></tr>`).join('');
+  const have = Object.entries(S.skills).filter(([,v])=>v==='have').length;
+  return `<div class="cols"><div class="card"><h3 class="h3">Where each application goes</h3><div class="scroll-x"><table class="tbl"><thead><tr><th>Job</th><th>How it gets there</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>
+      <h3 class="h3" style="margin-top:18px">How we reach you</h3>
+      ${[['text','Text message','Works with no email and on any phone, including a shared one.'],['email','Email','Needs an address you can check.'],['nav','Through my navigator','Dana K. gets the update and passes it on.']].map(([v,t,d])=>`<label class="radio"><input type="radio" name="notify" data-act="notify" data-v="${v}" ${S.notify===v?'checked':''}><span><b>${t}</b><br><span class="muted">${d}</span></span></label>`).join('')}
+    </div>
+    <div style="display:grid;gap:14px;align-content:start">
+      <div class="card"><h3 class="h3">What employers will see</h3><ul class="list"><li>Your name and how to reach you through the portal</li><li>The ${have} skills you marked <b>Have it</b>, and what you can get</li><li>Your availability</li><li>The job-related work history in your resume</li></ul>
+        <h3 class="h3 no" style="margin-top:14px">What stays out</h3><ul class="list no"><li>Conviction history. The portal never asks.</li><li>Social Security number</li><li>Medical information</li></ul></div>
+      <label class="consent"><input type="checkbox" data-act="consent" ${S.consent?'checked':''}><span><b>I agree to share this with the employers I chose.</b><br><span class="muted">You can stop at any time. Sharing is limited to the list on this page.</span></span></label>
+      <label class="switch"><input type="checkbox" data-act="share" ${S.share?'checked':''}> Let ${esc(DATA.profile.navigator)} see my application status</label>
+    </div></div>
+    <div class="actionbar"><button class="btn" data-act="prev">Back</button><button class="btn primary" data-act="submit" ${S.consent&&fresh.length?'':'disabled'}>${fresh.length?`Send ${fresh.length} application${fresh.length>1?'s':''}`:'Nothing new to send'}</button></div>`;
+}
+
+function stepApps(){
+  if(!S.mineApps.length) return `<div class="empty">You have not sent anything yet. Pick jobs, confirm your skills and send them, then your applications show up here.</div>`;
+  const cards = S.mineApps.map(a => {
+    const j = job(a.job), idx = STAGE_IDX[a.status], [sl,sc] = STAT[a.status];
+    const tl = `<div class="tl" aria-label="Progress">${STAGES.map((l,i)=>`<div class="st ${i<=idx?'on':''} ${i===idx?'cur':''}">${l}</div>`).join('')}</div>`;
+    const acts = a.status==='handoff' ? `<button class="btn sm" data-act="finished" data-id="${a.id}">I finished it on their site</button>` :
+      (a.status==='received'||a.status==='review') ? `<button class="btn sm" data-act="selfint" data-id="${a.id}">I got an interview (tell the portal)</button>` : '';
+    return `<div class="card" style="margin-bottom:12px"><div class="row spread"><div><b style="font-size:16px">${esc(j.title)}</b><div class="muted">${esc(j.employer)} · sent ${esc(a.date)}</div></div>${chip(sl,sc)}</div>${tl}
+      ${a.status==='handoff'?`<div class="help">${esc(CH.handoff.how)} Your answers are ready to copy over.</div>`:''}${a.status==='closed'?`<div class="help">${esc(a.reason)}. You can apply to other jobs any time.</div>`:''}
+      <div class="row" style="margin-top:10px">${acts}</div></div>`;
+  }).join('');
+  const msgs = S.msgs.length ? S.msgs.map(m => `<div class="bubble">${esc(m.text)}<time>${esc(m.time)}</time></div>`).join('') : '<div class="muted">No messages yet.</div>';
+  return `<div class="cols"><div>${cards}<button class="btn" data-act="more">Pick more jobs</button></div>
+    <div><h3 class="h3">Messages sent to your phone</h3><div class="phone" aria-live="polite">${S.notify==='text'?'':`<div class="muted" style="font-size:12px;margin-bottom:8px">You chose ${S.notify==='email'?'email':'your navigator'}; shown here as text for the demo.</div>`}${msgs}</div>
+    <div class="note-box">To see the employer side, open the <b>Employers</b> tab: your applications are there, ranked next to the other applicants. Decisions made there show up here.</div></div></div>`;
+}
+
+/* =====================================================================
+   TAB 2: EMPLOYERS
+   ===================================================================== */
+const employers = () => {
+  const names = [...new Set(S.jobs.map(j => j.employer))];
+  const order = n => n==='City of Santa Fe' ? 0 : ['Walgreens','CVS'].includes(n) ? 1 : 2;
+  return names.sort((a,b) => order(a)-order(b) || a.localeCompare(b));
+};
+const appsFor = jid => S.apps.concat(S.mineApps.map(a => ({...a, who:'you'}))).filter(a => a.job === jid);
+function ranked(jid){
+  const j = job(jid);
+  let list = appsFor(jid).map(a => { const p = person(a.who); return {a, p, f: fit(j, p.skills)}; });
+  if(S.readyOnly) list = list.filter(x => x.f.ready==='ready');
+  const dn = x => x.a.date;
+  list.sort((x,y) => S.sort==='fit' ? (y.f.score-x.f.score || (x.a.date<y.a.date?-1:1)) : (dn(y)>dn(x)?1:-1));
+  return list;
+}
+function renderEmployers(){
+  const p = $('#panel-employers');
+  const names = employers();
+  if(!names.includes(S.emp)) S.emp = names[0];
+  const ejobs = S.jobs.filter(j => j.employer===S.emp);
+  if(!S.empJob || !ejobs.find(j=>j.id===S.empJob)) S.empJob = ejobs[0].id;
+  const isGov = ejobs[0].gov;
+  const opts = names.map(n => `<option ${n===S.emp?'selected':''}>${esc(n)}</option>`).join('');
+  const op = ejobs.map(j => {
+    const all = appsFor(j.id).map(a => fit(j, person(a.who).skills)), rd = all.filter(f=>f.ready==='ready').length;
+    return `<button class="opening" data-act="empjob" data-id="${j.id}" aria-pressed="${j.id===S.empJob}"><div class="t">${esc(j.title)}</div><div class="muted" style="font-size:13px">${j.openings} opening${j.openings>1?'s':''} · ${esc(j.pay)}</div><div class="row" style="margin-top:6px">${chip(all.length+' applied','sys')}${chip(rd+' ready now','ok')}</div></button>`;
+  }).join('');
+  const J = job(S.empJob), list = ranked(S.empJob);
+  if(S.selApp && !list.find(x=>x.a.id===S.selApp)) S.selApp = null;
+  const rows = list.map((x,i) => {
+    const [rl,rc] = READY[x.f.ready], [sl,sc] = STAT[x.a.status] || ['',''];
+    const met = x.f.items.filter(i=>i.lvl==='R'&&i.st==='have').slice(0,2).map(i=>SK[i.id].label).join(', ');
+    return `<button class="rank" data-act="selapp" data-id="${x.a.id}" aria-pressed="${x.a.id===S.selApp}">
+      <span class="no1">${i+1}</span>
+      <span class="c2"><span class="name">${esc(x.p.name)}</span>${x.a.who==='you'?'':''}<br><span class="muted" style="font-size:13px">Applied ${esc(x.a.date)}</span></span>
+      <span class="c3"><span class="pct">${x.f.score}%</span> fit<div class="meter ${x.f.score>=75?'':x.f.score>=45?'mid':'low'}" style="margin-top:4px"><i style="width:${x.f.score}%"></i></div></span>
+      <span class="c4">${chip(rl,rc)}<div class="muted" style="font-size:12.5px;margin-top:3px">${met?'Has: '+esc(met):''}</div></span>
+      <span class="c5">${chip(sl,sc)}</span></button>`;
+  }).join('');
+  const sel = list.find(x => x.a.id===S.selApp);
+  p.innerHTML = `<div class="sysnote" style="background:var(--sys-soft)"><span class="tag">Employer view</span><span>Hiring contacts see who applied, ranked by how well their skills match the posting. Ranking uses only skills and availability. The portal does not collect conviction history, so it cannot affect the order. Employers make every hiring decision.</span></div>
+    <div class="row" style="margin-bottom:14px"><label for="empsel" style="font-weight:700">Viewing as</label><select id="empsel" data-act="emp" style="border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--surface);min-height:44px;min-width:230px">${opts}</select>${isGov?chip('Government','gov'):chip('Business · sample','sample')}</div>
+    <div class="openings">${op}</div>
+    <div class="emp-layout"><div class="card" style="padding:0;overflow:hidden">
+      <div class="row spread" style="padding:14px"><div><h2 class="h2">${esc(J.title)}</h2><div class="muted">${list.length} applicant${list.length===1?'':'s'}${S.readyOnly?' (ready now only)':''} · ${J.openings} opening${J.openings>1?'s':''}</div></div>
+        <div class="row"><label class="switch" style="min-height:36px"><input type="checkbox" data-act="ready" ${S.readyOnly?'checked':''}> Ready now only</label>
+        <div class="seg" role="group" aria-label="Sort"><button class="have" style="${S.sort==='fit'?'':''}" data-act="sort" data-v="fit" aria-pressed="${S.sort==='fit'}">Best fit</button><button class="no" data-act="sort" data-v="new" aria-pressed="${S.sort==='new'}">Newest</button></div></div></div>
+      ${rows || '<div class="empty" style="margin:14px">Nobody has applied yet.</div>'}
+      <div class="note-box" style="margin:14px">How ranking works: each required item counts double; each preferred item counts once; "can get it" counts half. Ties go to whoever applied first.</div></div>
+      <aside class="card detail" aria-live="polite">${sel ? employerDetail(sel, J) : '<div class="empty">Select an applicant to see how they match, and to respond.</div>'}</aside></div>`;
+}
+function employerDetail(x, J){
+  const f = x.f, [rl,rc] = READY[f.ready], [sl,sc] = STAT[x.a.status] || ['',''];
+  const initials = x.p.name.split(' ').map(w=>w[0]).slice(0,2).join('');
+  const items = f.items.slice().sort((a,b)=>'RPH'.indexOf(a.lvl)-'RPH'.indexOf(b.lvl)).map(i => {
+    const sym = i.st==='have'?IC.check : i.st==='get'?IC.half : i.st==='gap'?IC.x : IC.clock;
+    const word = i.st==='have'?'Has this': i.st==='get'?'Can get this': i.st==='gap'?'Not yet': 'Earns after hire';
+    return `<div class="req"><span class="s ${i.st}" role="img" aria-label="${word}">${sym}</span><div><b>${esc(SK[i.id].label)}</b> <span class="lvl">${lvlName(i.lvl)}</span><div class="note">${word}${i.note?' · '+esc(i.note):''}</div></div></div>`;
+  }).join('');
+  const closed = x.a.status==='closed';
+  let actions;
+  if(closed) actions = `<div class="note-box">Closed: ${esc(x.a.reason||'No reason recorded')}.</div>`;
+  else if(S.declining) actions = `<div class="decide"><label for="why" style="font-weight:700">Why is this applicant not moving forward?</label><select id="why" style="border:1px solid var(--line);border-radius:10px;padding:10px;background:var(--surface);min-height:44px"><option>Position filled</option><option>A required item is missing</option><option>Schedule does not match</option><option>Another applicant was a closer match</option></select><div class="row"><button class="btn danger" data-act="decline" data-id="${x.a.id}">Send "No"</button><button class="btn" data-act="canceldecline">Cancel</button></div></div>`;
+  else actions = `<div class="decide"><button class="btn" data-act="decide" data-v="review" data-id="${x.a.id}" ${x.a.status==='review'||x.a.status==='interview'?'disabled':''}>Mark under review</button><button class="btn sys" data-act="decide" data-v="interview" data-id="${x.a.id}" ${x.a.status==='interview'?'disabled':''}>Yes: invite to interview</button><button class="btn danger" data-act="startdecline">No: not moving forward</button></div>`;
+  return `<div class="row" style="margin-bottom:10px"><div class="avatar">${esc(initials)}</div><div><h2 class="h2" style="font-size:1.2rem">${esc(x.p.name)}</h2><div class="row">${chip(rl,rc)}${chip(sl,sc)}</div></div></div>
+    <p style="margin:0 0 6px">${esc(x.p.summary)}</p><p class="muted" style="margin:0 0 12px;font-size:13.5px">Availability: ${esc(x.p.avail)} · Fit ${f.score}% · meets ${f.rm} of ${f.rt} required</p>
+    <h3 class="h3">Match against the posting</h3>${items}${actions}
+    <div class="note-box">A "Yes" is not a job offer. It moves the applicant to the next step, and ${x.a.who==='you'?'they get a text message right away.':'the applicant is told.'}</div>`;
+}
+
+/* =====================================================================
+   TAB 3: DATA
+   ===================================================================== */
+function renderData(){
+  const p = $('#panel-data');
+  const sub = [['overview','Sources & funnel'],['openings','Job openings'],['skills','Skills']];
+  const nav = `<div class="filters">${sub.map(([v,l]) => `<button class="pill" data-act="dsub" data-v="${v}" aria-pressed="${S.dsub===v}">${l}</button>`).join('')}</div>`;
+  p.innerHTML = nav + (S.dsub==='overview' ? dataOverview() : S.dsub==='openings' ? dataOpenings() : dataSkills());
+}
+function dataOverview(){
+  const T = DATA.totals, max = Math.max(...DATA.funnel.map(f=>f.n));
+  const col = {1:'var(--ok)',2:'var(--sys)',3:'var(--warn)',4:'var(--bad)',5:'var(--muted)'};
+  const funnel = DATA.funnel.map(f => `<div class="bar"><div><b>Tier ${f.t}: ${esc(f.label)}</b><div class="muted" style="font-size:12.5px">${esc(f.detail)}</div></div><div class="trk"><i style="width:${Math.round(100*f.n/max)}%;background:${col[f.t]}"></i></div><div class="mono" style="text-align:right">${f.n}</div></div>`).join('');
+  const dmax = DATA.depts[0].n;
+  const depts = DATA.depts.map(d => `<div class="bar"><div>${esc(d.name)}</div><div class="trk"><i style="width:${Math.round(100*d.n/dmax)}%;background:var(--sys)"></i></div><div class="mono" style="text-align:right">${d.n}</div></div>`).join('');
+  const tr = DATA.training.filter(t => !t.path.startsWith('N/A')).sort((a,b)=>b.n-a.n).slice(0,7).map(t => `<tr><td>${esc(t.path.replace(/\s*\(state exam.*$/,'').replace(/\s*\(state-licensed.*$/,''))}</td><td class="mono">${t.n}</td><td class="muted">${esc(t.ex.split(', ').slice(0,3).join(', '))}</td></tr>`).join('');
+  const up = S.uploaded ? '' : '';
+  return `<div class="grid3" style="margin-bottom:16px">
+      <div class="card stat"><b>${T.vacancies}</b><span>City vacancies loaded (as of Aug 14, 2026)</span></div>
+      <div class="card stat"><b>${T.classes}</b><span>job classes across ${T.depts} departments</span></div>
+      <div class="card stat"><b>${DATA.funnel[0].n + DATA.funnel[1].n}</b><span>vacancies in tiers 1 and 2: the ones this portal can feature today</span></div></div>
+    <h3 class="h3">Sources</h3><div class="src" style="margin-bottom:20px">${DATA.sources.map(s => `<div class="card"><div class="row spread"><b>${esc(s.name)}</b>${chip(s.state, s.real?'ok':'sample')}</div><div class="muted" style="font-size:13.5px;margin-top:4px">${esc(s.kind)}</div><div style="margin-top:6px;font-size:14px">${esc(s.detail)}</div></div>`).join('')}</div>
+    <div class="grid2"><div class="card"><h2 class="h2">Which City vacancies fit?</h2><p class="muted" style="margin:0 0 12px">All ${T.vacancies} vacancies sorted by re-entry fit. Tiers 1 and 2 are listed in the demo. Tier 3 needs a department check, and tier 4 is closed to anyone with a conviction by statute.</p><div class="bars">${funnel}</div></div>
+      <div class="card"><h2 class="h2">Where the openings are</h2><p class="muted" style="margin:0 0 12px">Vacancies by department, top 8.</p><div class="bars">${depts}</div></div></div>
+    <div class="card" style="margin-top:14px"><h2 class="h2">Training paths these vacancies point to</h2><p class="muted" style="margin:0 0 8px">Used for the “Close the gap” suggestions in the applicant's fit check.</p><div class="scroll-x"><table class="tbl"><thead><tr><th>Training or path</th><th>Vacancies</th><th>Example job classes</th></tr></thead><tbody>${tr}</tbody></table></div></div>`;
+}
+function dataOpenings(){
+  const q = S.dq.trim().toLowerCase();
+  const list = S.jobs.filter(j => (S.dfilter==='all' || (S.dfilter==='gov')===j.gov) && (!q || (j.title+' '+j.employer).toLowerCase().includes(q)));
+  const rows = list.map(j => `<tr data-act="dsel" data-id="${j.id}" class="${j.id===S.dsel?'sel':''}" tabindex="0" role="button" aria-label="Show requirements for ${esc(j.title)}"><td><b>${esc(j.title)}</b><br><span class="muted">${esc(j.employer)}</span></td><td class="mono">${j.openings}</td><td>${esc(j.pay)}</td><td>${TIER[j.tier]?chip(TIER[j.tier][0],TIER[j.tier][1]):'<span class="muted">n/a</span>'}</td><td>${esc(CH[j.channel].short)}</td><td>${esc(j.verified)}${j.vdays>45?' '+chip('re-verify','warn'):''}</td><td class="mono">${j.reqs.length}</td><td>${j.reviewed?chip('Spot-checked','ok'):chip('Needs review','warn')}</td></tr>`).join('');
+  const stages = ['Reading the file','Pulling out the requirements','Ready for a human spot-check'];
+  const upload = `<div class="card" style="margin-bottom:14px"><div class="row spread"><div><h2 class="h2">Add postings</h2><div class="muted">Drop in a job description or a spreadsheet of openings. The system pulls out the requirements and flags them for a person to check before they go live.</div></div>
+      <button class="btn sys" data-act="upload" ${S.uploaded||S.uploadStage?'disabled':''}>${S.uploaded?'Sample uploaded':'Try a sample upload'}</button></div>
+      ${S.uploadStage?`<div class="prog" aria-hidden="true"><i style="width:${S.uploadStage*33.4}%"></i></div><div class="muted" style="margin-top:6px">${stages[Math.min(S.uploadStage,3)-1]}…</div>`:''}</div>`;
+  const J = S.dsel ? job(S.dsel) : null;
+  return upload + `<div class="filters"><button class="pill" data-act="dfilter" data-v="all" aria-pressed="${S.dfilter==='all'}">All (${S.jobs.length})</button><button class="pill" data-act="dfilter" data-v="gov" aria-pressed="${S.dfilter==='gov'}">City of Santa Fe</button><button class="pill" data-act="dfilter" data-v="biz" aria-pressed="${S.dfilter==='biz'}">Employers</button><input class="search" type="search" placeholder="Search openings" value="${esc(S.dq)}" data-act="dsearch" aria-label="Search openings"></div>
+    <div class="card" style="padding:0"><div class="scroll-x"><table class="tbl"><thead><tr><th>Opening</th><th>Open</th><th>Pay</th><th>Fit tier</th><th>How applications go</th><th>Last verified</th><th>Reqs</th><th>Review</th></tr></thead><tbody>${rows}</tbody></table></div></div>
+    ${J ? extractView(J) : '<p class="muted" style="margin-top:12px">Select an opening to see how its description was turned into structured requirements.</p>'}`;
+}
+function extractView(J){
+  const reqs = J.reqs.map(([id,l,note]) => `<div class="req"><span class="s ${l==='R'?'gap':l==='P'?'get':'after'}" style="font-size:11px;font-weight:700" aria-hidden="true">${l}</span><div><b>${esc(SK[id].label)}</b> <span class="lvl">${lvlName(l)}</span><div class="note">${esc(note||'')}</div></div></div>`).join('');
+  let src;
+  if(J.jd.raw){ let t = esc(J.jd.raw); ['6:30 a.m.','lift up to 50 lbs','four-person crew','mowers, trimmers and hand tools','valid driver’s license'].forEach(k => { t = t.replace(esc(k), m => `<mark class="hl">${m}</mark>`); }); src = `<div class="quote"><b>Uploaded job description</b>${t}</div>`; }
+  else src = [['Education', J.jd.edu],['Experience',J.jd.exp],['Licensure & certification',J.jd.lic],['Special requirements',J.jd.spec]].filter(x=>x[1]).map(([k,v]) => `<div class="quote"><b>${k}</b>${esc(v)}</div>`).join('') + (J.gov?`<div class="muted" style="font-size:12.5px">From the City's job description: ${esc(J.jd.src)}</div>`:`<div class="muted" style="font-size:12.5px">${esc(J.jd.src)}</div>`);
+  return `<div class="card" style="margin-top:14px"><div class="row spread"><div><h2 class="h2">Requirement extraction: ${esc(J.title)}</h2><div class="muted">${esc(J.employer)} · ${J.reqs.length} requirements found</div></div>${J.reviewed?chip('Spot-checked','ok'):`<button class="btn sm sys" data-act="review" data-id="${J.id}">Mark as spot-checked</button>`}</div>
+    <div class="extract" style="margin-top:12px"><div><h3 class="h3">What the posting says</h3>${src}</div><div><h3 class="h3">What the system understood</h3>${reqs}<div class="muted" style="font-size:12.5px;margin-top:6px"><b>R</b> required now · <b>P</b> preferred · <b>H</b> can be earned after hire</div></div></div></div>`;
+}
+function dataSkills(){
+  const all = [...S.jobs];
+  const rows = DATA.skills.map(s => {
+    const R = all.filter(j=>j.reqs.some(r=>r[0]===s.id&&r[1]==='R')).length, P = all.filter(j=>j.reqs.some(r=>r[0]===s.id&&r[1]==='P')).length, H = all.filter(j=>j.reqs.some(r=>r[0]===s.id&&r[1]==='H')).length;
+    const have = DATA.applicants.filter(a=>a.skills[s.id]==='have').length;
+    return {s,R,P,H,have, tot:R+P+H};
+  }).sort((a,b)=>b.tot-a.tot);
+  const body = rows.map(r => `<tr><td><b>${esc(r.s.label)}</b></td><td class="muted">${esc(DATA.cats[r.s.cat])}</td><td class="mono">${r.R}</td><td class="mono">${r.P}</td><td class="mono">${r.H}</td><td class="mono">${r.have} of ${DATA.applicants.length}</td></tr>`).join('');
+  return `<div class="card" style="padding:0"><div style="padding:16px 16px 0"><h2 class="h2">Skills across all openings</h2><p class="muted" style="margin:4px 0 12px">The shared vocabulary that the checklist, the fit check and the ranking all use. The last column shows how many of the ${DATA.applicants.length} sample applicants have each skill, which points to where training would help most.</p></div><div class="scroll-x"><table class="tbl"><thead><tr><th>Skill</th><th>Type</th><th>Required in</th><th>Preferred in</th><th>After hire in</th><th>Sample applicants who have it</th></tr></thead><tbody>${body}</tbody></table></div></div>`;
+}
+
+/* =====================================================================
+   actions
+   ===================================================================== */
+function setStatus(app, status, reason){
+  app.status = status; if(reason) app.reason = reason;
+  if(app.who==='you'){
+    const j = job(app.job);
+    const t = {received:`${j.employer} received your application for ${j.title}. Reply HELP to talk to a person.`,
+      review:`Your application for ${j.title} at ${j.employer} is now under review.`,
+      interview:`Good news: ${j.employer} invited you to interview for ${j.title}. ${DATA.profile.navigator.split(',')[0]} can help you prepare. This is not a job offer.`,
+      closed:`${j.employer} closed your application for ${j.title}: ${reason||'no reason given'}. You can apply to other jobs any time.`}[status];
+    if(t) sms(t);
+  }
+}
+function render(){
+  document.querySelectorAll('.tab').forEach(t => { const on = t.dataset.v===S.tab; t.setAttribute('aria-selected', on); t.tabIndex = on?0:-1; });
+  ['applicants','employers','data'].forEach(k => { $('#panel-'+k).hidden = k!==S.tab; });
+  if(S.tab==='applicants') renderApplicants(); else if(S.tab==='employers') renderEmployers(); else renderData();
+}
+function go(step){ S.step = step; render(); $('#tab-applicants').scrollIntoView({block:'start'}); }
+
+document.addEventListener('click', e => {
+  const el = e.target.closest('[data-act]'); if(!el) return;
+  const a = el.dataset.act, id = el.dataset.id, v = el.dataset.v;
+  if(['pick','apply','consent','share','ready','notify','search','dsearch','emp'].includes(a)) return; // handled on change/input
+  switch(a){
+    case 'tab': S.tab = v; render(); break;
+    case 'step': go(+v); break;
+    case 'next': go(Math.min(5, S.step+1)); break;
+    case 'prev': go(Math.max(1, S.step-1)); break;
+    case 'filter': S.filter = v; render(); break;
+    case 'skill': if(v==='no') delete S.skills[id]; else S.skills[id] = v; S.fromResume.delete(id); render(); break;
+    case 'drop': S.picked.delete(id); render(); toast('Removed from your list'); break;
+    case 'submit': {
+      const have = new Set(S.mineApps.map(x=>x.job));
+      pick().filter(j => S.apply[j.id] !== false && !have.has(j.id)).forEach((j,i) => {
+        const app = {id:'me'+j.id, job:j.id, who:'you', date:'Oct 9', status: j.channel==='handoff' ? 'handoff' : 'received', reason:''};
+        S.mineApps.push(app);
+        sms(j.channel==='handoff' ? `We pre-filled your ${j.title} application at ${j.employer}. Finish it on their site, then tap "I finished it" here.` : `${j.employer} received your application for ${j.title}. Reply HELP to talk to a person.`);
+      });
+      S.step = 5; render(); toast('Applications sent'); $('#tab-applicants').scrollIntoView({block:'start'}); break; }
+    case 'finished': { const ap = S.mineApps.find(x=>x.id===id); setStatus(ap,'received'); render(); toast('Marked as received'); break; }
+    case 'selfint': { const ap = S.mineApps.find(x=>x.id===id); setStatus(ap,'interview'); render(); toast('Interview recorded'); break; }
+    case 'more': S.step = 1; render(); break;
+    case 'emp': break;
+    case 'empjob': S.empJob = id; S.selApp = null; S.declining = false; render(); break;
+    case 'selapp': S.selApp = id; S.declining = false; render(); break;
+    case 'sort': S.sort = v; render(); break;
+    case 'decide': { const ap = findApp(id); setStatus(ap, v); render(); toast(v==='interview'?'Interview invitation sent':'Marked under review'); break; }
+    case 'startdecline': S.declining = true; render(); break;
+    case 'canceldecline': S.declining = false; render(); break;
+    case 'decline': { const ap = findApp(id); setStatus(ap,'closed', $('#why').value); S.declining = false; render(); toast('Response recorded'); break; }
+    case 'dsub': S.dsub = v; render(); break;
+    case 'dfilter': S.dfilter = v; render(); break;
+    case 'dsel': S.dsel = id; render(); break;
+    case 'review': { job(id).reviewed = true; render(); toast('Marked as spot-checked'); break; }
+    case 'upload': runUpload(); break;
+  }
+});
+document.addEventListener('keydown', e => {
+  const tr = e.target.closest('tr[data-act="dsel"]');
+  if(tr && (e.key==='Enter'||e.key===' ')){ e.preventDefault(); S.dsel = tr.dataset.id; render(); }
+  const tab = e.target.closest('.tab');
+  if(tab && (e.key==='ArrowRight'||e.key==='ArrowLeft')){
+    const order = ['applicants','employers','data']; const i = order.indexOf(S.tab);
+    S.tab = order[(i + (e.key==='ArrowRight'?1:2)) % 3]; render(); $('#tab-'+S.tab).focus();
+  }
+});
+document.addEventListener('change', e => {
+  const el = e.target.closest('[data-act]'); if(!el) return;
+  const a = el.dataset.act, id = el.dataset.id;
+  if(a==='pick'){ el.checked ? S.picked.add(id) : S.picked.delete(id); renderApplicants(); const n = document.querySelector('input[data-act="pick"][data-id="'+id+'"]'); if(n) n.focus({preventScroll:true}); }
+  else if(a==='apply'){ S.apply[id] = el.checked; renderApplicants(); }
+  else if(a==='consent'){ S.consent = el.checked; renderApplicants(); }
+  else if(a==='share'){ S.share = el.checked; }
+  else if(a==='notify'){ S.notify = el.dataset.v; renderApplicants(); }
+  else if(a==='ready'){ S.readyOnly = el.checked; renderEmployers(); }
+  else if(a==='emp'){ S.emp = el.value; S.empJob = null; S.selApp = null; S.declining = false; renderEmployers(); }
+});
+document.addEventListener('input', e => {
+  const el = e.target.closest('[data-act]'); if(!el) return;
+  if(el.dataset.act==='search'){ S.q = el.value; const pos = el.selectionStart; renderApplicants(); const n = $('.search'); n.focus(); n.setSelectionRange(pos,pos); }
+  if(el.dataset.act==='dsearch'){ S.dq = el.value; const pos = el.selectionStart; renderData(); const n = $('.search'); n.focus(); n.setSelectionRange(pos,pos); }
+});
+function findApp(id){ return S.apps.find(a=>a.id===id) || S.mineApps.find(a=>a.id===id); }
+
+function runUpload(){
+  if(S.uploaded || S.uploadStage) return;
+  S.uploadStage = 1; renderData();
+  setTimeout(()=>{ S.uploadStage = 2; renderData(); }, 900);
+  setTimeout(()=>{ S.uploadStage = 3; renderData(); }, 1800);
+  setTimeout(()=>{
+    S.jobs.push({...DATA.upload}); DATA.upApps.forEach(a => S.apps.push({...a}));
+    S.uploaded = true; S.uploadStage = 0; S.dsel = DATA.upload.id; S.dfilter = 'all'; renderData();
+    toast('Added: Landscape Crew Member. Requirements are waiting for a spot-check.');
+  }, 2700);
+}
+
+// demo hooks for testing
+window.PORTAL = {S, fit, DATA};
+render();
+</script>
+</body>
+</html>
