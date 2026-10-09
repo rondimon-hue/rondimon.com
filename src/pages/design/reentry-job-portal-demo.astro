@@ -141,6 +141,18 @@ svg.ic{width:1.05em;height:1.05em;vertical-align:-.15em;flex:none}
 .req .note{color:var(--muted);font-size:13px}
 .lvl{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
 .help{background:var(--soft);border-radius:8px;padding:10px 12px;font-size:13.5px;margin-top:10px}
+.train{margin-top:12px;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+.train summary{cursor:pointer;font-weight:700;padding:11px 14px;min-height:44px;display:flex;align-items:center;gap:8px;list-style:none}
+.train summary::-webkit-details-marker{display:none}
+.train summary::before{content:"";width:8px;height:8px;border-right:2.5px solid currentColor;border-bottom:2.5px solid currentColor;transform:rotate(-45deg);transition:transform .15s;flex:none;margin-right:4px}
+.train[open] summary::before{transform:rotate(45deg)}
+.train .tin{padding:2px 14px 14px}
+.tr{padding:10px 0;border-top:1px solid var(--line);font-size:14px}
+.tr:first-child{border-top:0}
+.tr .tn{font-weight:700}
+.tr .how{margin-top:2px}
+.tr .when{color:var(--muted);font-size:13px;margin-top:2px}
+.prog-line{background:var(--soft);border-radius:8px;padding:10px 12px;font-size:13.5px;margin-bottom:6px}
 .cond{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
 .switch{display:flex;align-items:center;gap:10px;font-weight:600;cursor:pointer;min-height:44px}
 .switch input{width:22px;height:22px;accent-color:var(--cand)}
@@ -305,7 +317,7 @@ const STAGE_IDX = {handoff:0, received:1, review:2, interview:3, closed:4};
 const S = {
   tab:'applicants', step:1, filter:'all', q:'',
   picked:new Set(), skills:{...DATA.profile.skills}, fromResume:new Set(DATA.profile.fromResume),
-  apply:{}, consent:false, share:true, notify:'text',
+  apply:{}, trainOpen:new Set(), consent:false, share:true, notify:'text',
   msgs:[], mineApps:[],
   jobs:DATA.jobs.slice(), apps:DATA.apps.map(a => ({...a})),
   emp:'City of Santa Fe', empJob:null, selApp:null, sort:'fit', readyOnly:false, declining:false,
@@ -413,6 +425,48 @@ function stepSkills(){
     <div class="actionbar"><button class="btn" data-act="prev">Back</button><button class="btn primary" data-act="next">See how you fit ${IC.arrow}</button></div>`;
 }
 
+
+/* what it takes to get each skill; deadlines for after-hire items come from the City job descriptions */
+const GET = {
+  hsged:['Work toward a GED or high school equivalency through an adult education program.','Ask your navigator about classes near you. Many programs let you start any month.'],
+  dl:['Get or reinstate a New Mexico driver’s license at the MVD. Fines or holds may need to be cleared first.','Your navigator can help sort out what is blocking it.'],
+  cityperm:['The City issues its driving permit after you are hired.','Required within 3 months of starting. You do not need it to apply.'],
+  cdl:['The City sponsors the CDL training and test after you are hired.','Deadline in the job description: 8 weeks to 6 months from the start date, depending on the job. You do not need it to apply.'],
+  cpr:['Take a short CPR / First Aid class. Many are one day.','Due within 3 to 6 months of starting. You do not need it to apply.'],
+  food:['Get a food handler card through a short course.','Due within 30 days of starting. You do not need it to apply.'],
+  x_custodial:['Count any cleaning or housekeeping work, including paid, volunteer or jobs done while incarcerated or in a program. Put it on your resume.','If you have none, ask about the City’s on-the-job safety orientation and training.'],
+  x_food:['Count kitchen work of any kind: restaurant, shelter, program or institutional kitchens.','A food handler card helps show you are ready.'],
+  x_grounds:['Count yard, building, maintenance or equipment work of any kind, paid or volunteer.','Basic safety and tool use are taught on the job.'],
+  x_labor:['Count construction, moving, loading or other physical work, paid or not.','Basic safety orientation is part of hiring.'],
+  x_cs:['Count any work with the public: counter, phone, front desk, volunteering, church or community roles.','A short customer service class can fill the gap.'],
+  x_clerical:['Count filing, data entry, answering phones or helping in an office, including volunteer work.','Basic computer classes help.'],
+  x_enforce:['Count security, safety or monitoring roles. Public enforcement is often learned in the agency’s own orientation.','Ask the hiring contact what the orientation covers.'],
+  x_equip:['Count any driving or equipment operation. Forklifts, mowers and vans all count.','A defensive driving course can help if you are newer to driving for work.'],
+  x_cash:['Count any register, cash box or money handling, including at events or fundraisers.','Employers usually teach their own register system.'],
+  x_stock:['Count stocking, inventory or warehouse work of any kind, paid or volunteer.','Employers usually teach their own system on the first days.'],
+  s_lift:['Build up to the lifting amount in the posting. It is usually a physical ability, not a certificate.','Walking, carrying and gym work all help. Ask if they accept a short on-site tryout.'],
+  s_tools:['Practice with common hand and power tools. A short safety orientation is usually part of hiring.','Volunteer build or repair days are a way to get hands-on time.'],
+  s_comp:['Learn basic computer use and data entry: typing, email, forms.','Free basic computer classes are often offered through public libraries and adult education.'],
+  s_comm:['Practice clear speaking, writing and using a phone or radio.','Mock calls and interview practice with your navigator count.'],
+  s_team:['Show examples of working with others: a crew, a program, a kitchen, a shelter.','This is usually shown in the interview, not learned in a class.'],
+  s_detail:['Show you can follow written steps, check your work and keep records.','Checklists and logs from past work or a program are good examples.'],
+  a_shifts:['This is about your schedule, not training. Check transportation and childcare for evenings, weekends or on-call hours.','Your navigator can help line up rides and care before you apply.'],
+  a_early:['This is about your schedule, not training. Overnight or very early shifts need a ride that works at those hours.','Your navigator can help line up transportation before you apply.']
+};
+function trainingBlock(j, f){
+  const order = {gap:0, get:1, after:2};
+  const rows = f.items.filter(i => i.st!=='have').sort((a,b) => order[a.st]-order[b.st] || 'RPH'.indexOf(a.lvl)-'RPH'.indexOf(b.lvl));
+  if(!rows.length) return '';
+  const n = rows.filter(r => r.st!=='after').length;
+  const label = f.gaps ? `What training is needed (${n})` : n ? `Skills to build (${n})` : 'What you can earn after you are hired';
+  const prog = j.gov ? `<div class="prog-line"><b>Program this job points to:</b> ${esc(j.training)}</div>` : `<div class="prog-line"><b>This employer:</b> ${esc(j.training)}. You do not need to arrive with every skill.</div>`;
+  const items = rows.map(r => {
+    const g = GET[r.id] || ['Ask your navigator what would help.',''];
+    const tag = r.st==='after' ? chip('After you are hired','sys') : r.st==='get' ? chip('You said you can get this','warn') : r.lvl==='R' ? chip('Required','bad') : chip('Preferred','warn');
+    return `<div class="tr"><div class="row"><span class="tn">${esc(SK[r.id].label)}</span>${tag}</div><div class="how">${esc(g[0])}</div>${g[1]?`<div class="when">${esc(g[1])}</div>`:''}</div>`;
+  }).join('');
+  return `<details class="train" data-tk="${j.id}" ${S.trainOpen.has(j.id)?'open':''}><summary>${label}</summary><div class="tin">${prog}${items}</div></details>`;
+}
 function stepFit(){
   const jobs = pick();
   if(!jobs.length) return `<div class="empty">Pick at least one job first.</div>`;
@@ -427,7 +481,7 @@ function stepFit(){
     }).join('');
     const conds = j.conditions.map(c => chip(esc(c), /background/i.test(c)?'warn':'')).join('');
     const bg = j.conditions.some(c=>/background/i.test(c));
-    const help = f.gaps ? `<div class="help"><b>Close the gap:</b> ${j.gov ? esc(j.training) : 'The employer trains on the job. Mention any related experience.'} ${j.gov?'':''}</div>` : '';
+    const help = trainingBlock(j, f);
     const bgnote = bg ? `<div class="help" style="background:var(--warn-soft);color:var(--warn)"><b>Talk with your navigator first.</b> This posting states a background check. ${esc(DATA.profile.navigator.split(',')[0])} can walk you through how it applies before you apply. The portal never asks about your record.</div>` : '';
     return `<div class="card fit"><div class="top"><div style="min-width:0"><div class="t" style="font-weight:700;font-size:17px">${esc(j.title)}</div><div class="muted">${esc(j.employer)} ${j.gov?chip('City HR posting','gov'):chip('Sample','sample')}</div></div>
       <div style="min-width:200px;flex:1;max-width:320px"><div class="row spread"><b>Meets ${f.rm} of ${f.rt} required</b>${chip(rl,rc)}</div><div class="meter ${cls}" style="margin-top:6px" role="img" aria-label="Fit ${f.score} percent"><i style="width:${f.score}%"></i></div></div></div>
@@ -690,6 +744,7 @@ document.addEventListener('input', e => {
   if(el.dataset.act==='search'){ S.q = el.value; const pos = el.selectionStart; renderApplicants(); const n = $('.search'); n.focus(); n.setSelectionRange(pos,pos); }
   if(el.dataset.act==='dsearch'){ S.dq = el.value; const pos = el.selectionStart; renderData(); const n = $('.search'); n.focus(); n.setSelectionRange(pos,pos); }
 });
+document.addEventListener('toggle', e => { const d = e.target; if(d.matches && d.matches('details.train')){ d.open ? S.trainOpen.add(d.dataset.tk) : S.trainOpen.delete(d.dataset.tk); } }, true);
 function findApp(id){ return S.apps.find(a=>a.id===id) || S.mineApps.find(a=>a.id===id); }
 
 function runUpload(){
