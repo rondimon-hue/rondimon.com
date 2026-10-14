@@ -1,0 +1,85 @@
+---
+// The poster itself is a self-contained export (public/design/enterprise-technology-landscape-poster.html).
+// This page wraps it in a pan-and-zoom viewer, since the canvas is 3800 x 2900.
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Enterprise Technology Landscape 2026 | Ron Dimon</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <style is:global>
+    html,body{margin:0;height:100%;background:#E9E6DF;font-family:system-ui,-apple-system,'Segoe UI',sans-serif;color:#1E2A32}
+    .bar{position:fixed;top:0;left:0;right:0;height:52px;display:flex;align-items:center;gap:10px;padding:0 14px;background:#fff;border-bottom:1px solid #D8D3C8;z-index:5}
+    .bar a{color:#1E2A32;text-decoration:none;font-size:14px;white-space:nowrap}
+    .bar a:hover{text-decoration:underline}
+    .bar .t{font-weight:700;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+    .bar .sp{flex:1}
+    .bar .hint{font-size:12.5px;color:#5B6A74;white-space:nowrap}
+    .bar button{border:1px solid #D8D3C8;background:#fff;border-radius:8px;min-width:40px;height:36px;padding:0 10px;font:inherit;font-size:13.5px;font-weight:600;cursor:pointer}
+    .bar button:hover{border-color:#1E2A32}
+    .bar button[aria-pressed=true]{background:#1E2A32;color:#fff;border-color:#1E2A32}
+    .bar button:focus-visible,.bar a:focus-visible{outline:3px solid #1D4ED8;outline-offset:2px}
+    #view{position:fixed;top:52px;left:0;right:0;bottom:0;overflow:auto;cursor:grab;-webkit-overflow-scrolling:touch}
+    #view.drag{cursor:grabbing;user-select:none}
+    #stage{position:relative;margin:0}
+    #poster{position:absolute;top:0;left:0;width:3800px;height:2900px;border:0;transform-origin:0 0;background:#fff;box-shadow:0 2px 18px rgba(0,0,0,.18)}
+    #view.drag #poster{pointer-events:none}
+    @media (max-width:760px){.bar .hint{display:none}.bar .t{font-size:13px}.bar .opt{display:none}}
+  </style>
+</head>
+<body>
+  <div class="bar" role="toolbar" aria-label="Zoom">
+    <a href="/design">&larr; Design</a>
+    <span class="t">Enterprise Technology Landscape 2026</span>
+    <span class="sp"></span>
+    <span class="hint" id="hint">Zoom in to read vendor names. Drag to pan.</span>
+    <button id="zout" aria-label="Zoom out">&minus;</button>
+    <button id="zfit" aria-pressed="true">Fit</button>
+    <button class="opt" id="z50" aria-pressed="false">50%</button>
+    <button class="opt" id="z100" aria-pressed="false">100%</button>
+    <button id="zin" aria-label="Zoom in">+</button>
+  </div>
+  <div id="view"><div id="stage"><iframe id="poster" src="/design/enterprise-technology-landscape-poster.html" title="Enterprise Technology Landscape 2026" loading="eager"></iframe></div></div>
+
+  <script is:inline>
+    (function(){
+      var W = 3800, H = 2900, view = document.getElementById('view'), stage = document.getElementById('stage'), f = document.getElementById('poster');
+      var s = 1, mode = 'fit';
+      var fitScale = function(){ return Math.max(.1, view.clientWidth / W); };
+      function apply(ns, keep){
+        // keep the point at the centre of the viewport stable while zooming
+        var cx = (view.scrollLeft + view.clientWidth / 2) / s, cy = (view.scrollTop + view.clientHeight / 2) / s;
+        s = ns;
+        f.style.transform = 'scale(' + s + ')';
+        stage.style.width = Math.round(W * s) + 'px';
+        stage.style.height = Math.round(H * s) + 'px';
+        if(keep){ view.scrollLeft = cx * s - view.clientWidth / 2; view.scrollTop = cy * s - view.clientHeight / 2; }
+        else { view.scrollLeft = 0; view.scrollTop = 0; }
+        document.getElementById('zfit').setAttribute('aria-pressed', mode === 'fit');
+        document.getElementById('z50').setAttribute('aria-pressed', mode === 'num' && Math.abs(s - .5) < .001);
+        document.getElementById('z100').setAttribute('aria-pressed', mode === 'num' && Math.abs(s - 1) < .001);
+      }
+      function setFit(){ mode = 'fit'; apply(fitScale(), false); }
+      function setNum(n, keep){ mode = 'num'; apply(Math.min(2, Math.max(fitScale() * .9, n)), keep !== false); }
+      document.getElementById('zfit').onclick = setFit;
+      document.getElementById('z50').onclick = function(){ setNum(.5); };
+      document.getElementById('z100').onclick = function(){ setNum(1); };
+      document.getElementById('zin').onclick = function(){ setNum(s * 1.25); };
+      document.getElementById('zout').onclick = function(){ setNum(s / 1.25); };
+      window.addEventListener('resize', function(){ if(mode === 'fit') setFit(); });
+      // ctrl/cmd + wheel zooms (also trackpad pinch)
+      view.addEventListener('wheel', function(e){ if(e.ctrlKey || e.metaKey){ e.preventDefault(); setNum(s * (e.deltaY < 0 ? 1.1 : 1 / 1.1)); } }, {passive:false});
+      // drag to pan with a mouse
+      var d = null;
+      view.addEventListener('pointerdown', function(e){ if(e.pointerType !== 'mouse' || e.button) return; d = {x:e.clientX, y:e.clientY, l:view.scrollLeft, t:view.scrollTop}; view.classList.add('drag'); view.setPointerCapture(e.pointerId); });
+      view.addEventListener('pointermove', function(e){ if(!d) return; view.scrollLeft = d.l - (e.clientX - d.x); view.scrollTop = d.t - (e.clientY - d.y); });
+      function end(){ d = null; view.classList.remove('drag'); }
+      view.addEventListener('pointerup', end); view.addEventListener('pointercancel', end);
+      setFit();
+    })();
+  </script>
+</body>
+</html>
