@@ -659,9 +659,9 @@
 
 <script is:inline>
   // ============================================================
-  // CONFIG — set this once, see the handoff comment at the top
+  // CONFIG — responses go to a Google Sheet via Apps Script
   // ============================================================
-  const FORM_ENDPOINT = "REPLACE_WITH_YOUR_FORMSPREE_ENDPOINT"; // e.g. "https://formspree.io/f/abcd1234"
+  const FORM_ENDPOINT = "https://script.google.com/macros/s/AKfycbwP4Z-2_iSxN_b1emxLAU9cEENDAi1hrllAyHREgvDyeZdhU8s4mM75tW08oTLxBQc/exec"; // Google Apps Script web app, see google-apps-script/pkn-survey.gs
 
   // ---- "Other" field reveal/require ----
   // Checkboxes: listen on the box itself. Radios: listen on every radio in
@@ -746,7 +746,10 @@
       body: data,
       headers: { 'Accept': 'application/json' }
     }).then(function (res) {
-      if (res.ok) {
+      // Apps Script reports its own errors as a 200 HTML page, so check the JSON body
+      return res.ok ? res.json() : {};
+    }).then(function (body) {
+      if (body.result === 'ok') {
         form.style.display = 'none';
         document.querySelector('.stepper').style.display = 'none';
         thanksPanel.classList.add('show');
