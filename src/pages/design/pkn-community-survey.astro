@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Help shape what comes next — Pecha Kucha Night Santa Fe</title>
+<meta name="description" content="A short survey for the Pecha Kucha Night community, from Creative Santa Fe.">
+<meta property="og:title" content="Help shape what comes next — PKN Santa Fe">
+<meta property="og:description" content="A 5-minute survey for the Pecha Kucha Night community.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style is:global>
+  :root {
+    --ink: #22262F;
+    --ink-soft: #4A5059;
+    --paper: #F2ECDE;
+    --paper-raised: #FBF8F0;
+    --line: #D6CEB9;
+    --accent: #3E7C74;
+    --accent-dim: #2C5B55;
+    --ember: #C98A3D;
+    --white: #FFFEFB;
+    --error: #A8432E;
+    --radius: 3px;
+    --max-w: 42rem;
+  }
+
+  * { box-sizing: border-box; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-fade { animation: fadeUp .7s ease-out both; }
+    .hero-fade.delay { animation-delay: .12s; }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, .display {
+    font-family: "Fraunces", Georgia, serif;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: inherit;
+    margin: 0;
+  }
+
+  a { color: var(--accent-dim); }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    background: var(--ink);
+    color: var(--paper);
+    position: relative;
+    overflow: hidden;
+    padding: 3.5rem 1.5rem 3.25rem;
+  }
+  .hero::before,
+  .hero::after,
+  .hero .star {
+    content: "";
+    position: absolute;
+    width: 3px; height: 3px;
+    background: var(--ember);
+    border-radius: 50%;
+    opacity: .55;
+  }
+  .hero::before { top: 18%; left: 12%; }
+  .hero::after  { top: 62%; left: 86%; width: 2px; height: 2px; }
+  .hero .star1 { top: 32%; left: 78%; }
+  .hero .star2 { top: 74%; left: 20%; width: 2px; height: 2px; }
+  .hero .star3 { top: 12%; left: 55%; width: 2px; height: 2px; }
+
+  .hero-inner { max-width: var(--max-w); margin: 0 auto; position: relative; }
+  .kicker {
+    font-size: .8125rem;
+    color: #C9C3B4;
+    margin: 0 0 .9rem;
+    font-weight: 500;
+  }
+  .hero h1 {
+    font-size: clamp(1.9rem, 5vw, 2.6rem);
+    line-height: 1.12;
+    max-width: 18ch;
+  }
+  .hero p {
+    margin: 1.1rem 0 0;
+    max-width: 44ch;
+    color: #E3DFD2;
+    font-size: 1.0625rem;
+  }
+  .hero .meta {
+    margin-top: 1.6rem;
+    font-size: .875rem;
+    color: #ABA691;
+  }
+
+  /* ---------- Progress stepper ---------- */
+  .stepper {
+    position: sticky; top: 0; z-index: 10;
+    background: var(--paper);
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    justify-content: center;
+    padding: .6rem 1rem;
+  }
+  .stepper-track {
+    display: flex;
+    gap: .4rem;
+    max-width: var(--max-w);
+    width: 100%;
+  }
+  .stepper-seg {
+    flex: 1;
+    height: 3px;
+    background: var(--line);
+    border-radius: 2px;
+    transition: background .25s ease;
+  }
+  .stepper-seg.active { background: var(--accent); }
+
+  /* ---------- Layout ---------- */
+  main { max-width: var(--max-w); margin: 0 auto; padding: 2.75rem 1.5rem 1rem; }
+  form { display: block; }
+
+  section.q-section {
+    padding: 2.25rem 0 2.5rem;
+    border-bottom: 1px solid var(--line);
+  }
+  section.q-section:last-of-type { border-bottom: none; }
+
+  .section-head {
+    display: flex;
+    gap: 1rem;
+    align-items: baseline;
+    margin-bottom: .4rem;
+  }
+  .section-num {
+    font-family: "Fraunces", serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 1rem;
+    color: var(--ember);
+    flex: none;
+  }
+  .section-head h2 { font-size: 1.375rem; }
+  .section-sub {
+    margin: .4rem 0 0 1.9rem;
+    color: var(--ink-soft);
+    font-size: .9375rem;
+    max-width: 48ch;
+  }
+
+  .question {
+    margin-top: 1.9rem;
+    padding-left: 1.9rem;
+  }
+  .q-label {
+    font-size: 1.0625rem;
+    font-weight: 500;
+    margin: 0 0 .7rem;
+  }
+  .q-num { color: var(--ink-soft); font-weight: 400; margin-right: .35rem; }
+  .q-help { font-size: .875rem; color: var(--ink-soft); margin: -.4rem 0 .7rem; }
+
+  /* ---------- Controls ---------- */
+  .choice-list { display: grid; gap: .55rem; }
+  .choice {
+    display: flex;
+    align-items: flex-start;
+    gap: .65rem;
+    padding: .7rem .85rem;
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: border-color .15s ease, background .15s ease;
+  }
+  .choice:has(input:checked) {
+    border-color: var(--accent);
+    background: #EAF2F0;
+  }
+  .choice input { margin-top: .2rem; accent-color: var(--accent); flex: none; }
+  .choice span { font-size: .975rem; }
+
+  .other-text {
+    margin-top: .55rem;
+    margin-left: 0;
+    display: none;
+  }
+  .other-text.show { display: block; }
+
+  input[type="text"], textarea {
+    width: 100%;
+    font-family: inherit;
+    font-size: .975rem;
+    padding: .65rem .8rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--paper-raised);
+    color: var(--ink);
+  }
+  textarea { min-height: 5rem; resize: vertical; }
+  input[type="text"]:focus, textarea:focus, .choice input:focus-visible,
+  button:focus-visible, .likert input:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .likert-wrap { display: flex; flex-direction: column; gap: .5rem; }
+  .likert-scale {
+    display: flex;
+    gap: .5rem;
+  }
+  .likert-scale label {
+    flex: 1;
+    text-align: center;
+  }
+  .likert-scale input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .likert-scale span {
+    display: block;
+    padding: .55rem 0;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--paper-raised);
+    font-size: .9375rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: border-color .15s ease, background .15s ease, color .15s ease;
+  }
+  .likert-scale input:checked + span {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: var(--white);
+  }
+  .likert-ends {
+    display: flex;
+    justify-content: space-between;
+    font-size: .8125rem;
+    color: var(--ink-soft);
+  }
+
+  .optional-tag {
+    font-size: .75rem;
+    color: var(--ink-soft);
+    font-weight: 400;
+  }
+
+  /* ---------- Submit ---------- */
+  .submit-area { padding: 2.25rem 0 1rem; }
+  button[type="submit"] {
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--white);
+    background: var(--accent);
+    border: none;
+    border-radius: var(--radius);
+    padding: .85rem 1.6rem;
+    cursor: pointer;
+    transition: background .15s ease, opacity .15s ease;
+  }
+  button[type="submit"]:hover { background: var(--accent-dim); }
+  button[type="submit"]:disabled { opacity: .6; cursor: default; }
+
+  .fallback {
+    margin-top: .9rem;
+    font-size: .8125rem;
+    color: var(--ink-soft);
+  }
+  .fallback a { color: var(--ink-soft); text-decoration: underline; }
+
+  .error-banner {
+    display: none;
+    margin-top: 1.1rem;
+    padding: .8rem 1rem;
+    background: #F5E4DD;
+    border: 1px solid var(--error);
+    color: var(--error);
+    border-radius: var(--radius);
+    font-size: .9rem;
+  }
+  .error-banner.show { display: block; }
+
+  /* ---------- Thank you ---------- */
+  .thanks {
+    display: none;
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 4rem 1.5rem 5rem;
+    text-align: left;
+  }
+  .thanks.show { display: block; }
+  .thanks h2 { font-size: 1.9rem; margin-bottom: .75rem; }
+  .thanks p { color: var(--ink-soft); max-width: 46ch; }
+
+  footer {
+    text-align: left;
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 1rem 1.5rem 3rem;
+    font-size: .8rem;
+    color: var(--ink-soft);
+  }
+
+  @media (max-width: 480px) {
+    .question { padding-left: 0; }
+    .section-sub { margin-left: 0; }
+    .section-head { gap: .6rem; }
+    .likert-scale { gap: .35rem; }
+    .likert-scale span { padding: .55rem 0; font-size: .875rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <span class="star star1"></span><span class="star star2"></span><span class="star star3"></span>
+  <div class="hero-inner">
+    <p class="kicker hero-fade">Creative Santa Fe · Pecha Kucha Night</p>
+    <h1 class="hero-fade">Help shape what comes next</h1>
+    <p class="hero-fade delay">Thanks for being part of this community. We're starting a simple, ongoing way to learn from the people who show up — not to grade any single night, but to understand what's actually working and where Creative Santa Fe should go from here.</p>
+    <p class="meta hero-fade delay">About 5 minutes · No wrong answers · Not tied to any one event or presenter</p>
+  </div>
+</div>
+
+<div class="stepper" aria-hidden="true">
+  <div class="stepper-track" id="stepperTrack">
+    <div class="stepper-seg" data-seg="0"></div>
+    <div class="stepper-seg" data-seg="1"></div>
+    <div class="stepper-seg" data-seg="2"></div>
+    <div class="stepper-seg" data-seg="3"></div>
+    <div class="stepper-seg" data-seg="4"></div>
+    <div class="stepper-seg" data-seg="5"></div>
+  </div>
+</div>
+
+<main>
+  <form id="pknForm">
+
+    <!-- hidden metadata fields for the form backend -->
+    <input type="hidden" name="_subject" value="PKN Community Survey response">
+    <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+
+    <!-- ===================== SECTION 1 — ABOUT YOU ===================== -->
+    <section class="q-section" id="sec-0" data-seg="0">
+      <div class="section-head">
+        <span class="section-num">I</span>
+        <h2>About you</h2>
+      </div>
+      <p class="section-sub">A few quick ones, so we can see how reach is growing — not to label you.</p>
+
+      <div class="question">
+        <p class="q-label"><span class="q-num">1.</span>How many Pecha Kucha Nights have you attended, including this coming one?</p>
+        <div class="choice-list" role="radiogroup" aria-label="Attendance history">
+          <label class="choice"><input type="radio" name="q1_attendance" value="First time" required><span>First time</span></label>
+          <label class="choice"><input type="radio" name="q1_attendance" value="2–5"><span>2–5</span></label>
+          <label class="choice"><input type="radio" name="q1_attendance" value="6 or more"><span>6 or more</span></label>
+        </div>
+      </div>
+
+      <div class="question">
+        <p class="q-label"><span class="q-num">2.</span>How did you first hear about PKN?</p>
+        <div class="choice-list" role="radiogroup" aria-label="How you heard about PKN" id="q2group">
+          <label class="choice"><input type="radio" name="q2_heard" value="Friend or word of mouth" required><span>Friend or word of mouth</span></label>
+          <label class="choice"><input type="radio" name="q2_heard" value="Social media"><span>Social media</span></label>
+          <label class="choice"><input type="radio" name="q2_heard" value="CSF newsletter"><span>CSF newsletter</span></label>
+          <label class="choice"><input type="radio" name="q2_heard" value="A past presenter"><span>A past presenter</span></label>
+          <label class="choice"><input type="radio" name="q2_heard" value="Other" data-other-toggle="q2other"><span>Other</span></label>
+        </div>
+        <input class="other-text" id="q2other" type="text" name="q2_heard_other" placeholder="Tell us where">
+      </div>
+
+      <div class="question">
+        <p class="q-label"><span class="q-num">3.</span>Are you involved with any other Creative Santa Fe programs? <span class="optional-tag">(select all that apply)</span></p>
+        <div class="choice-list">
+          <label class="choice"><input type="checkbox" name="q3_programs" value="Beyond Profit"><span>Beyond Profit</span></label>
+          <label class="choice"><input type="checkbox" name="q3_programs" value="Imagined Future"><span>Imagined Future</span></label>
+          <label class="choice"><input type="checkbox" name="q3_programs" value="Volunteer"><span>Volunteer</span></label>
+          <label class="choice"><input type="checkbox" name="q3_programs" value="Donor"><span>Donor</span></label>
+          <label class="choice"><input type="checkbox" name="q3_programs" value="Board"><span>Board</span></label>
+          <label class="choice"><input type="checkbox" name="q3_programs" value="None"><span>None</span></label>
+          <label class="choice"><input type="checkbox" name="q3_programs" value="Other" data-other-toggle="q3other"><span>Other</span></label>
+        </div>
+        <input class="other-text" id="q3other" type="text" name="q3_programs_other" placeholder="Which other program?">
+      </div>
+
+      <div class="question">
+        <p class="q-label"><span class="q-num">4.</span>What part of Santa Fe — or beyond — do you call home? <span class="optional-tag">(optional)</span></p>
+        <input type="text" name="q4_location" placeholder="Neighborhood, town, or zip code">
+      </div>
+    </section>
+
+    <!-- ===================== SECTION 2 — CONNECTION & BELONGING ===================== -->
+    <section class="q-section" id="sec-1" data-seg="1">
+      <div class="section-head">
+        <span class="section-num">II</span>
+        <h2>Connection &amp; belonging</h2>
+      </div>
+      <p class="section-sub">Rate how much you agree with each.</p>
+
+      <div class="question">
+        <p class="q-label" id="q5label"><span class="q-num">5.</span>I feel a sense of belonging when I'm at a PKN event.</p>
+        <div class="likert-wrap">
+          <div class="likert-scale" role="radiogroup" aria-labelledby="q5label">
+            <label><input type="radio" name="q5_belonging" value="1" required><span>1</span></label>
+            <label><input type="radio" name="q5_belonging" value="2"><span>2</span></label>
+            <label><input type="radio" name="q5_belonging" value="3"><span>3</span></label>
+            <label><input type="radio" name="q5_belonging" value="4"><span>4</span></label>
+            <label><input type="radio" name="q5_belonging" value="5"><span>5</span></label>
+          </div>
+          <div class="likert-ends"><span>Strongly disagree</span><span>Strongly agree</span></div>
+        </div>
+      </div>
+
+      <div class="question">
+        <p class="q-label" id="q6label"><span class="q-num">6.</span>I've made meaningful connections with other people through PKN.</p>
+        <div class="likert-wrap">
+          <div class="likert-scale" role="radiogroup" aria-labelledby="q6label">
+            <label><input type="radio" name="q6_connections" value="1" required><span>1</span></label>
+            <label><input type="radio" name="q6_connections" value="2"><span>2</span></label>
+            <label><input type="radio" name="q6_connections" value="3"><span>3</span></label>
+            <label><input type="radio" name="q6_connections" value="4"><span>4</span></label>
+            <label><input type="radio" name="q6_connections" value="5"><span>5</span></label>
+          </div>
+          <div class="likert-ends"><span>Strongly disagree</span><span>Strongly agree</span></div>
+        </div>
+      </div>
+
+      <div class="question">
+        <p class="q-label" id="q7label"><span class="q-num">7.</span>PKN feels like a place where my perspective is welcome.</p>
+        <div class="likert-wrap">
+          <div class="likert-scale" role="radiogroup" aria-labelledby="q7label">
+            <label><input type="radio" name="q7_welcome" value="1" required><span>1</span></label>
+            <label><input type="radio" name="q7_welcome" value="2"><span>2</span></label>
+            <label><input type="radio" name="q7_welcome" value="3"><span>3</span></label>
+            <label><input type="radio" name="q7_welcome" value="4"><span>4</span></label>
+            <label><input type="radio" name="q7_welcome" value="5"><span>5</span></label>
+          </div>
+          <div class="likert-ends"><span>Strongly disagree</span><span>Strongly agree</span></div>
+        </div>
+      </div>
+
+      <div class="question">
+        <p class="q-label" id="q8label"><span class="q-num">8.</span>I feel emotionally engaged, not just entertained, at PKN events.</p>
+        <div class="likert-wrap">
+          <div class="likert-scale" role="radiogroup" aria-labelledby="q8label">
+            <label><input type="radio" name="q8_engaged" value="1" required><span>1</span></label>
+            <label><input type="radio" name="q8_engaged" value="2"><span>2</span></label>
+            <label><input type="radio" name="q8_engaged" value="3"><span>3</span></label>
+            <label><input type="radio" name="q8_engaged" value="4"><span>4</span></label>
+            <label><input type="radio" name="q8_engaged" value="5"><span>5</span></label>
+          </div>
+          <div class="likert-ends"><span>Strongly disagree</span><span>Strongly agree</span></div>
+        </div>
+      </div>
+
+      <div class="question">
+        <p class="q-label" id="q9label"><span class="q-num">9.</span>I feel comfortable sharing my honest opinion in this setting.</p>
+        <div class="likert-wrap">
+          <div class="likert-scale" role="radiogroup" aria-labelledby="q9label">
+            <label><input type="radio" name="q9_honest" value="1" required><span>1</span></label>
+            <label><input type="radio" name="q9_honest" value="2"><span>2</span></label>
+            <label><input type="radio" name="q9_honest" value="3"><span>3</span></label>
+            <label><input type="radio" name="q9_honest" value="4"><span>4</span></label>
+            <label><input type="radio" name="q9_honest" value="5"><span>5</span></label>
+          </div>
+          <div class="likert-ends"><span>Strongly disagree</span><span>Strongly agree</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== SECTION 3 — TRUST & BRIDGING ===================== -->
+    <section class="q-section" id="sec-2" data-seg="2">
+      <div class="section-head">
+        <span class="section-num">III</span>
+        <h2>Trust &amp; bridging across difference</h2>
+      </div>
+      <p class="section-sub">Still a 1–5 scale.</p>
+
+      <div class="question">
+        <p class="q-label" id="q10label"><span class="q-num">10.</span>At PKN, I regularly encounter people whose backgrounds or views are different from mine.</p>
+        <div class="likert-wrap">
+          <div class="likert-scale" role="radiogroup" aria-labelledby="q10label">
+            <label><input type="radio" name="q10_difference" value="1" required><span>1</span></label>
+            <label><input type="radio" name="q10_difference" value="2"><span>2</span></label>
+            <label><input type="radio" name="q10_difference" value="3"><span>3</span></label>
+            <label><input type="radio" name="q10_difference" value="4"><span>4</span></label>
+            <label><input type="radio" name="q10_difference" value="5"><span>5</span></label>
+          </div>
+          <div class="likert-ends"><span>Strongly disagree</span><span>Strongly agree</span></div>
+        </div>
+      </div>
+
+      <div class="question">
+        <p class="q-label" id="q11label"><span class="q-num">11.</span>PKN is a space where different perspectives are treated with respect, even when people disagree.</p>
+        <div class="likert-wrap">
+          <div class="likert-scale" role="radiogroup" aria-labelledby="q11label">
+            <label><input type="radio" name="q11_respect" value="1" required><span>1</span></label>
+            <label><input type="radio" name="q11_respect" value="2"><span>2</span></label>
+            <label><input type="radio" name="q11_respect" value="3"><span>3</span></label>
+            <label><input type="radio" name="q11_respect" value="4"><span>4</span></label>
+            <label><input type="radio" name="q11_respect" value="5"><span>5</span></label>
+          </div>
+          <div class="likert-ends"><span>Strongly disagree</span><span>Strongly agree</span></div>
+        </div>
+      </div>
+
+      <div class="question">
+        <p class="q-label" id="q12label"><span class="q-num">12.</span>Attending PKN has made me more open to viewpoints I don't personally hold.</p>
+        <div class="likert-wrap">
+          <div class="likert-scale" role="radiogroup" aria-labelledby="q12label">
+            <label><input type="radio" name="q12_open" value="1" required><span>1</span></label>
+            <label><input type="radio" name="q12_open" value="2"><span>2</span></label>
+            <label><input type="radio" name="q12_open" value="3"><span>3</span></label>
+            <label><input type="radio" name="q12_open" value="4"><span>4</span></label>
+            <label><input type="radio" name="q12_open" value="5"><span>5</span></label>
+          </div>
+          <div class="likert-ends"><span>Strongly disagree</span><span>Strongly agree</span></div>
+        </div>
+      </div>
+
+      <div class="question">
+        <p class="q-label" id="q13label"><span class="q-num">13.</span>I trust Creative Santa Fe as an organization.</p>
+        <div class="likert-wrap">
+          <div class="likert-scale" role="radiogroup" aria-labelledby="q13label">
+            <label><input type="radio" name="q13_trust" value="1" required><span>1</span></label>
+            <label><input type="radio" name="q13_trust" value="2"><span>2</span></label>
+            <label><input type="radio" name="q13_trust" value="3"><span>3</span></label>
+            <label><input type="radio" name="q13_trust" value="4"><span>4</span></label>
+            <label><input type="radio" name="q13_trust" value="5"><span>5</span></label>
+          </div>
+          <div class="likert-ends"><span>Strongly disagree</span><span>Strongly agree</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== SECTION 4 — PERSONAL AGENCY & ACTION ===================== -->
+    <section class="q-section" id="sec-3" data-seg="3">
+      <div class="section-head">
+        <span class="section-num">IV</span>
+        <h2>Personal agency &amp; action</h2>
+      </div>
+      <p class="section-sub">This is the part that turns "belonging" into something concrete.</p>
+
+      <div class="question">
+        <p class="q-label"><span class="q-num">14.</span>Because of something you saw or learned at a PKN event, have you taken any action since — reached out to an organization, changed a habit, started a project, told someone else about it?</p>
+        <div class="choice-list" role="radiogroup" aria-label="Took action after PKN" id="q14group">
+          <label class="choice"><input type="radio" name="q14_action" value="Yes" required data-other-toggle="q14detail"><span>Yes</span></label>
+          <label class="choice"><input type="radio" name="q14_action" value="No" data-other-toggle="q14detail"><span>No</span></label>
+        </div>
+        <input class="other-text" id="q14detail" type="text" name="q14_action_detail" placeholder="What did you do?">
+      </div>
+
+      <div class="question">
+        <p class="q-label"><span class="q-num">15.</span>I can name at least one local organization I know about specifically because of PKN.</p>
+        <div class="choice-list" role="radiogroup" aria-label="Can name a local organization">
+          <label class="choice"><input type="radio" name="q15_orgaware" value="Yes" required><span>Yes</span></label>
+          <label class="choice"><input type="radio" name="q15_orgaware" value="No"><span>No</span></label>
+        </div>
+      </div>
+
+      <div class="question">
+        <p class="q-label" id="q16label"><span class="q-num">16.</span>I feel like I have a voice in shaping Santa Fe's civic and creative life.</p>
+        <div class="likert-wrap">
+          <div class="likert-scale" role="radiogroup" aria-labelledby="q16label">
+            <label><input type="radio" name="q16_voice" value="1" required><span>1</span></label>
+            <label><input type="radio" name="q16_voice" value="2"><span>2</span></label>
+            <label><input type="radio" name="q16_voice" value="3"><span>3</span></label>
+            <label><input type="radio" name="q16_voice" value="4"><span>4</span></label>
+            <label><input type="radio" name="q16_voice" value="5"><span>5</span></label>
+          </div>
+          <div class="likert-ends"><span>Strongly disagree</span><span>Strongly agree</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== SECTION 5 — LOOKING AHEAD ===================== -->
+    <section class="q-section" id="sec-4" data-seg="4">
+      <div class="section-head">
+        <span class="section-num">V</span>
+        <h2>Looking ahead</h2>
+      </div>
+      <p class="section-sub">This part shapes where Creative Santa Fe goes next.</p>
+
+      <div class="question">
+        <p class="q-label"><span class="q-num">17.</span>Which of these would you most want to see more of from Creative Santa Fe? <span class="optional-tag">(pick your top 2)</span></p>
+        <div class="choice-list" id="q17group">
+          <label class="choice"><input type="checkbox" name="q17_priorities" value="More PKN-style talks and quick stories"><span>More PKN-style talks and quick stories</span></label>
+          <label class="choice"><input type="checkbox" name="q17_priorities" value="Deeper workshops or discussions on specific local issues"><span>Deeper workshops or discussions on specific local issues</span></label>
+          <label class="choice"><input type="checkbox" name="q17_priorities" value="Direct ways to collaborate with presenters or local organizations"><span>Direct ways to collaborate with presenters or local organizations</span></label>
+          <label class="choice"><input type="checkbox" name="q17_priorities" value="More social or networking time built into events"><span>More social or networking time built into events</span></label>
+          <label class="choice"><input type="checkbox" name="q17_priorities" value="Programming focused on specific civic issues (e.g., homelessness, climate, housing)"><span>Programming focused on specific civic issues (e.g., homelessness, climate, housing)</span></label>
+          <label class="choice"><input type="checkbox" name="q17_priorities" value="Other" data-other-toggle="q17other"><span>Something else</span></label>
+        </div>
+        <input class="other-text" id="q17other" type="text" name="q17_priorities_other" placeholder="What else?">
+      </div>
+
+      <div class="question">
+        <p class="q-label"><span class="q-num">18.</span>What's one local issue you wish Santa Fe had more spaces to really talk through together?</p>
+        <textarea name="q18_issue" required></textarea>
+      </div>
+
+      <div class="question">
+        <p class="q-label"><span class="q-num">19.</span>If CSF built a year-long "incubator" bringing people together to work on one big local issue, would you want to be involved?</p>
+        <div class="choice-list" role="radiogroup" aria-label="Interest in a year-long incubator">
+          <label class="choice"><input type="radio" name="q19_incubator" value="Not at all" required><span>Not at all</span></label>
+          <label class="choice"><input type="radio" name="q19_incubator" value="Maybe — tell me more"><span>Maybe — tell me more</span></label>
+          <label class="choice"><input type="radio" name="q19_incubator" value="Yes, definitely"><span>Yes, definitely</span></label>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== SECTION 6 — OPEN REFLECTION ===================== -->
+    <section class="q-section" id="sec-5" data-seg="5">
+      <div class="section-head">
+        <span class="section-num">VI</span>
+        <h2>Open reflection</h2>
+      </div>
+
+      <div class="question">
+        <p class="q-label"><span class="q-num">20.</span>What makes you feel like you belong somewhere — at PKN, or anywhere?</p>
+        <textarea name="q20_belonging_open" required></textarea>
+      </div>
+
+      <div class="question">
+        <p class="q-label"><span class="q-num">21.</span>Anything else you want Creative Santa Fe to know? <span class="optional-tag">(optional)</span></p>
+        <textarea name="q21_other"></textarea>
+      </div>
+    </section>
+
+    <div class="submit-area">
+      <button type="submit" id="submitBtn">Send my answers</button>
+      <p class="fallback">Problems submitting? Email your answers to <a href="mailto:rdimon@creativesantafe.org">rdimon@creativesantafe.org</a> instead.</p>
+      <div class="error-banner" id="errorBanner">Something went wrong sending this — please try again, or use the email above.</div>
+    </div>
+  </form>
+
+  <div class="thanks" id="thanksPanel">
+    <h2>Thank you</h2>
+    <p>This genuinely helps us understand what's working and where Creative Santa Fe should go next. We'll be back in touch after future Pecha Kucha Nights with a much shorter check-in.</p>
+  </div>
+</main>
+
+<footer>Creative Santa Fe · Pecha Kucha Night community survey</footer>
+
+<script is:inline>
+  // ============================================================
+  // CONFIG — set this once, see the handoff comment at the top
+  // ============================================================
+  const FORM_ENDPOINT = "REPLACE_WITH_YOUR_FORMSPREE_ENDPOINT"; // e.g. "https://formspree.io/f/abcd1234"
+
+  // ---- "Other" field reveal/require ----
+  // Checkboxes: listen on the box itself. Radios: listen on every radio in
+  // the group (not just the "Other" one) so switching away hides it again.
+  var radioGroupsNeedingToggle = {};
+  document.querySelectorAll('[data-other-toggle]').forEach(function (input) {
+    if (input.type === 'checkbox') {
+      input.addEventListener('change', function () {
+        var target = document.getElementById(input.dataset.otherToggle);
+        target.classList.toggle('show', input.checked);
+        target.required = input.checked;
+      });
+    } else if (input.type === 'radio') {
+      radioGroupsNeedingToggle[input.name] = true;
+    }
+  });
+  Object.keys(radioGroupsNeedingToggle).forEach(function (name) {
+    var radios = document.querySelectorAll('input[type="radio"][name="' + name + '"]');
+    var targetIds = new Set();
+    radios.forEach(function (r) { if (r.dataset.otherToggle) targetIds.add(r.dataset.otherToggle); });
+    radios.forEach(function (r) {
+      r.addEventListener('change', function () {
+        var checked = document.querySelector('input[name="' + name + '"]:checked');
+        targetIds.forEach(function (tid) {
+          var el = document.getElementById(tid);
+          var show = !!checked && checked.dataset.otherToggle === tid &&
+                     (checked.value === 'Other' || checked.value === 'Yes');
+          el.classList.toggle('show', show);
+          el.required = show;
+        });
+      });
+    });
+  });
+
+  // ---- Q17: limit to 2 selections ----
+  (function () {
+    var group = document.getElementById('q17group');
+    var boxes = group.querySelectorAll('input[type="checkbox"]');
+    boxes.forEach(function (box) {
+      box.addEventListener('change', function () {
+        var checked = Array.from(boxes).filter(function (b) { return b.checked; });
+        boxes.forEach(function (b) {
+          b.disabled = checked.length >= 2 && !b.checked;
+        });
+      });
+    });
+  })();
+
+  // ---- Scroll-spy progress stepper ----
+  (function () {
+    var segs = document.querySelectorAll('.stepper-seg');
+    var sections = document.querySelectorAll('.q-section');
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          var idx = parseInt(entry.target.dataset.seg, 10);
+          segs.forEach(function (s, i) {
+            s.classList.toggle('active', i <= idx);
+          });
+        }
+      });
+    }, { rootMargin: '-45% 0px -45% 0px' });
+    sections.forEach(function (s) { observer.observe(s); });
+  })();
+
+  // ---- Submit handling ----
+  var form = document.getElementById('pknForm');
+  var submitBtn = document.getElementById('submitBtn');
+  var errorBanner = document.getElementById('errorBanner');
+  var thanksPanel = document.getElementById('thanksPanel');
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    errorBanner.classList.remove('show');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending…';
+
+    var data = new FormData(form);
+
+    fetch(FORM_ENDPOINT, {
+      method: 'POST',
+      body: data,
+      headers: { 'Accept': 'application/json' }
+    }).then(function (res) {
+      if (res.ok) {
+        form.style.display = 'none';
+        document.querySelector('.stepper').style.display = 'none';
+        thanksPanel.classList.add('show');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        throw new Error('Submit failed');
+      }
+    }).catch(function () {
+      errorBanner.classList.add('show');
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Send my answers';
+      errorBanner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+  });
+</script>
+</body>
+</html>
