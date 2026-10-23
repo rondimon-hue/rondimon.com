@@ -4,10 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
-<title>Help shape what comes next — Pecha Kucha Night Santa Fe</title>
-<meta name="description" content="A short survey for the Pecha Kucha Night community, from Creative Santa Fe.">
+<title>Help shape what comes next — PechaKucha Night Santa Fe (PKN)</title>
+<meta name="description" content="A short survey for the PechaKucha Night Santa Fe (PKN) community, from CrSF.">
 <meta property="og:title" content="Help shape what comes next — PKN Santa Fe">
-<meta property="og:description" content="A 5-minute survey for the Pecha Kucha Night community.">
+<meta property="og:description" content="A 5-minute survey for the PKN community.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -203,7 +203,7 @@
   }
   .other-text.show { display: block; }
 
-  input[type="text"], textarea {
+  input[type="text"], input[type="email"], textarea {
     width: 100%;
     font-family: inherit;
     font-size: .975rem;
@@ -214,7 +214,7 @@
     color: var(--ink);
   }
   textarea { min-height: 5rem; resize: vertical; }
-  input[type="text"]:focus, textarea:focus, .choice input:focus-visible,
+  input[type="text"]:focus, input[type="email"]:focus, textarea:focus, .choice input:focus-visible,
   button:focus-visible, .likert input:focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 2px;
@@ -330,9 +330,9 @@
 <div class="hero">
   <span class="star star1"></span><span class="star star2"></span><span class="star star3"></span>
   <div class="hero-inner">
-    <p class="kicker hero-fade">Creative Santa Fe · Pecha Kucha Night</p>
+    <p class="kicker hero-fade">CrSF · PechaKucha Night Santa Fe (PKN)</p>
     <h1 class="hero-fade">Help shape what comes next</h1>
-    <p class="hero-fade delay">Thanks for being part of this community. We're starting a simple, ongoing way to learn from the people who show up — not to grade any single night, but to understand what's actually working and where Creative Santa Fe should go from here.</p>
+    <p class="hero-fade delay">Thanks for being part of this community. We're starting a simple, ongoing way to learn from the people who show up — not to grade any single night, but to understand what's actually working and where CrSF should go from here.</p>
     <p class="meta hero-fade delay">About 5 minutes · No wrong answers · Not tied to any one event or presenter</p>
   </div>
 </div>
@@ -364,11 +364,12 @@
       <p class="section-sub">A few quick ones, so we can see how reach is growing — not to label you.</p>
 
       <div class="question">
-        <p class="q-label"><span class="q-num">1.</span>How many Pecha Kucha Nights have you attended, including this coming one?</p>
+        <p class="q-label"><span class="q-num">1.</span>Of the 30 PechaKucha Nights Santa Fe (PKN) to date, how many have you attended?</p>
         <div class="choice-list" role="radiogroup" aria-label="Attendance history">
-          <label class="choice"><input type="radio" name="q1_attendance" value="First time" required><span>First time</span></label>
-          <label class="choice"><input type="radio" name="q1_attendance" value="2–5"><span>2–5</span></label>
-          <label class="choice"><input type="radio" name="q1_attendance" value="6 or more"><span>6 or more</span></label>
+          <label class="choice"><input type="radio" name="q1_attendance" value="None — Nov. 18 will be my first" required><span>None — Nov. 18 will be my first</span></label>
+          <label class="choice"><input type="radio" name="q1_attendance" value="1–5"><span>1–5</span></label>
+          <label class="choice"><input type="radio" name="q1_attendance" value="6–10"><span>6–10</span></label>
+          <label class="choice"><input type="radio" name="q1_attendance" value="10+"><span>10+</span></label>
         </div>
       </div>
 
@@ -376,8 +377,11 @@
         <p class="q-label"><span class="q-num">2.</span>How did you first hear about PKN?</p>
         <div class="choice-list" role="radiogroup" aria-label="How you heard about PKN" id="q2group">
           <label class="choice"><input type="radio" name="q2_heard" value="Friend or word of mouth" required><span>Friend or word of mouth</span></label>
-          <label class="choice"><input type="radio" name="q2_heard" value="Social media"><span>Social media</span></label>
-          <label class="choice"><input type="radio" name="q2_heard" value="CSF newsletter"><span>CSF newsletter</span></label>
+          <label class="choice"><input type="radio" name="q2_heard" value="CrSF social media"><span>CrSF social media</span></label>
+          <label class="choice"><input type="radio" name="q2_heard" value="Social media (other)"><span>Social media (other)</span></label>
+          <label class="choice"><input type="radio" name="q2_heard" value="CrSF newsletter"><span>CrSF newsletter</span></label>
+          <label class="choice"><input type="radio" name="q2_heard" value="The Lensic"><span>The Lensic</span></label>
+          <label class="choice"><input type="radio" name="q2_heard" value="Radio"><span>Radio</span></label>
           <label class="choice"><input type="radio" name="q2_heard" value="A past presenter"><span>A past presenter</span></label>
           <label class="choice"><input type="radio" name="q2_heard" value="Other" data-other-toggle="q2other"><span>Other</span></label>
         </div>
@@ -385,13 +389,12 @@
       </div>
 
       <div class="question">
-        <p class="q-label"><span class="q-num">3.</span>Are you involved with any other Creative Santa Fe programs? <span class="optional-tag">(select all that apply)</span></p>
+        <p class="q-label"><span class="q-num">3.</span>Have you participated in any other CrSF programs, initiatives, or engagements? <span class="optional-tag">(select all that apply)</span></p>
         <div class="choice-list">
-          <label class="choice"><input type="checkbox" name="q3_programs" value="Beyond Profit"><span>Beyond Profit</span></label>
-          <label class="choice"><input type="checkbox" name="q3_programs" value="Imagined Future"><span>Imagined Future</span></label>
-          <label class="choice"><input type="checkbox" name="q3_programs" value="Volunteer"><span>Volunteer</span></label>
-          <label class="choice"><input type="checkbox" name="q3_programs" value="Donor"><span>Donor</span></label>
-          <label class="choice"><input type="checkbox" name="q3_programs" value="Board"><span>Board</span></label>
+          <label class="choice"><input type="checkbox" name="q3_programs" value="53:20"><span>53:20</span></label>
+          <label class="choice"><input type="checkbox" name="q3_programs" value="Design Collabs"><span>Design Collabs</span></label>
+          <label class="choice"><input type="checkbox" name="q3_programs" value="DOFC"><span>DOFC</span></label>
+          <label class="choice"><input type="checkbox" name="q3_programs" value="Story Me"><span>Story Me</span></label>
           <label class="choice"><input type="checkbox" name="q3_programs" value="None"><span>None</span></label>
           <label class="choice"><input type="checkbox" name="q3_programs" value="Other" data-other-toggle="q3other"><span>Other</span></label>
         </div>
@@ -400,7 +403,21 @@
 
       <div class="question">
         <p class="q-label"><span class="q-num">4.</span>What part of Santa Fe — or beyond — do you call home? <span class="optional-tag">(optional)</span></p>
-        <input type="text" name="q4_location" placeholder="Neighborhood, town, or zip code">
+        <input type="text" name="q4_location" placeholder="Neighborhood or town">
+      </div>
+
+      <div class="question">
+        <p class="q-label" id="q5label"><span class="q-num">5.</span>I feel like I have a voice in shaping Santa Fe's civic and creative life.</p>
+        <div class="likert-wrap">
+          <div class="likert-scale" role="radiogroup" aria-labelledby="q5label">
+            <label><input type="radio" name="q5_voice" value="1" required><span>1</span></label>
+            <label><input type="radio" name="q5_voice" value="2"><span>2</span></label>
+            <label><input type="radio" name="q5_voice" value="3"><span>3</span></label>
+            <label><input type="radio" name="q5_voice" value="4"><span>4</span></label>
+            <label><input type="radio" name="q5_voice" value="5"><span>5</span></label>
+          </div>
+          <div class="likert-ends"><span>Strongly disagree</span><span>Strongly agree</span></div>
+        </div>
       </div>
     </section>
 
@@ -413,70 +430,56 @@
       <p class="section-sub">Rate how much you agree with each.</p>
 
       <div class="question">
-        <p class="q-label" id="q5label"><span class="q-num">5.</span>I feel a sense of belonging when I'm at a PKN event.</p>
-        <div class="likert-wrap">
-          <div class="likert-scale" role="radiogroup" aria-labelledby="q5label">
-            <label><input type="radio" name="q5_belonging" value="1" required><span>1</span></label>
-            <label><input type="radio" name="q5_belonging" value="2"><span>2</span></label>
-            <label><input type="radio" name="q5_belonging" value="3"><span>3</span></label>
-            <label><input type="radio" name="q5_belonging" value="4"><span>4</span></label>
-            <label><input type="radio" name="q5_belonging" value="5"><span>5</span></label>
-          </div>
-          <div class="likert-ends"><span>Strongly disagree</span><span>Strongly agree</span></div>
-        </div>
-      </div>
-
-      <div class="question">
-        <p class="q-label" id="q6label"><span class="q-num">6.</span>I've made meaningful connections with other people through PKN.</p>
+        <p class="q-label" id="q6label"><span class="q-num">6.</span>I feel a sense of belonging when I'm at a PKN event.</p>
         <div class="likert-wrap">
           <div class="likert-scale" role="radiogroup" aria-labelledby="q6label">
-            <label><input type="radio" name="q6_connections" value="1" required><span>1</span></label>
-            <label><input type="radio" name="q6_connections" value="2"><span>2</span></label>
-            <label><input type="radio" name="q6_connections" value="3"><span>3</span></label>
-            <label><input type="radio" name="q6_connections" value="4"><span>4</span></label>
-            <label><input type="radio" name="q6_connections" value="5"><span>5</span></label>
+            <label><input type="radio" name="q6_belonging" value="1" required><span>1</span></label>
+            <label><input type="radio" name="q6_belonging" value="2"><span>2</span></label>
+            <label><input type="radio" name="q6_belonging" value="3"><span>3</span></label>
+            <label><input type="radio" name="q6_belonging" value="4"><span>4</span></label>
+            <label><input type="radio" name="q6_belonging" value="5"><span>5</span></label>
           </div>
           <div class="likert-ends"><span>Strongly disagree</span><span>Strongly agree</span></div>
         </div>
       </div>
 
       <div class="question">
-        <p class="q-label" id="q7label"><span class="q-num">7.</span>PKN feels like a place where my perspective is welcome.</p>
+        <p class="q-label" id="q7label"><span class="q-num">7.</span>I've made meaningful connections with other people through PKN.</p>
         <div class="likert-wrap">
           <div class="likert-scale" role="radiogroup" aria-labelledby="q7label">
-            <label><input type="radio" name="q7_welcome" value="1" required><span>1</span></label>
-            <label><input type="radio" name="q7_welcome" value="2"><span>2</span></label>
-            <label><input type="radio" name="q7_welcome" value="3"><span>3</span></label>
-            <label><input type="radio" name="q7_welcome" value="4"><span>4</span></label>
-            <label><input type="radio" name="q7_welcome" value="5"><span>5</span></label>
+            <label><input type="radio" name="q7_connections" value="1" required><span>1</span></label>
+            <label><input type="radio" name="q7_connections" value="2"><span>2</span></label>
+            <label><input type="radio" name="q7_connections" value="3"><span>3</span></label>
+            <label><input type="radio" name="q7_connections" value="4"><span>4</span></label>
+            <label><input type="radio" name="q7_connections" value="5"><span>5</span></label>
           </div>
           <div class="likert-ends"><span>Strongly disagree</span><span>Strongly agree</span></div>
         </div>
       </div>
 
       <div class="question">
-        <p class="q-label" id="q8label"><span class="q-num">8.</span>I feel emotionally engaged, not just entertained, at PKN events.</p>
+        <p class="q-label" id="q8label"><span class="q-num">8.</span>PKN feels like a place where my perspective would be welcome.</p>
         <div class="likert-wrap">
           <div class="likert-scale" role="radiogroup" aria-labelledby="q8label">
-            <label><input type="radio" name="q8_engaged" value="1" required><span>1</span></label>
-            <label><input type="radio" name="q8_engaged" value="2"><span>2</span></label>
-            <label><input type="radio" name="q8_engaged" value="3"><span>3</span></label>
-            <label><input type="radio" name="q8_engaged" value="4"><span>4</span></label>
-            <label><input type="radio" name="q8_engaged" value="5"><span>5</span></label>
+            <label><input type="radio" name="q8_welcome" value="1" required><span>1</span></label>
+            <label><input type="radio" name="q8_welcome" value="2"><span>2</span></label>
+            <label><input type="radio" name="q8_welcome" value="3"><span>3</span></label>
+            <label><input type="radio" name="q8_welcome" value="4"><span>4</span></label>
+            <label><input type="radio" name="q8_welcome" value="5"><span>5</span></label>
           </div>
           <div class="likert-ends"><span>Strongly disagree</span><span>Strongly agree</span></div>
         </div>
       </div>
 
       <div class="question">
-        <p class="q-label" id="q9label"><span class="q-num">9.</span>I feel comfortable sharing my honest opinion in this setting.</p>
+        <p class="q-label" id="q9label"><span class="q-num">9.</span>I feel emotionally engaged, not just entertained, at PKN events.</p>
         <div class="likert-wrap">
           <div class="likert-scale" role="radiogroup" aria-labelledby="q9label">
-            <label><input type="radio" name="q9_honest" value="1" required><span>1</span></label>
-            <label><input type="radio" name="q9_honest" value="2"><span>2</span></label>
-            <label><input type="radio" name="q9_honest" value="3"><span>3</span></label>
-            <label><input type="radio" name="q9_honest" value="4"><span>4</span></label>
-            <label><input type="radio" name="q9_honest" value="5"><span>5</span></label>
+            <label><input type="radio" name="q9_engaged" value="1" required><span>1</span></label>
+            <label><input type="radio" name="q9_engaged" value="2"><span>2</span></label>
+            <label><input type="radio" name="q9_engaged" value="3"><span>3</span></label>
+            <label><input type="radio" name="q9_engaged" value="4"><span>4</span></label>
+            <label><input type="radio" name="q9_engaged" value="5"><span>5</span></label>
           </div>
           <div class="likert-ends"><span>Strongly disagree</span><span>Strongly agree</span></div>
         </div>
@@ -534,7 +537,7 @@
       </div>
 
       <div class="question">
-        <p class="q-label" id="q13label"><span class="q-num">13.</span>I trust Creative Santa Fe as an organization.</p>
+        <p class="q-label" id="q13label"><span class="q-num">13.</span>I trust CrSF to deliver high-quality programming.</p>
         <div class="likert-wrap">
           <div class="likert-scale" role="radiogroup" aria-labelledby="q13label">
             <label><input type="radio" name="q13_trust" value="1" required><span>1</span></label>
@@ -557,7 +560,7 @@
       <p class="section-sub">This is the part that turns "belonging" into something concrete.</p>
 
       <div class="question">
-        <p class="q-label"><span class="q-num">14.</span>Because of something you saw or learned at a PKN event, have you taken any action since — reached out to an organization, changed a habit, started a project, told someone else about it?</p>
+        <p class="q-label"><span class="q-num">14.</span>Because of something you saw or learned at a PKN event, have you taken any action since — reached out to an organization/individual, changed a habit, started a project, told someone else about it?</p>
         <div class="choice-list" role="radiogroup" aria-label="Took action after PKN" id="q14group">
           <label class="choice"><input type="radio" name="q14_action" value="Yes" required data-other-toggle="q14detail"><span>Yes</span></label>
           <label class="choice"><input type="radio" name="q14_action" value="No" data-other-toggle="q14detail"><span>No</span></label>
@@ -566,24 +569,10 @@
       </div>
 
       <div class="question">
-        <p class="q-label"><span class="q-num">15.</span>I can name at least one local organization I know about specifically because of PKN.</p>
-        <div class="choice-list" role="radiogroup" aria-label="Can name a local organization">
+        <p class="q-label"><span class="q-num">15.</span>I can name at least one local organization, creative, or change-maker I know about specifically because of PKN.</p>
+        <div class="choice-list" role="radiogroup" aria-label="Can name a local organization, creative, or change-maker">
           <label class="choice"><input type="radio" name="q15_orgaware" value="Yes" required><span>Yes</span></label>
           <label class="choice"><input type="radio" name="q15_orgaware" value="No"><span>No</span></label>
-        </div>
-      </div>
-
-      <div class="question">
-        <p class="q-label" id="q16label"><span class="q-num">16.</span>I feel like I have a voice in shaping Santa Fe's civic and creative life.</p>
-        <div class="likert-wrap">
-          <div class="likert-scale" role="radiogroup" aria-labelledby="q16label">
-            <label><input type="radio" name="q16_voice" value="1" required><span>1</span></label>
-            <label><input type="radio" name="q16_voice" value="2"><span>2</span></label>
-            <label><input type="radio" name="q16_voice" value="3"><span>3</span></label>
-            <label><input type="radio" name="q16_voice" value="4"><span>4</span></label>
-            <label><input type="radio" name="q16_voice" value="5"><span>5</span></label>
-          </div>
-          <div class="likert-ends"><span>Strongly disagree</span><span>Strongly agree</span></div>
         </div>
       </div>
     </section>
@@ -597,29 +586,28 @@
       <p class="section-sub">This part shapes where Creative Santa Fe goes next.</p>
 
       <div class="question">
-        <p class="q-label"><span class="q-num">17.</span>Which of these would you most want to see more of from Creative Santa Fe? <span class="optional-tag">(pick your top 2)</span></p>
-        <div class="choice-list" id="q17group">
-          <label class="choice"><input type="checkbox" name="q17_priorities" value="More PKN-style talks and quick stories"><span>More PKN-style talks and quick stories</span></label>
-          <label class="choice"><input type="checkbox" name="q17_priorities" value="Deeper workshops or discussions on specific local issues"><span>Deeper workshops or discussions on specific local issues</span></label>
-          <label class="choice"><input type="checkbox" name="q17_priorities" value="Direct ways to collaborate with presenters or local organizations"><span>Direct ways to collaborate with presenters or local organizations</span></label>
-          <label class="choice"><input type="checkbox" name="q17_priorities" value="More social or networking time built into events"><span>More social or networking time built into events</span></label>
-          <label class="choice"><input type="checkbox" name="q17_priorities" value="Programming focused on specific civic issues (e.g., homelessness, climate, housing)"><span>Programming focused on specific civic issues (e.g., homelessness, climate, housing)</span></label>
-          <label class="choice"><input type="checkbox" name="q17_priorities" value="Other" data-other-toggle="q17other"><span>Something else</span></label>
+        <p class="q-label"><span class="q-num">16.</span>Which of these would you most want to see more of from CrSF? <span class="optional-tag">(pick your top 2)</span></p>
+        <div class="choice-list" id="q16group">
+          <label class="choice"><input type="checkbox" name="q16_priorities" value="More interactive experiences"><span>More interactive experiences</span></label>
+          <label class="choice"><input type="checkbox" name="q16_priorities" value="Direct ways to collaborate with presenters or local organizations"><span>Direct ways to collaborate with presenters or local organizations</span></label>
+          <label class="choice"><input type="checkbox" name="q16_priorities" value="More social or networking time built into events"><span>More social or networking time built into events</span></label>
+          <label class="choice"><input type="checkbox" name="q16_priorities" value="Programming focused on specific civic issues (e.g., homelessness, climate, housing)"><span>Programming focused on specific civic issues (e.g., homelessness, climate, housing)</span></label>
+          <label class="choice"><input type="checkbox" name="q16_priorities" value="Other" data-other-toggle="q16other"><span>Something else</span></label>
         </div>
-        <input class="other-text" id="q17other" type="text" name="q17_priorities_other" placeholder="What else?">
+        <input class="other-text" id="q16other" type="text" name="q16_priorities_other" placeholder="What else?">
       </div>
 
       <div class="question">
-        <p class="q-label"><span class="q-num">18.</span>What's one local issue you wish Santa Fe had more spaces to really talk through together?</p>
-        <textarea name="q18_issue" required></textarea>
+        <p class="q-label"><span class="q-num">17.</span>What's one local issue you wish Santa Fe had more spaces to really talk through together?</p>
+        <textarea name="q17_issue" required></textarea>
       </div>
 
       <div class="question">
-        <p class="q-label"><span class="q-num">19.</span>If CSF built a year-long "incubator" bringing people together to work on one big local issue, would you want to be involved?</p>
+        <p class="q-label"><span class="q-num">18.</span>If CrSF built a year-long "incubator" bringing people together to work on one big local issue, would you want to be involved?</p>
         <div class="choice-list" role="radiogroup" aria-label="Interest in a year-long incubator">
-          <label class="choice"><input type="radio" name="q19_incubator" value="Not at all" required><span>Not at all</span></label>
-          <label class="choice"><input type="radio" name="q19_incubator" value="Maybe — tell me more"><span>Maybe — tell me more</span></label>
-          <label class="choice"><input type="radio" name="q19_incubator" value="Yes, definitely"><span>Yes, definitely</span></label>
+          <label class="choice"><input type="radio" name="q18_incubator" value="Not at all" required><span>Not at all</span></label>
+          <label class="choice"><input type="radio" name="q18_incubator" value="Maybe — tell me more"><span>Maybe — tell me more</span></label>
+          <label class="choice"><input type="radio" name="q18_incubator" value="Yes, definitely"><span>Yes, definitely</span></label>
         </div>
       </div>
     </section>
@@ -632,15 +620,20 @@
       </div>
 
       <div class="question">
-        <p class="q-label"><span class="q-num">20.</span>What makes you feel like you belong somewhere — at PKN, or anywhere?</p>
-        <textarea name="q20_belonging_open" required></textarea>
+        <p class="q-label"><span class="q-num">19.</span>What makes you feel like you belong somewhere — at PKN, or anywhere?</p>
+        <textarea name="q19_belonging_open" required></textarea>
       </div>
 
       <div class="question">
-        <p class="q-label"><span class="q-num">21.</span>Anything else you want Creative Santa Fe to know? <span class="optional-tag">(optional)</span></p>
-        <textarea name="q21_other"></textarea>
+        <p class="q-label"><span class="q-num">20.</span>Anything else you want CrSF to know? <span class="optional-tag">(optional)</span></p>
+        <textarea name="q20_other"></textarea>
       </div>
     </section>
+
+    <div style="padding: 1.9rem 0 0;">
+      <p class="q-label">Want to hear more, or get involved? <span class="optional-tag">(optional)</span></p>
+      <input type="email" name="contact_email" placeholder="Your email">
+    </div>
 
     <div class="submit-area">
       <button type="submit" id="submitBtn">Send my answers</button>
@@ -651,11 +644,12 @@
 
   <div class="thanks" id="thanksPanel">
     <h2>Thank you</h2>
-    <p>This genuinely helps us understand what's working and where Creative Santa Fe should go next. We'll be back in touch after future Pecha Kucha Nights with a much shorter check-in.</p>
+    <p>This genuinely helps us understand what's working and where CrSF should go next. We'll be back in touch after future PechaKucha Nights with a much shorter check-in.</p>
+    <p>Help us learn — forward this to friends &amp; family.</p>
   </div>
 </main>
 
-<footer>Creative Santa Fe · Pecha Kucha Night community survey</footer>
+<footer>CrSF · PechaKucha Night Santa Fe (PKN) community survey</footer>
 
 <script is:inline>
   // ============================================================
@@ -696,9 +690,9 @@
     });
   });
 
-  // ---- Q17: limit to 2 selections ----
+  // ---- Q16: limit to 2 selections ----
   (function () {
-    var group = document.getElementById('q17group');
+    var group = document.getElementById('q16group');
     var boxes = group.querySelectorAll('input[type="checkbox"]');
     boxes.forEach(function (box) {
       box.addEventListener('change', function () {

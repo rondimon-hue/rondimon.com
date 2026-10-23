@@ -1,14 +1,18 @@
 // Receives /design/pkn-community-survey submissions and appends one row per response.
 // Paste into the response sheet's Extensions > Apps Script, then
-// Deploy > New deployment > Web app (Execute as: Me, Who has access: Anyone).
+// Deploy > Manage deployments > edit > Version: New version (keeps the same URL).
 // The web app URL goes into FORM_ENDPOINT in src/pages/design/pkn-community-survey.astro.
+
+// v2 renumbered the questions, so its answers go to their own tab;
+// v1 responses stay untouched on the first tab.
+const SHEET_NAME = 'Responses v2';
 
 const FIELDS = [
   'q1_attendance', 'q2_heard', 'q2_heard_other', 'q3_programs', 'q3_programs_other',
-  'q4_location', 'q5_belonging', 'q6_connections', 'q7_welcome', 'q8_engaged',
-  'q9_honest', 'q10_difference', 'q11_respect', 'q12_open', 'q13_trust',
-  'q14_action', 'q14_action_detail', 'q15_orgaware', 'q16_voice', 'q17_priorities',
-  'q17_priorities_other', 'q18_issue', 'q19_incubator', 'q20_belonging_open', 'q21_other',
+  'q4_location', 'q5_voice', 'q6_belonging', 'q7_connections', 'q8_welcome',
+  'q9_engaged', 'q10_difference', 'q11_respect', 'q12_open', 'q13_trust',
+  'q14_action', 'q14_action_detail', 'q15_orgaware', 'q16_priorities', 'q16_priorities_other',
+  'q17_issue', 'q18_incubator', 'q19_belonging_open', 'q20_other', 'contact_email',
 ];
 
 function doPost(e) {
@@ -19,7 +23,8 @@ function doPost(e) {
   const lock = LockService.getScriptLock();
   lock.waitLock(10000);
   try {
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const sheet = ss.getSheetByName(SHEET_NAME) || ss.insertSheet(SHEET_NAME);
     if (sheet.getLastRow() === 0) sheet.appendRow(['submitted_at'].concat(FIELDS));
     // checkboxes arrive as several values; join them into one cell
     sheet.appendRow([new Date()].concat(FIELDS.map(f => plain((p[f] || []).join(', ')))));
