@@ -1,0 +1,29 @@
+---
+import { testimonials, type Testimonial } from '../data/testimonials';
+
+interface Props {
+  /** Which testimonials to show, by index; defaults to all */
+  pick?: number[];
+}
+
+const { pick } = Astro.props;
+const items: Testimonial[] = pick ? pick.map((i) => testimonials[i]) : testimonials;
+---
+
+<ul class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" role="list">
+  {items.map((t) => (
+    <li class="flex">
+      <figure class="flex flex-col justify-between w-full bg-surface rounded-lg border border-border p-6">
+        <blockquote class="text-text-secondary leading-relaxed">
+          <svg class="w-6 h-6 text-accent/40 mb-3" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9.6 6C6.5 7.3 4.5 10 4.5 13.5V18h6v-6H7.6c.2-1.9 1.4-3.4 3.2-4.3L9.6 6zm9 0c-3.1 1.3-5.1 4-5.1 7.5V18h6v-6h-2.9c.2-1.9 1.4-3.4 3.2-4.3L18.6 6z"/></svg>
+          <p>{t.quote}</p>
+        </blockquote>
+        <figcaption class="mt-5 pt-4 border-t border-border-light">
+          <span class="block text-sm font-semibold text-text-primary">{t.name}</span>
+          <span class="block text-sm text-text-secondary">{t.role}</span>
+          <span class="block mt-1 text-xs text-text-muted">{t.source}</span>
+        </figcaption>
+      </figure>
+    </li>
+  ))}
+</ul>
