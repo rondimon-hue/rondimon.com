@@ -1,0 +1,51 @@
+---
+// Click-to-load YouTube embed. Shows the thumbnail and only loads YouTube's
+// player (from the privacy-enhanced youtube-nocookie.com domain) when clicked.
+// Without JavaScript it is a plain link to the video on YouTube.
+interface Props {
+  id: string;
+  title: string;
+}
+
+const { id, title } = Astro.props;
+---
+
+<a
+  href={`https://www.youtube.com/watch?v=${id}`}
+  class="yt-facade group relative block w-full h-full bg-text-primary"
+  data-yt-id={id}
+  data-yt-title={title}
+  aria-label={`Play video: ${title}`}
+>
+  <img
+    src={`https://i.ytimg.com/vi/${id}/hqdefault.jpg`}
+    alt=""
+    width="480"
+    height="360"
+    class="w-full h-full object-cover"
+    loading="lazy"
+    decoding="async"
+  />
+  <span class="absolute inset-0 flex items-center justify-center">
+    <span class="flex items-center justify-center w-16 h-11 rounded-xl bg-[#CC0000] shadow-lg transition-transform group-hover:scale-110 group-focus-visible:scale-110">
+      <svg class="w-6 h-6 text-white ml-0.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+    </span>
+  </span>
+</a>
+
+<script>
+  document.addEventListener('click', (e) => {
+    const link = (e.target as HTMLElement).closest<HTMLAnchorElement>('a.yt-facade');
+    if (!link || e.metaKey || e.ctrlKey || e.shiftKey) return;
+    e.preventDefault();
+    const iframe = document.createElement('iframe');
+    iframe.src = `https://www.youtube-nocookie.com/embed/${link.dataset.ytId}?autoplay=1&rel=0`;
+    iframe.title = link.dataset.ytTitle || 'YouTube video';
+    iframe.className = 'w-full h-full';
+    iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+    iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+    iframe.allowFullscreen = true;
+    link.replaceWith(iframe);
+    iframe.focus();
+  });
+</script>

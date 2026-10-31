@@ -1,5 +1,6 @@
 ---
 import Page from '../layouts/Page.astro';
+import YouTube from '../components/YouTube.astro';
 ---
 
 <Page title="Work" description="Ron Dimon's professional work — EPM, Spark Labs, MRWD LLC, Creative Santa Fe, and more.">
@@ -257,15 +258,7 @@ import Page from '../layouts/Page.astro';
           <h3 class="text-sm font-medium text-text-muted uppercase tracking-wider mb-4">Videos</h3>
           <div class="space-y-4">
             <div class="rounded-lg overflow-hidden border border-border aspect-video">
-              <iframe
-                src="https://www.youtube.com/embed/EEajYKD4-Ws"
-                title="Creative Santa Fe"
-                class="w-full h-full"
-                frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen
-                loading="lazy"
-              ></iframe>
+              <YouTube id="EEajYKD4-Ws" title="Creative Santa Fe" />
             </div>
 
             <!-- Instagram reel -->

@@ -1,5 +1,22 @@
 ---
 import Page from '../layouts/Page.astro';
+import YouTube from '../components/YouTube.astro';
+import { Picture } from 'astro:assets';
+import connectedPlanningCover from '../assets/books/connected-planning-cover.jpg';
+import epmDoneRightCover from '../assets/books/epm-done-right-cover.jpg';
+import sgaBookletCover from '../assets/books/sga-booklet-cover.jpg';
+import stewartJamesCover from '../assets/books/stewart-james-cover.jpg';
+import microcomputersCover from '../assets/books/microcomputers-cover.jpg';
+import bpmRevolutionCover from '../assets/books/bpm-revolution-cover.jpg';
+import onTheUpAndUpCover from '../assets/books/on-the-up-and-up-cover.jpg';
+import scorecardBestPracticesCover from '../assets/books/scorecard-best-practices-cover.jpg';
+import retrogradeFieldManualCover from '../assets/books/retrograde-field-manual-cover.jpg';
+import jedoxBeyondBudgeting from '../assets/media/jedox-beyond-budgeting.jpg';
+import jedoxDisruptionToDirection from '../assets/media/jedox-disruption-to-direction.jpg';
+import connectedPlanningWhiteboardPhoto from '../assets/speaking/connected-planning-whiteboard.jpg';
+import anaplanConnectedPlanningTalkPhoto from '../assets/speaking/anaplan-connected-planning-talk.jpg';
+import anaplanPanelPhoto from '../assets/speaking/anaplan-panel.jpg';
+import supposeTalkPhoto from '../assets/speaking/suppose-talk.jpg';
 ---
 
 <Page title="Books & Speaking" description="Books by Ron Dimon — Enterprise Performance Management Done Right, Connected Planning, and more — plus his talks, workshops, and keynotes on strategy, EPM, value selling, and business education.">
@@ -38,12 +55,15 @@ import Page from '../layouts/Page.astro';
     <div id="connected-planning" class="mt-10 grid md:grid-cols-[10rem_1fr] gap-6 md:gap-10 items-start scroll-mt-24">
       <div class="w-28 md:w-auto">
         <div class="image-frame bg-surface">
-          <img
-            src="/images/connected-planning-cover.jpg"
+          <Picture
+              src={connectedPlanningCover}
             alt="Connected Planning book cover"
             class="w-full"
-            loading="lazy"
-          />
+              widths={[160, 320]}
+              sizes="(min-width: 768px) 160px, 112px"
+              formats={["avif", "webp"]}
+              loading="lazy"
+            />
         </div>
       </div>
 
@@ -85,12 +105,15 @@ import Page from '../layouts/Page.astro';
     <div id="epm-done-right" class="mt-10 pt-10 border-t border-border-light grid md:grid-cols-[10rem_1fr] gap-6 md:gap-10 items-start scroll-mt-24">
       <div class="w-28 md:w-auto">
         <div class="image-frame bg-surface">
-          <img
-            src="/images/epm-done-right-cover.jpg"
+          <Picture
+              src={epmDoneRightCover}
             alt="Enterprise Performance Management Done Right book cover"
             class="w-full"
-            loading="lazy"
-          />
+              widths={[160, 320]}
+              sizes="(min-width: 768px) 160px, 112px"
+              formats={["avif", "webp"]}
+              loading="lazy"
+            />
         </div>
       </div>
 
@@ -156,12 +179,15 @@ import Page from '../layouts/Page.astro';
     <div id="sga" class="mt-10 pt-10 border-t border-border-light grid md:grid-cols-[10rem_1fr] gap-6 md:gap-10 items-start scroll-mt-24">
       <div class="w-28 md:w-auto">
         <div class="image-frame bg-surface">
-          <img
-            src="/images/sga-booklet-cover.jpg"
+          <Picture
+              src={sgaBookletCover}
             alt="SG&A Expense Performance Management booklet cover"
             class="w-full"
-            loading="lazy"
-          />
+              widths={[160, 320]}
+              sizes="(min-width: 768px) 160px, 112px"
+              formats={["avif", "webp"]}
+              loading="lazy"
+            />
         </div>
       </div>
 
@@ -212,16 +238,19 @@ import Page from '../layouts/Page.astro';
     <!-- Photo gallery -->
     <div class="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4">
       {[
-        { src: '/images/speaking/connected-planning-whiteboard.jpg', alt: 'Live graphic recording mural of a Connected Planning talk' },
-        { src: '/images/speaking/anaplan-connected-planning-talk.jpg', alt: 'Presenting the Connected Planning framework on stage at an Anaplan event' },
-        { src: '/images/speaking/anaplan-panel.jpg', alt: 'Panel discussion on stage at an Anaplan conference' },
-        { src: '/images/speaking/suppose-talk.jpg', alt: 'Speaking at a podium during a "Suppose" themed talk' },
+        { src: connectedPlanningWhiteboardPhoto, alt: 'Live graphic recording mural of a Connected Planning talk' },
+        { src: anaplanConnectedPlanningTalkPhoto, alt: 'Presenting the Connected Planning framework on stage at an Anaplan event' },
+        { src: anaplanPanelPhoto, alt: 'Panel discussion on stage at an Anaplan conference' },
+        { src: supposeTalkPhoto, alt: 'Speaking at a podium during a "Suppose" themed talk' },
       ].map(photo => (
         <div class="image-frame aspect-square">
-          <img
+          <Picture
             src={photo.src}
             alt={photo.alt}
             class="w-full h-full object-cover"
+            widths={[300, 600]}
+            sizes="(min-width: 768px) 270px, 45vw"
+            formats={["avif", "webp"]}
             loading="lazy"
           />
         </div>
@@ -291,16 +320,7 @@ import Page from '../layouts/Page.astro';
       <!-- Featured: 3Q interview -->
       <div class="grid md:grid-cols-5 gap-6 md:gap-10 items-center max-w-5xl">
         <div class="md:col-span-3 rounded-lg overflow-hidden border border-border aspect-video">
-          <iframe
-            src="https://www.youtube.com/embed/JQ7WklU3L8s"
-            title="3Q, with Ron Dimon of SparkLabs"
-            class="w-full h-full"
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            referrerpolicy="strict-origin-when-cross-origin"
-            allowfullscreen
-            loading="lazy"
-          ></iframe>
+          <YouTube id="JQ7WklU3L8s" title="3Q, with Ron Dimon of SparkLabs" />
         </div>
         <div class="md:col-span-2">
           <span class="inline-block text-xs font-medium text-accent uppercase tracking-wider mb-2">Start here</span>
@@ -321,15 +341,7 @@ import Page from '../layouts/Page.astro';
         <!-- Anaplan x Deloitte webinar -->
         <div>
           <div class="rounded-lg overflow-hidden border border-border aspect-video">
-            <iframe
-              src="https://www.youtube.com/embed/Xaqr46dlNRY"
-              title="Anaplan Webinar | Connected planning with Deloitte"
-              class="w-full h-full"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen
-              loading="lazy"
-            ></iframe>
+            <YouTube id="Xaqr46dlNRY" title="Anaplan Webinar | Connected planning with Deloitte" />
           </div>
           <div class="mt-4 flex flex-wrap items-center gap-2">
             <span class="text-xs font-medium text-accent uppercase tracking-wider">Anaplan &amp; Deloitte webinar</span>
@@ -345,16 +357,7 @@ import Page from '../layouts/Page.astro';
         <!-- Spaulding Ridge Elevate21 -->
         <div>
           <div class="rounded-lg overflow-hidden border border-border aspect-video">
-            <iframe
-              src="https://www.youtube.com/embed/S29mLgbwMS0"
-              title="Elevate21: A Conversation with Ron Dimon | Spaulding Ridge"
-              class="w-full h-full"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              referrerpolicy="strict-origin-when-cross-origin"
-              allowfullscreen
-              loading="lazy"
-            ></iframe>
+            <YouTube id="S29mLgbwMS0" title="Elevate21: A Conversation with Ron Dimon | Spaulding Ridge" />
           </div>
           <span class="mt-4 inline-block text-xs font-medium text-accent uppercase tracking-wider">Spaulding Ridge &middot; Elevate21</span>
           <h4 class="mt-1 font-heading text-lg font-semibold text-text-primary leading-snug">A Conversation with Ron Dimon</h4>
@@ -364,16 +367,7 @@ import Page from '../layouts/Page.astro';
         <!-- FinTechLinker career interview -->
         <div>
           <div class="rounded-lg overflow-hidden border border-border aspect-video">
-            <iframe
-              src="https://www.youtube.com/embed/fI-7xsV-5sE"
-              title="EPM Chronicles & Confessions: 52. Ron Dimon (EPM Pioneer, Thought Leader & Author) | FinTechLinker"
-              class="w-full h-full"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              referrerpolicy="strict-origin-when-cross-origin"
-              allowfullscreen
-              loading="lazy"
-            ></iframe>
+            <YouTube id="fI-7xsV-5sE" title="EPM Chronicles & Confessions: 52. Ron Dimon (EPM Pioneer, Thought Leader & Author) | FinTechLinker" />
           </div>
           <span class="mt-4 inline-block text-xs font-medium text-accent uppercase tracking-wider">FinTechLinker &middot; EPM Chronicles &amp; Confessions</span>
           <h4 class="mt-1 font-heading text-lg font-semibold text-text-primary leading-snug">My career journey</h4>
@@ -399,10 +393,13 @@ import Page from '../layouts/Page.astro';
       <div class="mt-10 grid md:grid-cols-2 gap-8 max-w-4xl">
         <div>
           <a href="https://www.jedox.com/en/resources/webinar-beyond-budgeting-blueprint-epm/" target="_blank" rel="noopener noreferrer" class="group block rounded-lg overflow-hidden border border-border">
-            <img
-              src="/images/media/jedox-beyond-budgeting.jpg"
+            <Picture
+              src={jedoxBeyondBudgeting}
               alt="Jedox webinar cover: Beyond Budgeting — Building a Blueprint for Enterprise Performance Management"
               class="w-full transition-transform duration-300 group-hover:scale-[1.02]"
+              widths={[440, 880]}
+              sizes="(min-width: 768px) 430px, 90vw"
+              formats={["avif", "webp"]}
               loading="lazy"
             />
           </a>
@@ -418,10 +415,13 @@ import Page from '../layouts/Page.astro';
         </div>
         <div>
           <a href="https://www.jedox.com/en/resources/webinar-disruption-to-direction-americas-automotive-suppliers/" target="_blank" rel="noopener noreferrer" class="group block rounded-lg overflow-hidden border border-border">
-            <img
-              src="/images/media/jedox-disruption-to-direction.jpg"
+            <Picture
+              src={jedoxDisruptionToDirection}
               alt="Jedox webinar cover: From Disruption to Direction — How Automotive Suppliers Are Planning at the Speed of Change"
               class="w-full transition-transform duration-300 group-hover:scale-[1.02]"
+              widths={[440, 880]}
+              sizes="(min-width: 768px) 430px, 90vw"
+              formats={["avif", "webp"]}
               loading="lazy"
             />
           </a>
@@ -490,10 +490,13 @@ import Page from '../layouts/Page.astro';
         <!-- Stewart James in Print -->
         <div>
           <div class="image-frame bg-surface">
-            <img
-              src="/images/stewart-james-cover.jpg"
+            <Picture
+              src={stewartJamesCover}
               alt="Stewart James in Print: The First Fifty Years book cover"
               class="w-full"
+              widths={[320, 640]}
+              sizes="(min-width: 1024px) 300px, (min-width: 640px) 45vw, 90vw"
+              formats={["avif", "webp"]}
               loading="lazy"
             />
           </div>
@@ -510,10 +513,13 @@ import Page from '../layouts/Page.astro';
         <!-- Microcomputers -->
         <div>
           <div class="image-frame bg-surface">
-            <img
-              src="/images/microcomputers-cover.jpg"
+            <Picture
+              src={microcomputersCover}
               alt="Microcomputers: Making Technology Work for Your Business book cover"
               class="w-full"
+              widths={[320, 640]}
+              sizes="(min-width: 1024px) 300px, (min-width: 640px) 45vw, 90vw"
+              formats={["avif", "webp"]}
               loading="lazy"
             />
           </div>
@@ -530,10 +536,13 @@ import Page from '../layouts/Page.astro';
         <!-- The Business Performance Management Revolution -->
         <div>
           <div class="image-frame bg-surface">
-            <img
-              src="/images/bpm-revolution-cover.jpg"
+            <Picture
+              src={bpmRevolutionCover}
               alt="The Performance Management Revolution book cover"
               class="w-full"
+              widths={[320, 640]}
+              sizes="(min-width: 1024px) 300px, (min-width: 640px) 45vw, 90vw"
+              formats={["avif", "webp"]}
               loading="lazy"
             />
           </div>
@@ -550,10 +559,13 @@ import Page from '../layouts/Page.astro';
         <!-- On the Up and Up -->
         <div>
           <div class="image-frame bg-surface">
-            <img
-              src="/images/on-the-up-and-up-cover.jpg"
+            <Picture
+              src={onTheUpAndUpCover}
               alt="On the Up and Up: Achieving Breakthrough Performance Through Insight book cover"
               class="w-full"
+              widths={[320, 640]}
+              sizes="(min-width: 1024px) 300px, (min-width: 640px) 45vw, 90vw"
+              formats={["avif", "webp"]}
               loading="lazy"
             />
           </div>
@@ -570,10 +582,13 @@ import Page from '../layouts/Page.astro';
         <!-- Scorecard Best Practices -->
         <div>
           <div class="image-frame bg-surface">
-            <img
-              src="/images/scorecard-best-practices-cover.jpg"
+            <Picture
+              src={scorecardBestPracticesCover}
               alt="Scorecard Best Practices book cover"
               class="w-full"
+              widths={[320, 640]}
+              sizes="(min-width: 1024px) 300px, (min-width: 640px) 45vw, 90vw"
+              formats={["avif", "webp"]}
               loading="lazy"
             />
           </div>
@@ -590,10 +605,13 @@ import Page from '../layouts/Page.astro';
         <!-- The Retrograde Field Manual -->
         <div>
           <div class="image-frame bg-surface">
-            <img
-              src="/images/retrograde-field-manual-cover.jpg"
+            <Picture
+              src={retrogradeFieldManualCover}
               alt="The Retrograde Field Manual, 1973 book cover"
               class="w-full"
+              widths={[320, 640]}
+              sizes="(min-width: 1024px) 300px, (min-width: 640px) 45vw, 90vw"
+              formats={["avif", "webp"]}
               loading="lazy"
             />
           </div>
