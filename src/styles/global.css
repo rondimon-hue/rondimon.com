@@ -10,7 +10,7 @@
 
   --color-text-primary: #1C1917;
   --color-text-secondary: #57534E;
-  --color-text-muted: #A8A29E;
+  --color-text-muted: #736C67; /* 4.7:1 on surface-alt, passes WCAG AA */
 
   --color-accent: #2563EB;
   --color-accent-hover: #1D4ED8;
@@ -68,6 +68,13 @@ h1, h2, h3, h4, h5, h6 {
 
 .animate-in {
   animation: fadeIn 0.5s ease-out both;
+}
+
+/* Respect people who ask their device to reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .animate-in { animation: none; }
+  *, *::before, *::after { transition-duration: 0.01ms !important; }
 }
 
 /* Archive blog post prose */
