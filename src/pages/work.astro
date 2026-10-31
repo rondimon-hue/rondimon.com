@@ -1,6 +1,8 @@
 ---
 import Page from '../layouts/Page.astro';
 import YouTube from '../components/YouTube.astro';
+import ClientLogos from '../components/ClientLogos.astro';
+import CtaBand from '../components/CtaBand.astro';
 ---
 
 <Page title="Work" description="What Ron Dimon builds and advises on: enterprise performance management, Spark Labs workshops, the UNM accelerator, and community work in Santa Fe.">
@@ -54,8 +56,8 @@ import YouTube from '../components/YouTube.astro';
             </svg>
           </a>
           <div class="relative z-10 flex flex-wrap items-start gap-x-1 mt-1 text-sm">
-            <a href="https://strattum.ca" target="_blank" rel="noopener noreferrer" class="inline-flex items-start font-medium text-accent hover:text-accent-hover">
-              strattum.ca
+            <a href="https://www.stratuum.ca" target="_blank" rel="noopener noreferrer" class="inline-flex items-start font-medium text-accent hover:text-accent-hover">
+              stratuum.ca
               <svg class="w-4 h-4 ml-1 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
             </svg>
@@ -357,26 +359,7 @@ import YouTube from '../components/YouTube.astro';
     <div class="mt-24 pt-12 border-t border-border-light">
       <h2 class="text-sm font-medium text-text-muted uppercase tracking-wider mb-10 text-center">Organizations I've worked with</h2>
 
-      <div class="flex flex-wrap items-center justify-center gap-x-12 gap-y-8 mb-12">
-        {[
-          { name: 'Oracle', file: 'oracle.svg' },
-          { name: 'Microsoft', file: 'microsoft.png' },
-          { name: 'Google', file: 'google.png' },
-          { name: 'Salesforce', file: 'salesforce.png' },
-          { name: 'Anaplan', file: 'anaplan.png' },
-          { name: 'Deloitte', file: 'deloitte.png' },
-          { name: 'SAS', file: 'sas.png' },
-          { name: 'Cisco', file: 'cisco.svg' },
-          { name: 'Infosys', file: 'infosys.svg' },
-        ].map(logo => (
-          <img
-            src={`/images/logos/${logo.file}`}
-            alt={logo.name}
-            class="h-8 md:h-10 w-auto object-contain opacity-50 grayscale hover:opacity-100 hover:grayscale-0 transition-all"
-            loading="lazy"
-          />
-        ))}
-      </div>
+      <div class="mb-12"><ClientLogos /></div>
 
       <div class="relative overflow-hidden" id="client-scroll">
         <div class="flex animate-scroll gap-12 items-center">
@@ -390,7 +373,7 @@ import YouTube from '../components/YouTube.astro';
             'US State Department', 'UVA', 'UVM', 'UNM', 'McMaster',
             'Creative Santa Fe', 'BBBS',
           ].map(client => (
-            <span class="whitespace-nowrap text-sm font-medium text-text-muted/60 hover:text-text-secondary transition-colors shrink-0">
+            <span class="whitespace-nowrap text-sm font-medium text-text-muted hover:text-text-secondary transition-colors shrink-0">
               {client}
             </span>
           ))}
@@ -405,7 +388,7 @@ import YouTube from '../components/YouTube.astro';
             'US State Department', 'UVA', 'UVM', 'UNM', 'McMaster',
             'Creative Santa Fe', 'BBBS',
           ].map(client => (
-            <span class="whitespace-nowrap text-sm font-medium text-text-muted/60 hover:text-text-secondary transition-colors shrink-0" aria-hidden="true">
+            <span class="whitespace-nowrap text-sm font-medium text-text-muted hover:text-text-secondary transition-colors shrink-0" aria-hidden="true">
               {client}
             </span>
           ))}
@@ -426,6 +409,10 @@ import YouTube from '../components/YouTube.astro';
       }
       .animate-scroll:hover {
         animation-play-state: paused;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .animate-scroll { animation: none; flex-wrap: wrap; justify-content: center; row-gap: 0.5rem; }
+        .animate-scroll > [aria-hidden] { display: none; }
       }
     </style>
 
@@ -454,5 +441,7 @@ import YouTube from '../components/YouTube.astro';
       </div>
     </div>
   </section>
+
+  <CtaBand />
 
 </Page>

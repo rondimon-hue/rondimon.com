@@ -2,6 +2,7 @@
 import Page from '../layouts/Page.astro';
 import YouTube from '../components/YouTube.astro';
 import { Picture } from 'astro:assets';
+import { BOOKING_URL } from '../data/site';
 import connectedPlanningCover from '../assets/books/connected-planning-cover.jpg';
 import epmDoneRightCover from '../assets/books/epm-done-right-cover.jpg';
 import sgaBookletCover from '../assets/books/sga-booklet-cover.jpg';
@@ -495,9 +496,14 @@ const bookSchema = [
       <p class="mt-3 text-text-secondary">
         I'm available for keynotes, panel discussions, half-day workshops, and corporate events. All talks can be customized to your audience and industry. Let's talk about what would be most valuable for your group.
       </p>
-      <a href="/contact" class="inline-flex items-center mt-6 px-6 py-3 bg-accent text-white text-sm font-medium rounded-lg hover:bg-accent-hover transition-colors">
-        Get in touch
-      </a>
+      <div class="mt-6 flex flex-wrap gap-4">
+        <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-6 py-3 bg-accent text-white text-sm font-medium rounded-lg hover:bg-accent-hover transition-colors">
+          Book a conversation
+        </a>
+        <a href="/speaker-kit" class="inline-flex items-center px-6 py-3 border border-border text-text-primary text-sm font-medium rounded-lg hover:border-accent hover:text-accent transition-colors">
+          Speaker kit: bios &amp; photos
+        </a>
+      </div>
     </div>
     </div>
   </section>
