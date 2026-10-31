@@ -1,0 +1,239 @@
+---
+import Page from '../layouts/Page.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { BOOKING_URL } from '../data/site';
+
+// Value drivers come from Ron's "Closing the Strategy-Execution Gap" (archive, 2013).
+// The method follows his "EPM Wheel of Fortune" session: pick a value driver,
+// break it into its component parts, walk each part through the management
+// cycle, and come out with initiatives. Component suggestions are starting
+// points for the visitor to edit, not benchmarks.
+const outcomes = [
+  { id: 'growth', label: 'Profitable revenue growth', parts: ['Win new customers', 'Grow revenue from existing customers', 'Price and margin', 'Product and channel mix'] },
+  { id: 'customer', label: 'Customer success', parts: ['Time to value', 'Retention and renewal', 'Service quality', 'Customer satisfaction'] },
+  { id: 'efficiency', label: 'Operational efficiency', parts: ['Cost per unit or transaction', 'Process cycle time', 'Capacity utilization', 'Quality and rework'] },
+  { id: 'engagement', label: 'Employee engagement', parts: ['Retention of key people', 'Productivity per person', 'Skills and development', 'Manager effectiveness'] },
+  { id: 'cash', label: 'Cash cycle velocity', parts: ['Days sales outstanding', 'Days inventory outstanding', 'Days payables outstanding', 'Cash forecast accuracy'] },
+];
+
+const prompts = [
+  { id: 'debate', stage: 'Debate', q: 'What target, and what scenarios would change it?' },
+  { id: 'commit', stage: 'Commit', q: 'Who owns it, and by when?' },
+  { id: 'gather', stage: 'Gather', q: 'What data or report shows where it stands today?' },
+  { id: 'understand', stage: 'Understand', q: 'How will you find the root cause when it moves?' },
+];
+---
+
+<Page
+  title="Solution Designer"
+  description="Pick a business outcome, break it into its drivers and walk each one through the management cycle. Leave with a one-page blueprint of initiatives."
+>
+
+  <style is:global>
+    @media print {
+      header, footer, .no-print, #main > section:last-of-type { display: none !important; }
+      #blueprint { border: 0 !important; box-shadow: none !important; padding: 0 !important; }
+      body { background: #fff !important; }
+    }
+    @keyframes sd-spin { from { transform: rotate(0); } to { transform: rotate(var(--sd-turn, 1080deg)); } }
+    .sd-spinning { animation: sd-spin 1.2s cubic-bezier(.2,.7,.2,1) forwards; }
+    @media (prefers-reduced-motion: reduce) { .sd-spinning { animation: none; } }
+  </style>
+
+  <section class="container pt-20 md:pt-28 pb-10 no-print">
+    <div class="max-w-3xl animate-in">
+      <p class="text-sm font-medium text-accent uppercase tracking-wider mb-4">Solution designer</p>
+      <h1 class="text-4xl md:text-5xl font-heading font-bold text-text-primary">From an outcome to a plan people own</h1>
+      <p class="mt-6 text-xl text-text-secondary leading-relaxed">
+        This is the exercise I run on stage as the <a href="/about/archive/the-enterprise-performance-management-wheel-of-fortune" class="text-accent hover:text-accent-hover underline decoration-accent/30">EPM Wheel of Fortune</a>: pick a value driver, break it into its parts, and walk each part through the management cycle. You leave with a one-page blueprint of initiatives.
+      </p>
+      <p class="mt-4 text-sm text-text-muted">Takes about ten minutes. Nothing leaves your browser unless you choose to print it or email it to me.</p>
+    </div>
+  </section>
+
+  <section class="container pb-16">
+    <div class="max-w-4xl space-y-6">
+
+      <!-- Step 1 -->
+      <div class="bg-surface rounded-lg border border-border p-6 no-print">
+        <p class="text-xs font-medium text-accent uppercase tracking-wider">Step 1</p>
+        <h2 class="mt-1 text-xl font-heading font-semibold text-text-primary">Pick the outcome that matters most right now</h2>
+        <div class="mt-5 flex flex-col md:flex-row gap-6 md:items-center">
+          <div class="flex-1">
+            <div class="flex flex-wrap gap-2" role="radiogroup" aria-label="Outcome">
+              {outcomes.map((o) => (
+                <label class="px-4 py-2.5 min-h-11 inline-flex items-center rounded-lg border border-border text-sm text-text-secondary cursor-pointer hover:border-accent has-[:checked]:border-accent has-[:checked]:bg-accent-light has-[:checked]:text-accent has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-accent">
+                  <input type="radio" name="outcome" value={o.id} class="sr-only" />
+                  {o.label}
+                </label>
+              ))}
+              <label class="px-4 py-2.5 min-h-11 inline-flex items-center rounded-lg border border-border text-sm text-text-secondary cursor-pointer hover:border-accent has-[:checked]:border-accent has-[:checked]:bg-accent-light has-[:checked]:text-accent has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-accent">
+                <input type="radio" name="outcome" value="custom" class="sr-only" />
+                Something else
+              </label>
+            </div>
+            <div id="custom-wrap" class="mt-3" hidden>
+              <label for="custom-outcome" class="text-sm text-text-secondary">Your outcome</label>
+              <input id="custom-outcome" type="text" maxlength="80" placeholder="e.g. Grow membership" class="mt-1 w-full max-w-md rounded-lg border border-border bg-surface px-3 py-2 text-text-primary" />
+            </div>
+          </div>
+          <div class="flex flex-col items-center gap-2 shrink-0">
+            <svg id="wheel" viewBox="0 0 100 100" class="w-24 h-24" aria-hidden="true">
+              {outcomes.map((_, i) => {
+                const a0 = (i / outcomes.length) * 2 * Math.PI - Math.PI / 2, a1 = ((i + 1) / outcomes.length) * 2 * Math.PI - Math.PI / 2;
+                const p = (a: number) => `${50 + 46 * Math.cos(a)} ${50 + 46 * Math.sin(a)}`;
+                return <path d={`M50 50 L${p(a0)} A46 46 0 0 1 ${p(a1)} Z`} fill={['#2563EB', '#92400E', '#1C1917', '#736C67', '#1D4ED8'][i]} opacity="0.85" stroke="#fff" stroke-width="1.5" />;
+              })}
+              <circle cx="50" cy="50" r="7" fill="#fff" />
+            </svg>
+            <button id="spin" type="button" class="text-sm font-medium text-accent hover:text-accent-hover px-3 py-1.5 rounded-lg border border-accent/40">Spin the wheel</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div id="step2" class="bg-surface rounded-lg border border-border p-6 no-print" hidden>
+        <p class="text-xs font-medium text-accent uppercase tracking-wider">Step 2</p>
+        <h2 class="mt-1 text-xl font-heading font-semibold text-text-primary">Break it into the parts that drive it</h2>
+        <p class="mt-1 text-sm text-text-secondary">Suggestions to start from. Change them to fit your business, or clear the ones that don’t apply.</p>
+        <div id="parts" class="mt-4 grid sm:grid-cols-2 gap-3"></div>
+      </div>
+
+      <!-- Step 3 -->
+      <div id="step3" class="bg-surface rounded-lg border border-border p-6 no-print" hidden>
+        <p class="text-xs font-medium text-accent uppercase tracking-wider">Step 3</p>
+        <h2 class="mt-1 text-xl font-heading font-semibold text-text-primary">Walk each part through the cycle</h2>
+        <p class="mt-1 text-sm text-text-secondary">A few words each is plenty. Leave blank what you don’t know yet: the gaps are useful too.</p>
+        <div id="walk" class="mt-4 space-y-6"></div>
+      </div>
+
+      <!-- Step 4: blueprint -->
+      <div id="blueprint" class="bg-surface rounded-xl border-2 border-accent p-6 md:p-8" hidden aria-live="polite">
+        <p class="text-xs font-medium text-accent uppercase tracking-wider">Your blueprint</p>
+        <h2 id="bp-title" class="mt-1 text-2xl font-heading font-semibold text-text-primary"></h2>
+        <div id="bp-body" class="mt-4"></div>
+        <p class="mt-6 text-xs text-text-muted">Made with the Solution designer at rondimon.com/solution-designer</p>
+        <div class="mt-6 flex flex-wrap gap-3 no-print">
+          <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-5 py-2.5 bg-accent text-white text-sm font-medium rounded-lg hover:bg-accent-hover transition-colors">Talk it through with me</a>
+          <button id="print" type="button" class="inline-flex items-center px-5 py-2.5 border border-border text-text-primary text-sm font-medium rounded-lg hover:border-accent hover:text-accent transition-colors">Print or save as PDF</button>
+          <a id="email-bp" href="#" class="inline-flex items-center px-5 py-2.5 border border-border text-text-primary text-sm font-medium rounded-lg hover:border-accent hover:text-accent transition-colors">Email it to Ron</a>
+          <button id="clear" type="button" class="text-sm font-medium text-text-secondary hover:text-accent px-2">Start over</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand />
+
+  <script type="application/json" id="sd-data" set:html={JSON.stringify({ outcomes, prompts })}></script>
+</Page>
+
+<script>
+  import { EMAIL } from '../data/site';
+
+  type Outcome = { id: string; label: string; parts: string[] };
+  type Prompt = { id: string; stage: string; q: string };
+  const { outcomes, prompts } = JSON.parse(document.getElementById('sd-data')!.textContent || '{}') as { outcomes: Outcome[]; prompts: Prompt[] };
+  const KEY = 'rd-solution-designer';
+  const $ = (id: string) => document.getElementById(id)!;
+  const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]!));
+
+  type State = { outcome: string; custom: string; parts: string[]; notes: Record<string, string> };
+  let state: State = { outcome: '', custom: '', parts: [], notes: {} };
+  try { state = { ...state, ...JSON.parse(sessionStorage.getItem(KEY) || '{}') }; } catch {}
+  const save = () => { try { sessionStorage.setItem(KEY, JSON.stringify(state)); } catch {} };
+
+  const outcomeLabel = () => state.outcome === 'custom' ? (state.custom.trim() || 'Your outcome') : outcomes.find((o) => o.id === state.outcome)?.label || '';
+  const activeParts = () => state.parts.map((p, i) => ({ p: p.trim(), i })).filter((x) => x.p);
+
+  function renderParts() {
+    $('parts').innerHTML = state.parts.map((p, i) => `
+      <div><label class="sr-only" for="part-${i}">Driver ${i + 1}</label>
+      <input id="part-${i}" data-part="${i}" type="text" maxlength="60" value="${esc(p)}" placeholder="Driver ${i + 1}" class="w-full rounded-lg border border-border bg-surface px-3 py-2 text-text-primary" /></div>`).join('');
+  }
+  function renderWalk() {
+    $('walk').innerHTML = activeParts().map(({ p, i }) => `
+      <fieldset class="border-t border-border-light pt-4">
+        <legend class="font-heading text-lg font-semibold text-text-primary">${esc(p)}</legend>
+        <div class="mt-2 grid md:grid-cols-2 gap-3">
+          ${prompts.map((q) => `
+            <div><label for="n-${i}-${q.id}" class="text-sm"><span class="font-medium text-accent">${q.stage}:</span> <span class="text-text-secondary">${q.q}</span></label>
+            <textarea id="n-${i}-${q.id}" data-note="${i}-${q.id}" rows="2" maxlength="240" class="mt-1 w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm text-text-primary">${esc(state.notes[`${i}-${q.id}`] || '')}</textarea></div>`).join('')}
+        </div>
+      </fieldset>`).join('');
+  }
+  function renderBlueprint() {
+    const parts = activeParts();
+    $('bp-title').textContent = outcomeLabel();
+    $('bp-body').innerHTML = parts.length ? `
+      <div class="overflow-x-auto"><table class="w-full text-sm text-left border-collapse">
+        <thead><tr class="border-b border-border">
+          <th scope="col" class="py-2 pr-4 font-medium text-text-primary">Driver</th>
+          ${prompts.map((q) => `<th scope="col" class="py-2 pr-4 font-medium text-accent">${q.stage}</th>`).join('')}
+        </tr></thead>
+        <tbody>${parts.map(({ p, i }) => `<tr class="border-b border-border-light align-top">
+          <th scope="row" class="py-2 pr-4 font-medium text-text-primary">${esc(p)}</th>
+          ${prompts.map((q) => { const v = (state.notes[`${i}-${q.id}`] || '').trim(); return `<td class="py-2 pr-4 ${v ? 'text-text-secondary' : 'text-text-muted italic'}">${v ? esc(v) : 'To decide'}</td>`; }).join('')}
+        </tr>`).join('')}</tbody>
+      </table></div>
+      <p class="mt-4 text-sm text-text-secondary">Every “To decide” is a gap in the cycle, and a good place to start.</p>` : '<p class="text-text-secondary">Add at least one driver in step 2.</p>';
+
+    const lines = [`Outcome: ${outcomeLabel()}`, ''];
+    for (const { p, i } of parts) {
+      lines.push(`* ${p}`);
+      for (const q of prompts) lines.push(`  ${q.stage}: ${(state.notes[`${i}-${q.id}`] || '').trim() || 'To decide'}`);
+      lines.push('');
+    }
+    const body = ['Hi Ron,', '', 'Here is my Solution designer blueprint:', '', ...lines, 'Some context about us:', ''].join('\n').slice(0, 1800);
+    ($('email-bp') as HTMLAnchorElement).href = `mailto:${EMAIL}?subject=${encodeURIComponent('My Solution designer blueprint')}&body=${encodeURIComponent(body)}`;
+  }
+
+  function choose(id: string, fromSpin = false) {
+    if (state.outcome !== id) {
+      state.outcome = id;
+      state.parts = id === 'custom' ? ['', '', '', ''] : [...(outcomes.find((o) => o.id === id)?.parts || [])];
+      state.notes = {};
+    }
+    const r = document.querySelector<HTMLInputElement>(`input[name="outcome"][value="${id}"]`);
+    if (r) r.checked = true;
+    ($('custom-wrap') as HTMLElement).hidden = id !== 'custom';
+    ['step2', 'step3', 'blueprint'].forEach((s) => (($(s) as HTMLElement).hidden = false));
+    renderParts(); renderWalk(); renderBlueprint(); save();
+    if (fromSpin) $('step2').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+  }
+
+  document.querySelectorAll<HTMLInputElement>('input[name="outcome"]').forEach((r) => r.addEventListener('change', () => choose(r.value)));
+  ($('custom-outcome') as HTMLInputElement).addEventListener('input', (e) => { state.custom = (e.target as HTMLInputElement).value; renderBlueprint(); save(); });
+  $('parts').addEventListener('input', (e) => {
+    const el = e.target as HTMLInputElement;
+    state.parts[Number(el.dataset.part)] = el.value; renderBlueprint(); save();
+  });
+  $('parts').addEventListener('change', () => renderWalk());
+  $('walk').addEventListener('input', (e) => {
+    const el = e.target as HTMLTextAreaElement;
+    if (el.dataset.note) { state.notes[el.dataset.note] = el.value; renderBlueprint(); save(); }
+  });
+  $('spin').addEventListener('click', () => {
+    const wheel = $('wheel');
+    const pick = Math.floor(Math.random() * outcomes.length);
+    wheel.classList.remove('sd-spinning'); void wheel.getBoundingClientRect();
+    wheel.style.setProperty('--sd-turn', `${1080 + pick * 72}deg`);
+    wheel.classList.add('sd-spinning');
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    setTimeout(() => choose(outcomes[pick].id, true), reduce ? 0 : 1250);
+  });
+  $('print').addEventListener('click', () => window.print());
+  $('clear').addEventListener('click', () => {
+    state = { outcome: '', custom: '', parts: [], notes: {} }; save();
+    document.querySelectorAll<HTMLInputElement>('input[name="outcome"]').forEach((r) => (r.checked = false));
+    ['step2', 'step3', 'blueprint'].forEach((s) => (($(s) as HTMLElement).hidden = true));
+    window.scrollTo({ top: 0 });
+  });
+
+  if (state.outcome) {
+    const saved = { ...state };
+    choose(saved.outcome);
+    state = saved; ($('custom-outcome') as HTMLInputElement).value = saved.custom;
+    renderParts(); renderWalk(); renderBlueprint();
+  }
+</script>
