@@ -1,0 +1,217 @@
+---
+import Page from '../layouts/Page.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { stages } from '../data/management-cycle';
+import { BOOKING_URL } from '../data/site';
+
+const scale = ['Not yet', 'Sometimes', 'Mostly', 'Consistently'];
+
+// Cycle diagram: six positions around a ring. "Run the business" is shown but not scored.
+const ring = [
+  { id: 'strategy', label: 'Strategy' },
+  { id: 'debate', label: 'Debate' },
+  { id: 'commit', label: 'Commit' },
+  { id: 'execute', label: 'Run the business' },
+  { id: 'gather', label: 'Gather' },
+  { id: 'understand', label: 'Understand' },
+].map((n, i) => {
+  const a = (-90 + i * 60) * (Math.PI / 180);
+  return { ...n, x: 160 + 118 * Math.cos(a), y: 160 + 118 * Math.sin(a) };
+});
+---
+
+<Page
+  title="Strategy-to-Execution Advisor"
+  description="A two-minute self-check based on Ron Dimon's management cycle. See where your organization is strong, and where to start."
+>
+
+  <section class="container pt-20 md:pt-28 pb-10">
+    <div class="grid lg:grid-cols-5 gap-10 items-center">
+      <div class="lg:col-span-3 animate-in">
+        <p class="text-sm font-medium text-accent uppercase tracking-wider mb-4">Advisor</p>
+        <h1 class="text-4xl md:text-5xl font-heading font-bold text-text-primary">Where should you start?</h1>
+        <p class="mt-6 text-xl text-text-secondary leading-relaxed">
+          A two-minute self-check based on the management cycle from my book <a href="/books#epm-done-right" class="text-accent hover:text-accent-hover underline decoration-accent/30"><em>Enterprise Performance Management Done Right</em></a>. Rate twelve statements and see which part of your cycle to work on first.
+        </p>
+        <p class="mt-4 text-sm text-text-muted">Nothing you enter leaves your browser unless you choose to email it to me. It’s a conversation starter, not a benchmark.</p>
+      </div>
+      <figure class="lg:col-span-2" aria-labelledby="cycle-caption">
+        <svg id="cycle" viewBox="0 0 320 320" class="w-full max-w-xs mx-auto" role="img" aria-labelledby="cycle-caption">
+          <circle cx="160" cy="160" r="118" fill="none" stroke="var(--color-border)" stroke-width="2" stroke-dasharray="4 6" />
+          <g data-node="connect">
+            <circle cx="160" cy="160" r="44" fill="none" stroke="transparent" stroke-width="2" />
+            <text x="160" y="155" text-anchor="middle" class="fill-text-secondary" style="font: 600 12px var(--font-body)">Close</text>
+            <text x="160" y="171" text-anchor="middle" class="fill-text-secondary" style="font: 600 12px var(--font-body)">the loop</text>
+          </g>
+          {ring.map((n) => (
+            <g data-node={n.id}>
+              <circle cx={n.x} cy={n.y} r="34" fill={n.id === 'execute' ? 'var(--color-surface-alt)' : 'var(--color-surface)'} stroke={n.id === 'execute' ? 'var(--color-border)' : 'var(--color-accent)'} stroke-width="2" />
+              {n.label.split(' ').length > 2
+                ? n.label.split(' ').reduce((acc: string[], w, i) => (i === 0 ? [w] : i === 1 ? [acc[0] + ' ' + w] : [...acc, w]), []).map((line, i, arr) => (
+                    <text x={n.x} y={n.y + (i - (arr.length - 1) / 2) * 13 + 4} text-anchor="middle" class="fill-text-primary" style="font: 600 10.5px var(--font-body)">{line}</text>
+                  ))
+                : <text x={n.x} y={n.y + 4} text-anchor="middle" class="fill-text-primary" style="font: 600 11.5px var(--font-body)">{n.label}</text>}
+            </g>
+          ))}
+        </svg>
+        <figcaption id="cycle-caption" class="mt-3 text-center text-sm text-text-muted">
+          The management cycle: Strategy, Debate, Commit, run the business, Gather, Understand, and back again.
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="container pb-20">
+    <form id="advisor" class="max-w-3xl space-y-6" novalidate>
+      {stages.map((s, si) => (
+        <fieldset class="bg-surface rounded-lg border border-border p-6">
+          <legend class="sr-only">{s.name}</legend>
+          <p class="text-xs font-medium text-accent uppercase tracking-wider">{si + 1} of {stages.length}</p>
+          <h2 class="mt-1 text-xl font-heading font-semibold text-text-primary" aria-hidden="true">{s.name}</h2>
+          <p class="mt-1 text-sm text-text-secondary">{s.summary}</p>
+          <div class="mt-5 space-y-5">
+            {s.statements.map((st, qi) => (
+              <div role="radiogroup" aria-labelledby={`q-${s.id}-${qi}`}>
+                <p id={`q-${s.id}-${qi}`} class="text-text-primary">{st}</p>
+                <div class="mt-2 grid grid-cols-2 sm:grid-cols-4 gap-2">
+                  {scale.map((label, v) => (
+                    <label class="flex items-center justify-center gap-2 px-3 py-2.5 min-h-11 rounded-lg border border-border text-sm text-text-secondary cursor-pointer hover:border-accent has-[:checked]:border-accent has-[:checked]:bg-accent-light has-[:checked]:text-accent has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-accent">
+                      <input type="radio" class="sr-only" name={`${s.id}-${qi}`} value={v + 1} />
+                      {label}
+                    </label>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </fieldset>
+      ))}
+
+      <div class="flex flex-wrap items-center gap-4">
+        <button type="submit" class="inline-flex items-center px-6 py-3 bg-accent text-white text-sm font-medium rounded-lg hover:bg-accent-hover transition-colors">See where to start</button>
+        <button type="reset" class="text-sm font-medium text-text-secondary hover:text-accent px-2 py-2">Start over</button>
+        <p id="advisor-progress" class="text-sm text-text-muted" aria-live="polite"></p>
+      </div>
+    </form>
+
+    <!-- Results (filled in by the script) -->
+    <div id="results" class="max-w-3xl mt-12 scroll-mt-24" hidden tabindex="-1" aria-live="polite">
+      <h2 class="text-3xl font-heading font-semibold text-text-primary">Your results</h2>
+      <div id="start-here" class="mt-6 rounded-xl border-2 border-accent bg-accent-light p-6"></div>
+      <h3 class="mt-10 text-sm font-medium text-text-muted uppercase tracking-wider" style="font-family:var(--font-body)">Every stage</h3>
+      <ul id="bars" class="mt-4 space-y-3" role="list"></ul>
+      <div class="mt-10 flex flex-wrap gap-4">
+        <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-6 py-3 bg-accent text-white text-sm font-medium rounded-lg hover:bg-accent-hover transition-colors">Talk it through with me</a>
+        <a id="email-results" href="#" class="inline-flex items-center px-6 py-3 border border-border text-text-primary text-sm font-medium rounded-lg hover:border-accent hover:text-accent transition-colors">Email my results to Ron</a>
+        <a href="/solution-designer" class="inline-flex items-center px-6 py-3 border border-border text-text-primary text-sm font-medium rounded-lg hover:border-accent hover:text-accent transition-colors">Next: design a solution</a>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand />
+
+  <script type="application/json" id="cycle-data" set:html={JSON.stringify(stages)}></script>
+</Page>
+
+<script>
+  import { EMAIL } from '../data/site';
+
+  type Stage = {
+    id: string; name: string; summary: string; statements: string[]; nextStep: string;
+    offer: { id: string; label: string }; reading: { slug: string; title: string }[];
+  };
+  const stages: Stage[] = JSON.parse(document.getElementById('cycle-data')!.textContent || '[]');
+  const form = document.getElementById('advisor') as HTMLFormElement;
+  const results = document.getElementById('results')!;
+  const progress = document.getElementById('advisor-progress')!;
+  const total = stages.reduce((n, s) => n + s.statements.length, 0);
+  const KEY = 'rd-advisor';
+  const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]!));
+
+  function answers() {
+    return Object.fromEntries([...new FormData(form).entries()].map(([k, v]) => [k, Number(v)]));
+  }
+  function updateProgress() {
+    const n = Object.keys(answers()).length;
+    progress.textContent = n < total ? `${n} of ${total} answered` : 'All answered';
+    try { sessionStorage.setItem(KEY, JSON.stringify(answers())); } catch {}
+  }
+  function scoreStages(a: Record<string, number>) {
+    return stages.map((s) => {
+      // Unanswered statements count as "Not yet" (1)
+      const vals = s.statements.map((_, i) => a[`${s.id}-${i}`] || 1);
+      const avg = vals.reduce((x, y) => x + y, 0) / vals.length;
+      return { stage: s, pct: Math.round(((avg - 1) / 3) * 100) };
+    });
+  }
+
+  function show() {
+    const a = answers();
+    const scored = scoreStages(a);
+    const lowest = [...scored].sort((x, y) => x.pct - y.pct)[0];
+    const s = lowest.stage;
+    const color = (p: number) => (p >= 67 ? 'bg-emerald-600' : p >= 34 ? 'bg-amber-500' : 'bg-red-600');
+
+    document.getElementById('start-here')!.innerHTML = `
+      <p class="text-xs font-medium text-accent uppercase tracking-wider">Start here</p>
+      <h3 class="mt-1 text-2xl font-heading font-semibold text-text-primary">${esc(s.name)}</h3>
+      <p class="mt-2 text-text-secondary">${esc(s.nextStep)}</p>
+      <p class="mt-4 text-sm text-text-secondary"><span class="font-medium text-text-primary">How I can help:</span>
+        <a class="text-accent underline decoration-accent/30 hover:text-accent-hover" href="/work-with-me#${s.offer.id}">${esc(s.offer.label)}</a></p>
+      <p class="mt-2 text-sm text-text-secondary"><span class="font-medium text-text-primary">Read more:</span>
+        ${s.reading.map((r) => `<a class="text-accent underline decoration-accent/30 hover:text-accent-hover" href="/about/archive/${r.slug}">${esc(r.title)}</a>`).join(' · ')}</p>`;
+
+    document.getElementById('bars')!.innerHTML = scored.map(({ stage, pct }) => `
+      <li>
+        <div class="flex justify-between text-sm"><span class="font-medium text-text-primary">${esc(stage.name)}</span><span class="text-text-secondary">${pct}%</span></div>
+        <div class="mt-1 h-2.5 rounded-full bg-surface-alt overflow-hidden" role="img" aria-label="${esc(stage.name)}: ${pct} percent">
+          <div class="h-full rounded-full ${color(pct)}" style="width:${Math.max(pct, 3)}%"></div>
+        </div>
+      </li>`).join('');
+
+    // Highlight the weakest stage on the cycle diagram
+    document.querySelectorAll<SVGGElement>('#cycle [data-node]').forEach((g) => {
+      const c = g.querySelector('circle')!;
+      const hit = g.dataset.node === s.id;
+      if (g.dataset.node === 'connect') c.setAttribute('stroke', hit ? 'var(--color-accent)' : 'transparent');
+      c.setAttribute('stroke-width', hit ? '5' : '2');
+    });
+
+    const body = [
+      'Hi Ron,', '', 'Here are my Strategy-to-Execution Advisor results:', '',
+      ...scored.map(({ stage, pct }) => `${stage.name}: ${pct}%`), '',
+      `Suggested starting point: ${s.name}`, '', 'Some context about us:', '',
+    ].join('\n');
+    (document.getElementById('email-results') as HTMLAnchorElement).href =
+      `mailto:${EMAIL}?subject=${encodeURIComponent('My Advisor results')}&body=${encodeURIComponent(body)}`;
+
+    results.hidden = false;
+    results.focus();
+    results.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+  }
+
+  form.addEventListener('change', updateProgress);
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const n = Object.keys(answers()).length;
+    if (n < total) {
+      progress.textContent = `${total - n} statement${total - n === 1 ? '' : 's'} still to answer. Unanswered ones count as “Not yet”.`;
+    }
+    show();
+  });
+  form.addEventListener('reset', () => {
+    results.hidden = true;
+    try { sessionStorage.removeItem(KEY); } catch {}
+    setTimeout(updateProgress, 0);
+  });
+
+  // Restore answers from this browser session
+  try {
+    const saved = JSON.parse(sessionStorage.getItem(KEY) || '{}');
+    for (const [k, v] of Object.entries(saved)) {
+      const el = form.querySelector<HTMLInputElement>(`input[name="${k}"][value="${v}"]`);
+      if (el) el.checked = true;
+    }
+  } catch {}
+  updateProgress();
+</script>
