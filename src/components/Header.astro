@@ -1,19 +1,22 @@
 ---
+import { BOOKING_URL } from '../data/site';
+
 const currentPath = Astro.url.pathname;
 
+// "Ron Dimon" (top left) links home; Photography & Travel lives in the footer.
 const navLinks = [
-  { href: '/', label: 'Home' },
-  { href: '/about', label: 'Aboot' },
+  { href: '/work-with-me', label: 'Work with me' },
   { href: '/work', label: 'Work' },
   { href: '/books', label: 'Books & Speaking' },
-  { href: '/photography', label: 'Photography & Travel' },
+  { href: '/about', label: 'Aboot' },
   { href: '/contact', label: 'Contact' },
 ];
 
 function isActive(href: string): boolean {
-  if (href === '/') return currentPath === '/';
-  return currentPath.startsWith(href);
+  return currentPath === href || currentPath.startsWith(href + '/');
 }
+
+const bookClasses = 'inline-flex items-center justify-center px-4 py-2 bg-accent text-white text-sm font-medium rounded-lg hover:bg-accent-hover transition-colors';
 ---
 
 <header class="sticky top-0 z-50 bg-surface/90 backdrop-blur-md border-b border-border-light">
@@ -23,11 +26,12 @@ function isActive(href: string): boolean {
     </a>
 
     <!-- Desktop nav -->
-    <ul class="hidden md:flex items-center gap-1">
+    <ul class="hidden lg:flex items-center gap-1 ml-auto">
       {navLinks.map(link => (
         <li>
           <a
             href={link.href}
+            aria-current={isActive(link.href) ? 'page' : undefined}
             class:list={[
               'px-3 py-2 text-sm font-medium rounded-md transition-colors',
               isActive(link.href)
@@ -41,10 +45,16 @@ function isActive(href: string): boolean {
       ))}
     </ul>
 
+    <div class="hidden lg:block ml-2">
+      <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer" class={bookClasses}>
+        Book a conversation
+      </a>
+    </div>
+
     <!-- Mobile menu button -->
     <button
       id="mobile-menu-toggle"
-      class="md:hidden p-2 text-text-secondary hover:text-text-primary rounded-md"
+      class="lg:hidden p-2 text-text-secondary hover:text-text-primary rounded-md"
       aria-label="Menu" aria-controls="mobile-menu"
       aria-expanded="false"
     >
@@ -55,12 +65,13 @@ function isActive(href: string): boolean {
   </nav>
 
   <!-- Mobile menu -->
-  <div id="mobile-menu" class="hidden md:hidden border-t border-border-light bg-surface">
+  <div id="mobile-menu" class="hidden lg:hidden border-t border-border-light bg-surface">
     <ul class="container py-3 space-y-1">
       {navLinks.map(link => (
         <li>
           <a
             href={link.href}
+            aria-current={isActive(link.href) ? 'page' : undefined}
             class:list={[
               'block px-3 py-2 text-sm font-medium rounded-md transition-colors',
               isActive(link.href)
@@ -72,6 +83,9 @@ function isActive(href: string): boolean {
           </a>
         </li>
       ))}
+      <li class="pt-2 pb-1">
+        <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer" class:list={['w-full', bookClasses]}>Book a conversation</a>
+      </li>
     </ul>
   </div>
 </header>

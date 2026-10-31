@@ -1,0 +1,31 @@
+---
+import { BOOKING_URL, EMAIL } from '../data/site';
+
+interface Props {
+  title?: string;
+  text?: string;
+}
+
+const {
+  title = 'Have a decision that needs to move?',
+  text = 'Book a conversation. Tell me what you’re working on and we’ll see if I can help.',
+} = Astro.props;
+---
+
+<section class="border-t border-border-light bg-surface-alt">
+  <div class="container py-16 md:py-20">
+    <div class="max-w-3xl mx-auto text-center">
+      <h2 class="text-3xl md:text-4xl font-heading font-semibold text-text-primary">{title}</h2>
+      <p class="mt-4 text-lg text-text-secondary">{text}</p>
+      <div class="mt-8 flex flex-wrap justify-center items-center gap-4">
+        <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-6 py-3 bg-accent text-white text-sm font-medium rounded-lg hover:bg-accent-hover transition-colors">
+          Book a conversation
+          <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+        </a>
+        <a href={`mailto:${EMAIL}`} class="inline-flex items-center px-6 py-3 border border-border text-text-primary text-sm font-medium rounded-lg hover:border-accent hover:text-accent transition-colors">
+          Email {EMAIL}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
