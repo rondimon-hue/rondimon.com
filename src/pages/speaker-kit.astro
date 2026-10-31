@@ -1,0 +1,151 @@
+---
+import Page from '../layouts/Page.astro';
+import { Image } from 'astro:assets';
+import CtaBand from '../components/CtaBand.astro';
+import photo from '../assets/ron-dimon-photo.jpg';
+import painting from '../assets/ron-dimon-painting.jpg';
+import whiteboard from '../assets/speaking/connected-planning-whiteboard.jpg';
+import anaplanTalk from '../assets/speaking/anaplan-connected-planning-talk.jpg';
+import panel from '../assets/speaking/anaplan-panel.jpg';
+import suppose from '../assets/speaking/suppose-talk.jpg';
+
+// Bios are drawn from Ron's CV and this site. Keep facts in sync with /about.
+const shortBio =
+  'Ron Dimon is an executive advisor, facilitator and author who helps leaders connect strategy to execution. He helped pioneer enterprise performance management at Hyperion Solutions, was on Anaplan’s founding team, and built Deloitte’s global Anaplan practice. He is the author of Connected Planning and Enterprise Performance Management Done Right (Wiley) and leads the University of New Mexico’s Center for Responsible Entrepreneurship accelerator.';
+
+const longBio = [
+  'Ron Dimon helps leaders, founders and communities make better decisions with better information, and then act on them together.',
+  'He started as a 19-year-old programmer at Deloitte in Toronto and became the youngest senior manager in Canada at the newly formed Deloitte & Touche. At Hyperion Solutions (later acquired by Oracle) he helped pioneer the enterprise performance management category. He was on Anaplan’s founding team, writing the first version of its knowledge base, and later, as a Managing Director at Deloitte Consulting, built its global Anaplan practice to more than $80 million in annual revenue and four Anaplan Partner of the Year awards.',
+  'Across more than 200 engagements he has advised Fortune 500 companies, government agencies, universities and nonprofits. He is the author of Connected Planning and Enterprise Performance Management Done Right, both published by Wiley.',
+  'Today Ron runs MRWD LLC, an executive advisory firm (stratuum in Canada), and Spark Labs, a hands-on workshop program. He is lead faculty and acting executive director of the University of New Mexico’s Center for Responsible Entrepreneurship, serves on the board of Creative Santa Fe, and invests with New Mexico Angels. A graduate of Second City’s improv program, he splits his time between Santa Fe and Toronto.',
+];
+
+const headshots = [
+  { img: photo, file: '/images/ron-dimon-photo.jpg', name: 'ron-dimon-photo.jpg', label: 'Photo headshot', alt: 'Ron Dimon, photo headshot' },
+  { img: painting, file: '/images/ron-dimon-headshot.jpg', name: 'ron-dimon-painted-portrait.jpg', label: 'Painted portrait by Arlene Goldbard', alt: 'Painted portrait of Ron Dimon by Arlene Goldbard' },
+];
+
+const stagePhotos = [
+  { img: anaplanTalk, label: 'Presenting Connected Planning at an Anaplan event' },
+  { img: panel, label: 'Panel at an Anaplan conference' },
+  { img: suppose, label: 'Speaking at a podium' },
+  { img: whiteboard, label: 'Live graphic recording of a Connected Planning talk' },
+];
+
+const dl = 'M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 4v12m0 0l-4-4m4 4l4-4';
+---
+
+<Page
+  title="Speaker kit"
+  description="Bios, headshots, stage photos, talk topics and videos for event organizers booking Ron Dimon."
+>
+
+  <section class="container pt-20 md:pt-28 pb-8">
+    <div class="max-w-3xl animate-in">
+      <p class="text-sm font-medium text-accent uppercase tracking-wider mb-4">Speaker kit</p>
+      <h1 class="text-4xl md:text-5xl font-heading font-bold text-text-primary">For event organizers</h1>
+      <p class="mt-6 text-xl text-text-secondary leading-relaxed">
+        Everything you need to introduce me and promote your event: bios, photos, talk topics and videos. Use them as-is or trim to fit.
+      </p>
+      <nav class="mt-8 flex flex-wrap gap-3" aria-label="On this page">
+        {[['#bios', 'Bios'], ['#photos', 'Photos'], ['#talks', 'Talks & videos']].map(([href, label]) => (
+          <a href={href} class="inline-flex items-center px-4 py-2 bg-surface-alt text-sm text-text-secondary rounded-lg border border-border hover:border-accent hover:text-accent transition-colors">{label}</a>
+        ))}
+      </nav>
+    </div>
+  </section>
+
+  <!-- Bios -->
+  <section id="bios" class="container py-12 scroll-mt-20">
+    <h2 class="text-3xl font-heading font-semibold text-text-primary">Bios</h2>
+    <div class="mt-8 grid lg:grid-cols-5 gap-6 max-w-6xl">
+      <div class="lg:col-span-2 bg-surface rounded-lg border border-border p-6">
+        <div class="flex items-center justify-between gap-4">
+          <h3 class="text-sm font-medium text-text-muted uppercase tracking-wider" style="font-family:var(--font-body)">Short bio · {shortBio.split(/\s+/).length} words</h3>
+          <button type="button" class="copy-bio text-sm font-medium text-accent hover:text-accent-hover px-2 py-1 -m-1 rounded" data-target="bio-short">Copy</button>
+        </div>
+        <div id="bio-short" class="mt-4 text-text-secondary leading-relaxed"><p>{shortBio}</p></div>
+      </div>
+      <div class="lg:col-span-3 bg-surface rounded-lg border border-border p-6">
+        <div class="flex items-center justify-between gap-4">
+          <h3 class="text-sm font-medium text-text-muted uppercase tracking-wider" style="font-family:var(--font-body)">Long bio · {longBio.join(' ').split(/\s+/).length} words</h3>
+          <button type="button" class="copy-bio text-sm font-medium text-accent hover:text-accent-hover px-2 py-1 -m-1 rounded" data-target="bio-long">Copy</button>
+        </div>
+        <div id="bio-long" class="mt-4 space-y-3 text-text-secondary leading-relaxed">
+          {longBio.map((p) => <p>{p}</p>)}
+        </div>
+      </div>
+    </div>
+    <p class="sr-only" aria-live="polite" id="copy-status"></p>
+  </section>
+
+  <!-- Photos -->
+  <section id="photos" class="container py-12 scroll-mt-20">
+    <h2 class="text-3xl font-heading font-semibold text-text-primary">Photos</h2>
+    <h3 class="mt-8 text-sm font-medium text-text-muted uppercase tracking-wider" style="font-family:var(--font-body)">Headshots</h3>
+    <ul class="mt-4 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl" role="list">
+      {headshots.map((h) => (
+        <li>
+          <div class="image-frame">
+            <Image src={h.img} alt={h.alt} widths={[300, 600]} sizes="(min-width: 768px) 210px, 45vw" class="w-full aspect-[4/5] object-cover" />
+          </div>
+          <p class="mt-2 text-sm text-text-secondary">{h.label}</p>
+          <a href={h.file} download={h.name} class="inline-flex items-center mt-1 text-sm font-medium text-accent hover:text-accent-hover">
+            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={dl} /></svg>
+            Download ({h.img.width}×{h.img.height})
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <h3 class="mt-12 text-sm font-medium text-text-muted uppercase tracking-wider" style="font-family:var(--font-body)">On stage</h3>
+    <ul class="mt-4 grid grid-cols-2 md:grid-cols-4 gap-6" role="list">
+      {stagePhotos.map((p) => (
+        <li>
+          <div class="image-frame">
+            <Image src={p.img} alt={p.label} widths={[300, 600]} sizes="(min-width: 768px) 270px, 45vw" class="w-full aspect-square object-cover" />
+          </div>
+          <p class="mt-2 text-sm text-text-secondary">{p.label}</p>
+          <a href={p.img.src} download class="inline-flex items-center mt-1 text-sm font-medium text-accent hover:text-accent-hover">
+            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={dl} /></svg>
+            Download ({p.img.width}×{p.img.height})
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <!-- Talks -->
+  <section id="talks" class="container py-12 pb-20 scroll-mt-20">
+    <h2 class="text-3xl font-heading font-semibold text-text-primary">Talks & videos</h2>
+    <p class="mt-4 text-text-secondary max-w-2xl leading-relaxed">
+      Keynotes, panel discussions and half-day workshops, customized to your audience and industry.
+    </p>
+    <div class="mt-6 flex flex-wrap gap-4">
+      <a href="/books#speaking" class="inline-flex items-center px-5 py-2.5 border border-border text-text-primary text-sm font-medium rounded-lg hover:border-accent hover:text-accent transition-colors">Talk topics &amp; past events</a>
+      <a href="/books#media" class="inline-flex items-center px-5 py-2.5 border border-border text-text-primary text-sm font-medium rounded-lg hover:border-accent hover:text-accent transition-colors">Videos</a>
+    </div>
+  </section>
+
+  <CtaBand title="Checking a date?" text="Book a conversation or email me with your event, date, location and audience." />
+
+</Page>
+
+<script>
+  const status = document.getElementById('copy-status');
+  document.querySelectorAll<HTMLButtonElement>('.copy-bio').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const el = document.getElementById(btn.dataset.target || '');
+      if (!el) return;
+      const text = [...el.querySelectorAll('p')].map((p) => p.textContent?.trim()).join('\n\n');
+      try {
+        await navigator.clipboard.writeText(text);
+        btn.textContent = 'Copied';
+        if (status) status.textContent = 'Bio copied to clipboard';
+        setTimeout(() => (btn.textContent = 'Copy'), 2000);
+      } catch {
+        btn.textContent = 'Select and copy';
+      }
+    });
+  });
+</script>
