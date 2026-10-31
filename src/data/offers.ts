@@ -27,7 +27,11 @@ export const offers: Offer[] = [
       'Acquisition integration (systems and processes)',
     ],
     background: 'Helped pioneer EPM at Hyperion, was on Anaplan’s founding team, and built Deloitte’s global Anaplan practice to $80M+ in annual revenue.',
-    links: [{ href: 'https://epmroadmap.co', label: 'EPM Roadmaps' }],
+    links: [
+      { href: '/advisor', label: 'Try the Advisor self-check' },
+      { href: '/solution-designer', label: 'Try the Solution designer' },
+      { href: 'https://epmroadmap.co', label: 'EPM Roadmaps' },
+    ],
   },
   {
     id: 'facilitation',
