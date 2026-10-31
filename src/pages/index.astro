@@ -1,48 +1,121 @@
 ---
 import Page from '../layouts/Page.astro';
 import Card from '../components/Card.astro';
+import Testimonials from '../components/Testimonials.astro';
+import ClientLogos from '../components/ClientLogos.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { Picture } from 'astro:assets';
+import photo from '../assets/ron-dimon-photo.jpg';
+import { BOOKING_URL } from '../data/site';
+import { offers } from '../data/offers';
+
+// Proof points, all from Ron's CV.
+const proof = [
+  { value: '2', label: 'books published by Wiley' },
+  { value: '200+', label: 'strategy and transformation engagements' },
+  { value: '$80M+', label: 'Anaplan practice built at Deloitte' },
+  { value: '4×', label: 'Anaplan Partner of the Year' },
+];
 ---
 
-<Page title="Home" description="Ron Dimon — Strategist, author, educator, and builder based in New Mexico.">
-
-  <!-- Full-page background image -->
-  <div class="fixed inset-0 -z-10">
-    <img
-      src="/images/photography/architecture/ladder.jpg"
-      alt=""
-      class="w-full h-full object-cover opacity-[0.16]"
-      loading="eager"
-      aria-hidden="true"
-    />
-  </div>
+<Page
+  title="Home"
+  description="Ron Dimon helps leadership and finance teams turn strategy into execution, through advisory, facilitation, workshops, keynotes and mentoring."
+>
 
   <!-- Hero -->
-  <section class="relative overflow-hidden">
-    <div class="container py-24 md:py-32">
-      <div class="max-w-3xl animate-in">
-        <p class="text-sm font-medium text-accent uppercase tracking-wider mb-4">
-          Welcome
-        </p>
-        <h1 class="text-5xl md:text-6xl lg:text-7xl font-heading font-bold text-text-primary leading-[1.1]" aria-label="Ron Dimon">
+  <section class="container pt-16 pb-16 md:pt-24 md:pb-20">
+    <div class="grid lg:grid-cols-5 gap-10 lg:gap-16 items-center">
+      <div class="lg:col-span-3 animate-in">
+        <p class="font-heading text-2xl md:text-3xl font-semibold text-text-primary" aria-label="Ron Dimon">
           <!-- dotless i + a green tittle: a quiet door to /design -->
           Ron D<span class="relative inline-block" aria-hidden="true">&#305;<a href="/design" tabindex="-1" class="absolute block rounded-full" style="width:.14em;height:.14em;left:.085em;top:.235em;background:#16A34A;cursor:default"></a></span>mon
-        </h1>
-        <p class="mt-6 text-xl md:text-2xl text-text-secondary leading-relaxed max-w-2xl">
-          Strategist, author, educator, and builder. Helping organizations and people make better decisions with better information.
         </p>
-        <div class="mt-10 flex flex-wrap gap-4">
-          <a href="/about" class="inline-flex items-center px-6 py-3 bg-text-primary text-surface text-sm font-medium rounded-lg hover:bg-accent transition-colors">
-            About me
+        <h1 class="mt-4 text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-text-primary leading-[1.1]">
+          I help leadership and finance teams turn strategy into execution.
+        </h1>
+        <p class="mt-6 text-lg md:text-xl text-text-secondary leading-relaxed max-w-2xl">
+          Executive advisor, facilitator and author. I helped pioneer enterprise performance management, wrote two Wiley books on it, and have spent four decades helping organizations and people make better decisions with better information.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-4">
+          <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-6 py-3 bg-accent text-white text-sm font-medium rounded-lg hover:bg-accent-hover transition-colors">
+            Book a conversation
           </a>
-          <a href="/work" class="inline-flex items-center px-6 py-3 border border-border text-text-primary text-sm font-medium rounded-lg hover:border-accent hover:text-accent transition-colors">
-            See my work
+          <a href="/work-with-me" class="inline-flex items-center px-6 py-3 border border-border bg-surface text-text-primary text-sm font-medium rounded-lg hover:border-accent hover:text-accent transition-colors">
+            How I can help
+            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
           </a>
+        </div>
+      </div>
+      <div class="lg:col-span-2">
+        <div class="image-frame max-w-sm mx-auto lg:max-w-none">
+          <Picture
+            src={photo}
+            alt="Ron Dimon"
+            widths={[400, 800]}
+            sizes="(min-width: 1024px) 420px, (min-width: 640px) 384px, 90vw"
+            formats={['avif', 'webp']}
+            loading="eager"
+            fetchpriority="high"
+            class="w-full aspect-[4/5] object-cover"
+          />
         </div>
       </div>
     </div>
   </section>
 
-  <!-- What I Do -->
+  <!-- Proof -->
+  <section class="border-t border-border-light bg-surface" aria-labelledby="proof-heading">
+    <div class="container py-14 md:py-16">
+      <h2 id="proof-heading" class="sr-only">Track record</h2>
+      <dl class="grid grid-cols-2 lg:grid-cols-4 gap-8">
+        {proof.map((p) => (
+          <div class="flex flex-col">
+            <dt class="text-sm text-text-secondary order-2">{p.label}</dt>
+            <dd class="font-heading text-4xl md:text-5xl font-bold text-text-primary order-1 [font-variant-numeric:lining-nums]">{p.value}</dd>
+          </div>
+        ))}
+      </dl>
+      <p class="mt-12 mb-8 text-center text-sm font-medium text-text-muted uppercase tracking-wider">Organizations I’ve worked with</p>
+      <ClientLogos />
+    </div>
+  </section>
+
+  <!-- How I can help -->
+  <section class="border-t border-border-light">
+    <div class="container py-20 md:py-24">
+      <p class="text-sm font-medium text-accent uppercase tracking-wider mb-4">How I can help</p>
+      <h2 class="text-3xl md:text-4xl font-heading font-semibold text-text-primary mb-12">Ways we can work together</h2>
+      <ul class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" role="list">
+        {offers.map((o) => (
+          <li class="flex">
+            <a href={`/work-with-me#${o.id}`} class="group flex flex-col w-full bg-surface rounded-lg border border-border p-6 hover:border-accent/30 hover:shadow-md transition-all">
+              <h3 class="text-lg font-heading font-semibold text-text-primary group-hover:text-accent transition-colors">{o.title}</h3>
+              <p class="mt-2 text-sm text-text-secondary leading-relaxed flex-1">{o.summary}</p>
+              <span class="mt-4 text-xs text-text-muted"><span class="font-medium text-text-secondary">For:</span> {o.for}</span>
+            </a>
+          </li>
+        ))}
+        <li class="flex">
+          <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer" class="flex flex-col justify-center w-full rounded-lg border border-dashed border-accent/40 bg-accent-light p-6 text-accent hover:bg-accent hover:text-white transition-colors">
+            <span class="text-lg font-heading font-semibold">Not sure which fits?</span>
+            <span class="mt-2 text-sm">Book a conversation and we’ll work it out together.</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="border-t border-border-light">
+    <div class="container py-20 md:py-24">
+      <p class="text-sm font-medium text-accent uppercase tracking-wider mb-4">In their words</p>
+      <h2 class="text-3xl md:text-4xl font-heading font-semibold text-text-primary mb-12">What people say</h2>
+      <Testimonials pick={[0, 1, 2]} />
+    </div>
+  </section>
+
+  <!-- What I'm working on now -->
   <section class="border-t border-border-light">
     <div class="container py-20 md:py-24">
       <p class="text-sm font-medium text-accent uppercase tracking-wider mb-4">What I Do</p>
@@ -77,27 +150,9 @@ import Card from '../components/Card.astro';
     </div>
   </section>
 
-  <!-- CTA -->
-  <section class="border-t border-border-light bg-surface-alt">
-    <div class="container py-20 md:py-24">
-      <div class="max-w-3xl mx-auto text-center">
-        <p class="text-sm font-medium text-accent uppercase tracking-wider mb-4">Stay Connected</p>
-        <h2 class="text-3xl md:text-4xl font-heading font-semibold text-text-primary">
-          Let's talk
-        </h2>
-        <p class="mt-4 text-lg text-text-secondary">
-          Whether you're building a business, running workshops, planning a conference, or just want to connect — I'd love to hear from you.
-        </p>
-        <div class="mt-8 flex flex-wrap justify-center gap-4">
-          <a href="/contact" class="inline-flex items-center px-6 py-3 bg-accent text-white text-sm font-medium rounded-lg hover:bg-accent-hover transition-colors">
-            Get in touch
-          </a>
-          <a href="https://www.linkedin.com/in/rondimon/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-6 py-3 border border-border text-text-primary text-sm font-medium rounded-lg hover:border-accent hover:text-accent transition-colors">
-            Connect on LinkedIn
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
+  <CtaBand
+    title="Let's talk"
+    text="Whether you're building a business, running workshops, planning a conference, or just want to connect — I'd love to hear from you."
+  />
 
 </Page>
