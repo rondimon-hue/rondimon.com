@@ -4,7 +4,8 @@ import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
-  site: 'https://rondimon.com',
+  // www is the primary domain on Vercel (the bare domain redirects to it)
+  site: 'https://www.rondimon.com',
   // the tool briefly lived under /about; keep the old link working
   redirects: {
     '/about/whole-life-experiment': '/design/whole-life-experiment',

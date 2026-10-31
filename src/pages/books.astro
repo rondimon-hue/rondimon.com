@@ -17,9 +17,39 @@ import connectedPlanningWhiteboardPhoto from '../assets/speaking/connected-plann
 import anaplanConnectedPlanningTalkPhoto from '../assets/speaking/anaplan-connected-planning-talk.jpg';
 import anaplanPanelPhoto from '../assets/speaking/anaplan-panel.jpg';
 import supposeTalkPhoto from '../assets/speaking/suppose-talk.jpg';
+const author = { '@id': 'https://www.rondimon.com/#ron' };
+const wiley = { '@type': 'Organization', name: 'Wiley' };
+const bookSchema = [
+  {
+    '@type': 'Book',
+    name: 'Connected Planning',
+    alternativeHeadline: 'A Playbook for Agile Decision Making',
+    bookEdition: 'Second Edition',
+    author,
+    publisher: wiley,
+    url: 'https://www.amazon.com/dp/1119485800',
+    image: `https://www.rondimon.com${connectedPlanningCover.src}`,
+  },
+  {
+    '@type': 'Book',
+    name: 'Enterprise Performance Management Done Right',
+    alternativeHeadline: 'An Operating System for Your Organization',
+    author,
+    publisher: wiley,
+    url: 'https://www.amazon.com/Enterprise-Performance-Management-Done-Right/dp/1118370759',
+    image: `https://www.rondimon.com${epmDoneRightCover.src}`,
+  },
+  {
+    '@type': 'Book',
+    name: 'Selling, General, and Administrative (SG&A) Expense Performance Management',
+    author,
+    url: 'https://www.amazon.com/dp/B016VGC9IW',
+    image: `https://www.rondimon.com${sgaBookletCover.src}`,
+  },
+];
 ---
 
-<Page title="Books & Speaking" description="Books by Ron Dimon — Enterprise Performance Management Done Right, Connected Planning, and more — plus his talks, workshops, and keynotes on strategy, EPM, value selling, and business education.">
+<Page title="Books & Speaking" description="Ron Dimon's Wiley books, Connected Planning and Enterprise Performance Management Done Right, plus his talks, workshops, keynotes and videos." schema={bookSchema}>
 
   <!-- Intro -->
   <section class="container pt-20 md:pt-28">

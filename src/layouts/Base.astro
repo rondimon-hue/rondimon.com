@@ -6,6 +6,8 @@ interface Props {
   description?: string;
   image?: string;
   noindex?: boolean;
+  /** Extra schema.org objects for this page (e.g. Book), emitted as JSON-LD */
+  schema?: Record<string, unknown>[];
 }
 
 const {
@@ -13,6 +15,7 @@ const {
   description = 'Ron Dimon — Strategist, author, educator, and builder.',
   image = '/images/og-image.jpg',
   noindex = false,
+  schema = [],
 } = Astro.props;
 
 const fullTitle = title === 'Home'
@@ -22,15 +25,18 @@ const fullTitle = title === 'Home'
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const imageURL = new URL(image, Astro.site);
 
+const site = Astro.site!.origin;
 const personSchema = {
   '@context': 'https://schema.org',
   '@type': 'Person',
+  '@id': `${site}/#ron`,
   name: 'Ron Dimon',
-  url: 'https://rondimon.com',
-  image: 'https://rondimon.com/images/ron-dimon-headshot.jpg',
-  jobTitle: 'Strategist, Author, Educator',
+  url: `${site}/`,
+  image: `${site}/images/ron-dimon-photo.jpg`,
+  jobTitle: 'Executive Advisor, Facilitator, and Author',
   description: 'Strategist, author, educator, and builder. Helping organizations and people make better decisions with better information.',
-  sameAs: ['https://www.linkedin.com/in/rondimon/'],
+  knowsAbout: ['Enterprise Performance Management', 'Connected Planning', 'Strategy to execution', 'Finance transformation', 'Strategic facilitation', 'Scenario planning', 'Entrepreneurship'],
+  sameAs: ['https://www.linkedin.com/in/rondimon/', 'https://santafefacilitator.com/'],
 };
 ---
 <!DOCTYPE html>
@@ -67,6 +73,7 @@ const personSchema = {
   <meta name="twitter:image" content={imageURL} />
 
   <script type="application/ld+json" set:html={JSON.stringify(personSchema)}></script>
+  {schema.map((s) => <script type="application/ld+json" set:html={JSON.stringify({ '@context': 'https://schema.org', ...s })}></script>)}
 
   <link rel="preload" href="/fonts/inter-latin-v20.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="/fonts/playfair-display-latin-v40.woff2" as="font" type="font/woff2" crossorigin />
