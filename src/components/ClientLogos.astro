@@ -1,15 +1,15 @@
 ---
 // Logo row of organizations Ron has worked with (files in public/images/logos).
 const logos = [
-  { name: 'Oracle', file: 'oracle.svg' },
-  { name: 'Microsoft', file: 'microsoft.png' },
-  { name: 'Google', file: 'google.png' },
-  { name: 'Salesforce', file: 'salesforce.png' },
-  { name: 'Anaplan', file: 'anaplan.png' },
-  { name: 'Deloitte', file: 'deloitte.png' },
-  { name: 'SAS', file: 'sas.png' },
-  { name: 'Cisco', file: 'cisco.svg' },
-  { name: 'Infosys', file: 'infosys.svg' },
+  { name: 'Oracle', file: 'oracle.svg', w: 231, h: 30 },
+  { name: 'Microsoft', file: 'microsoft.png', w: 128, h: 128 },
+  { name: 'Google', file: 'google.png', w: 128, h: 128 },
+  { name: 'Salesforce', file: 'salesforce.png', w: 32, h: 32 },
+  { name: 'Anaplan', file: 'anaplan.png', w: 128, h: 128 },
+  { name: 'Deloitte', file: 'deloitte.png', w: 64, h: 64 },
+  { name: 'SAS', file: 'sas.png', w: 128, h: 128 },
+  { name: 'Cisco', file: 'cisco.svg', w: 216, h: 114 },
+  { name: 'Infosys', file: 'infosys.svg', w: 400, h: 160 },
 ];
 ---
 
@@ -19,6 +19,8 @@ const logos = [
       <img
         src={`/images/logos/${logo.file}`}
         alt={logo.name}
+        width={logo.w}
+        height={logo.h}
         class="h-8 md:h-10 w-auto max-w-[7rem] md:max-w-[8.5rem] object-contain opacity-60 grayscale hover:opacity-100 hover:grayscale-0 transition-all"
         loading="lazy"
       />

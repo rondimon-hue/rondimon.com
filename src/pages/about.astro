@@ -1,8 +1,10 @@
 ---
 import Page from '../layouts/Page.astro';
-import { Picture } from 'astro:assets';
+import { Picture, getImage } from 'astro:assets';
+import pechaPoster from '../assets/pecha-kucha-poster.jpg';
 import painting from '../assets/ron-dimon-painting.jpg';
 import CtaBand from '../components/CtaBand.astro';
+const poster = await getImage({ src: pechaPoster, width: 1280, format: 'webp', quality: 75 });
 ---
 
 <Page title="Aboot" description="Ron Dimon's background — 30+ years in strategy, finance systems, enterprise performance management, and education.">
@@ -72,7 +74,7 @@ import CtaBand from '../components/CtaBand.astro';
           <div class="rounded-lg overflow-hidden border border-border aspect-video bg-surface-alt">
             <video
               src="/videos/pecha-kucha.mp4"
-              poster="/images/pecha-kucha-poster.jpg"
+              poster={poster.src}
               class="w-full h-full"
               controls
               preload="none"
