@@ -8,6 +8,7 @@ export default defineConfig({
   // the tool briefly lived under /about; keep the old link working
   redirects: {
     '/about/whole-life-experiment': '/design/whole-life-experiment',
+    '/speaking': '/books#speaking',
     '/talent-lab.html': '/design/talent-lab',
     '/design/santa-fe-homelessness-network': '/design/the-santa-fe-unhoused-network',
   },
