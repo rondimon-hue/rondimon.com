@@ -1,0 +1,363 @@
+<!doctype html><html><head><meta charset=utf8><meta name="robots" content="noindex, nofollow"><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>KDN Value Blueprint</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: one-screen presenter tool. Top bar with build controls, the poster on a zoomable stage, a detail sidebar on the right (stacks under the poster on narrow screens). */
+:root{
+  --bg:#EEF1F6; --panel:#FFFFFF; --panel2:#F5F7FA; --fg:#0F1D33; --muted:#566378; --line:#D3DAE4;
+  --navy:#0A1E3F; --amber:#B8770F; --btn:#0A1E3F; --btnfg:#FFFFFF; --focus:#2E6DA4; --stagebg:#DCE2EA;
+  /* flow colors (same in both themes; they sit on the poster) */
+  --plan:#5B3FD6; --f1:#CC126B; --f2:#ED6B00;
+  /* poster: a fixed document look, same in both themes */
+  --p-paper:#FFFFFF; --p-cell:#F3F6FA; --p-grid:#2E6DA4; --p-ink:#14233B; --p-navy:#0A1E3F; --p-navy2:#1B3F6E; --p-navy3:#3568A6;
+  --p-amber:#E8A33D; --p-white:#FFFFFF; --p-box:#FFFFFF; --p-boxline:#93A1B5; --p-prim:#DCE6F5; --p-anchor:#FCEEC0; --p-risk:#D7F0DA; --p-sub:#C9D6EA;
+  --sans: Arial, Helvetica, "Liberation Sans", sans-serif;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0C1422; --panel:#141F33; --panel2:#1A2740; --fg:#E8EDF5; --muted:#9FB0C8; --line:#2A3A56;
+  --navy:#E8EDF5; --amber:#E8A33D; --btn:#E8A33D; --btnfg:#0A1E3F; --focus:#7FB2E5; --stagebg:#070D18; color-scheme:dark } }
+:root[data-theme="dark"]{
+  --bg:#0C1422; --panel:#141F33; --panel2:#1A2740; --fg:#E8EDF5; --muted:#9FB0C8; --line:#2A3A56;
+  --navy:#E8EDF5; --amber:#E8A33D; --btn:#E8A33D; --btnfg:#0A1E3F; --focus:#7FB2E5; --stagebg:#070D18; color-scheme:dark }
+
+html,body{height:100%}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:14px;line-height:1.45}
+*{box-sizing:border-box}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.app{height:100%;display:flex;flex-direction:column;gap:10px;padding-block:10px;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px))}
+.bar{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px}
+.brand{display:flex;flex-direction:column;min-width:0;margin-right:auto}
+.brand b{font-size:16px;letter-spacing:.01em}
+.brand span{font-size:12px;color:var(--muted)}
+.nav{display:flex;align-items:center;gap:8px}
+.btn{border:1px solid var(--line);background:var(--panel);border-radius:6px;padding:7px 12px;min-height:36px}
+.btn:hover{border-color:var(--focus)}
+.btn.primary{background:var(--btn);color:var(--btnfg);border-color:var(--btn);font-weight:bold;padding-inline:18px}
+.btn:disabled{opacity:.45;cursor:default}
+.count{font-variant-numeric:tabular-nums;min-width:74px;text-align:center;color:var(--muted);font-size:13px}
+.tools{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.tools .btn{padding:7px 10px}
+.chk{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);margin-left:6px}
+.main{flex:1;min-height:0;display:flex;gap:12px}
+.view{flex:1;min-width:0;position:relative;overflow:hidden;background:var(--stagebg);border:1px solid var(--line);border-radius:8px;touch-action:pan-y}
+.view.pan{cursor:grab}.view.panning{cursor:grabbing}
+.side{width:340px;flex:none;display:flex;flex-direction:column;gap:10px;overflow:auto;min-height:0}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px}
+.kick{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:bold}
+.card h2{margin:4px 0 8px;font-size:18px;line-height:1.25;text-wrap:balance}
+.card h3{margin:4px 0 8px;font-size:15px;line-height:1.3}
+.card p{margin:0 0 8px}
+.roi{border-top:1px solid var(--line);padding-top:8px;margin-top:4px}
+.roi b{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--amber);margin-bottom:2px}
+.src{font-size:12px;color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 8px}
+.chip{font-size:12px;border-radius:999px;padding:2px 9px;border:1px solid var(--line);background:var(--panel2);display:inline-flex;align-items:center;gap:6px}
+.dot{width:10px;height:10px;border-radius:50%;display:inline-block;flex:none}
+.sw{width:12px;height:12px;border:1px solid #93A1B5;display:inline-block;flex:none}
+dl{margin:0 0 8px;display:grid;grid-template-columns:auto 1fr;gap:3px 10px;font-size:13px}
+dt{color:var(--muted)}dd{margin:0}
+.links{list-style:none;margin:0 0 8px;padding:0;display:flex;flex-direction:column;gap:4px}
+.links button{width:100%;text-align:left;border:1px solid var(--line);background:var(--panel2);border-radius:6px;padding:6px 8px;font-size:13px;display:flex;gap:8px;align-items:center}
+.links button:hover{border-color:var(--focus)}
+.lh{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:bold;margin:8px 0 4px}
+.x{float:right;border:0;background:none;color:var(--muted);font-size:13px;padding:0 2px;text-decoration:underline}
+.steps{list-style:none;margin:0;padding:0;font-size:13px}
+.steps .ch{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:bold;margin:10px 0 4px}
+.steps .ch:first-child{margin-top:0}
+.steps button{width:100%;text-align:left;border:0;background:none;padding:4px 8px;border-radius:5px;display:flex;gap:8px}
+.steps button:hover{background:var(--panel2)}
+.steps button .n{color:var(--muted);font-variant-numeric:tabular-nums;min-width:18px}
+.steps button[aria-current="step"]{background:var(--btn);color:var(--btnfg);font-weight:bold}
+.steps button[aria-current="step"] .n{color:inherit}
+.steps button.done{color:var(--muted)}
+.tip{position:fixed;z-index:20;pointer-events:none;background:var(--p-navy);color:var(--p-white);padding:6px 9px;border-radius:5px;font-size:13px;max-width:260px;line-height:1.3;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+@media (max-width: 900px){
+  html,body{height:auto}
+  .app{height:auto}
+  .main{flex-direction:column}
+  .view{flex:none;aspect-ratio:3/2;max-width:100%}
+  .side{width:auto;overflow:visible}
+}
+
+/* ---------- poster (fixed 2592 x 1728 document, scaled by transform) ---------- */
+#stage{position:absolute;left:0;top:0;width:2592px;height:1728px;transform-origin:0 0;background:var(--p-paper);color:var(--p-ink);font-family:var(--sans);line-height:1.15}
+#stage.anim{transition:transform .5s ease}
+.p-hdr{position:absolute;left:0;top:0;width:2592px;height:128px;background:var(--p-navy);color:var(--p-white);display:flex;align-items:center;justify-content:space-between;padding:0 34px}
+.p-hdr .k{color:var(--p-amber);font-weight:bold;font-size:17px;letter-spacing:.2em}
+.p-hdr .t{font-size:42px;font-weight:bold;margin:4px 0 5px}
+.p-hdr .s{font-size:17px;color:var(--p-sub)}
+.p-hdr .r{text-align:right;max-width:900px}
+.p-hdr .r .o{font-size:11px;letter-spacing:.2em;color:var(--p-amber);font-weight:bold}
+.p-hdr .r .g{font-size:19px;font-weight:bold;line-height:1.25;margin:5px 0 7px}
+.p-hdr .badge{display:inline-block;border:1.5px solid var(--p-amber);color:var(--p-amber);font-size:12px;letter-spacing:.2em;padding:3px 10px;font-weight:bold}
+.p-fh{position:absolute;top:128px;height:118px;color:var(--p-white);display:flex;align-items:center;gap:14px;padding:0 20px;border-left:3px solid var(--p-grid)}
+.p-fh .n{width:46px;height:46px;border-radius:50%;background:var(--p-white);display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:bold;flex:none}
+.p-fh .nm{font-size:23px;font-weight:bold;line-height:1.15}
+.p-corner{position:absolute;left:0;top:128px;width:62px;height:118px;background:var(--p-navy)}
+.p-lay{position:absolute;left:0;width:62px;color:var(--p-white);display:flex;align-items:center;justify-content:center;border-top:3px solid var(--p-grid)}
+.p-lay span{display:inline-block;transform:rotate(-90deg);white-space:nowrap;font-weight:bold;font-size:22px;letter-spacing:.22em}
+.p-cell{position:absolute;background:var(--p-cell);border-left:3px solid var(--p-grid);border-top:3px solid var(--p-grid)}
+.drv{position:absolute;background:var(--p-box);border:1px solid var(--p-boxline);border-radius:4px;display:flex;align-items:center;justify-content:center;text-align:center;padding:4px 5px;font-size:16px;overflow:hidden;cursor:pointer;
+  opacity:0;transform:scale(.6);pointer-events:none;transition:opacity .35s ease, transform .35s ease, box-shadow .3s}
+.drv.on{opacity:1;transform:none;pointer-events:auto}
+.drv.p{background:var(--p-prim);font-weight:bold}.drv.a{background:var(--p-anchor);font-weight:bold}.drv.r{background:var(--p-risk);font-weight:bold}
+.drv.fresh{box-shadow:0 0 0 3px var(--p-amber), 0 0 18px 4px rgba(232,163,61,.55)}
+.drv.sel{box-shadow:0 0 0 5px var(--p-navy)}
+.drv .sl{position:absolute;right:50%;transform:translateX(50%);top:1px;min-width:19px;height:17px;border-radius:9px;background:var(--plan);color:var(--p-white);font-size:11px;font-weight:bold;line-height:17px;padding:0 4px}
+#wires,#lines{position:absolute;left:0;top:0;width:2592px;height:1728px;pointer-events:none;overflow:visible}
+#lines{z-index:1}.drv{z-index:2}#wires{z-index:3}
+#wires .ring{fill:none;stroke-width:4;opacity:0;transition:opacity .4s}
+#wires .ring.on{opacity:1}
+#lines .e{fill:none;stroke-width:3.5;opacity:0;transition:opacity .35s, stroke-dashoffset .7s ease .15s}
+#lines .e.on{opacity:.92}
+#lines .e.on.old{opacity:.38}
+#lines .e.fresh{stroke-width:5.5}
+#lines .e.sel,#lines .e.on.rel{opacity:1}
+#lines .e.sel{stroke-width:8;opacity:1}
+#lines .hit{fill:none;stroke:transparent;stroke-width:22;pointer-events:none;cursor:pointer}
+#lines .hit.on{pointer-events:stroke}
+#wires .tag{opacity:0;transition:opacity .4s}
+#wires .tag.on{opacity:1}
+#wires .tag text{font:bold 15px Arial, Helvetica, sans-serif;fill:#FFFFFF;text-anchor:middle}
+.p-ft{position:absolute;left:0;top:1578px;width:2592px;height:150px;background:var(--p-navy);color:var(--p-white);padding:12px 34px 0;font-size:14px;border-top:3px solid var(--p-grid)}
+.p-ft .row{display:flex;gap:44px;align-items:flex-start}
+.p-ft h6{margin:0 0 6px;font-size:11px;letter-spacing:.2em;color:var(--p-amber)}
+.p-ft .lg{display:flex;flex-direction:column;gap:4px}
+.p-ft .lg div{display:flex;align-items:center;gap:8px;white-space:nowrap}
+.p-ft .lg i{width:26px;height:14px;display:inline-block;border:1px solid var(--p-boxline);flex:none}
+.p-ft .lg u{width:34px;height:0;border-top:4px solid;display:inline-block;flex:none}
+.p-ft .oc{display:grid;grid-template-columns:repeat(3,auto);gap:3px 22px;font-size:13px;white-space:nowrap}
+.p-ft .cp{position:absolute;left:34px;right:34px;bottom:8px;font-size:12px;color:var(--p-sub);text-align:center}
+@media (prefers-reduced-motion: reduce){ .drv,#lines .e,#wires .ring,#wires .tag,#stage.anim{transition:none} }
+</style>
+
+<div class="app">
+  <div class="bar">
+    <div class="brand"><b>KDN Value Blueprint</b><span>Jedox planning models and value flows, built one click at a time</span></div>
+    <div class="nav">
+      <button class="btn" id="back" type="button">Back</button>
+      <span class="count" id="count" aria-live="polite"></span>
+      <button class="btn primary" id="next" type="button">Next</button>
+    </div>
+    <div class="tools">
+      <button class="btn" id="zout" type="button" aria-label="Zoom out">−</button>
+      <button class="btn" id="zin" type="button" aria-label="Zoom in">+</button>
+      <button class="btn" id="fit" type="button">Fit poster</button>
+      <button class="btn" id="focus" type="button">Zoom to this step</button>
+      <label class="chk"><input type="checkbox" id="split"> Lines on a second click</label>
+    </div>
+  </div>
+  <div class="main">
+    <div class="view" id="view"><div id="stage"></div></div>
+    <aside class="side">
+      <div class="card" id="stepcard"></div>
+      <div class="card" id="detail" hidden></div>
+      <div class="card"><ol class="steps" id="steps"></ol></div>
+    </aside>
+  </div>
+</div>
+<div class="tip" id="tip" hidden></div>
+
+<script>
+const D = {"drivers":{"1S0":["Total KDN Pipeline Value ($)","a"],"1S1":["Win Rate by Solution %",""],"1S2":["AI-Differentiated Service Mix %",""],"1S3":["Pipeline-to-Capacity Coverage Ratio","p"],"1S4":["Cross-Sell Penetration Across Member Firms",""],"1S5":["Average Deal Size by Solution",""],"1S6":["New Logo vs. Expansion Revenue Mix",""],"1S7":["Secured Multi-Year vs. Resold Revenue",""],"1S8":["Proposal-to-Contract Cycle Time",""],"1S9":["Pricing Realization vs. Rate Card","p"],"1S10":["Share of Wallet by Client",""],"1S11":["Competitive Win Rate vs. Peers",""],"1S12":["Pipeline Coverage Ratio (3x Target)",""],"1S13":["Solution Portfolio Growth Rate",""],"1S14":["Member Firm Referral Volume",""],"1S15":["Strategic Account Penetration %",""],"1O0":["Proposal Velocity per BD Rep","p"],"1O1":["Pipeline-to-Capacity Alignment Score",""],"1O2":["Qualified Opportunity Volume (Monthly)",""],"1O3":["Average Proposal Turnaround Time",""],"1O4":["AI-Assisted Proposal Generation Rate %",""],"1O5":["Cost-to-Win per Engagement ($)","r"],"1O6":["Demand Forecast Accuracy by Center",""],"1O7":["Cross-Center Referral Conversion Rate",""],"1O8":["Bid/No-Bid Decision Cycle Time",""],"1O9":["Solution-Line Pipeline Balance",""],"1O10":["RFP Response Win Rate",""],"1O11":["Client Renewal Pipeline Coverage",""],"1O12":["Pursuit Cost as % of Deal Value ($)","r"],"1O13":["Sales Cycle Length by Solution",""],"1O14":["Opportunity Aging (Days in Stage)",""],"1O15":["Capacity-Constrained Pipeline Loss %","p"],"1T0":["Weekly New Opportunities Logged",""],"1T1":["Daily Proposal Submissions",""],"1T2":["Follow-Up Response Time",""],"1T3":["CRM Data Completeness %",""],"1T4":["Weekly Win/Loss Notes Documented",""],"1T5":["Pricing Exception Requests (Volume)",""],"1T6":["Lead Response Time",""],"1T7":["Daily Pipeline Stage Movement",""],"1T8":["Proposal Draft Turnaround (Hours)",""],"1T9":["Weekly Pursuit Cost Tracking ($)","r"],"1T10":["Client Follow-Up Completion Rate",""],"1T11":["Bid Calendar Adherence",""],"1T12":["Daily Capacity Check Against Pipeline",""],"1T13":["Weekly Competitive Intel Logged",""],"1T14":["Proposal Template Reuse Rate",""],"1T15":["Same-Week RFI Response Rate",""],"2S0":["Global Leverage Ratio (Partner:Mgr:Staff)","a"],"2S1":["Headcount vs. Demand Forecast Accuracy",""],"2S2":["AI-Adjusted Staffing Model Coverage %","p"],"2S3":["Workforce Cost as % of Revenue",""],"2S4":["Delivery Center Headcount Mix (8 Centers)",""],"2S5":["Critical Skill Gap Index",""],"2S6":["Direct Cost per Head by Center & Role","p"],"2S7":["Multi-Year Capacity Growth Plan",""],"2S8":["Contractor/FTE Mix Ratio",""],"2S9":["Global HR Data Consolidation %","p"],"2S10":["Attrition Rate vs. Industry Benchmark",""],"2S11":["Internal Mobility Rate Across Centers",""],"2S12":["Career Pyramid Shape Index",""],"2S13":["Delivery Center Footprint Diversity",""],"2S14":["Talent Pipeline Depth by Solution",""],"2S15":["Workforce Scenario Plan Coverage",""],"2O0":["Driver-Based Headcount Forecast Accuracy","p"],"2O1":["Monthly Headcount, Exits & Average FTE","p"],"2O2":["Time-to-Fill (Days)",""],"2O3":["Bench Time by Delivery Center ($)","r"],"2O4":["Utilization Rate by Solution & Center",""],"2O5":["Reskilling Program Completion Rate",""],"2O6":["Capacity Reallocation Frequency Across Centers",""],"2O7":["Personnel Cost: Base, Bonus, Gratuity, Insurance","p"],"2O8":["Hours by Type & Utilized Time","p"],"2O9":["Per-Head Direct Function Costs (DFC)","p"],"2O10":["Contractor Spend vs. Budget ($)","r"],"2O11":["Workforce Scenario Model Refresh Cadence",""],"2O12":["Hiring Cost per FTE ($)","r"],"2O13":["Skill-Based Staffing Match Rate",""],"2O14":["Cost per FTE by Designation","p"],"2O15":["Headcount Variance vs. Budget","p"],"2T0":["Daily Bench Report ($)","r"],"2T1":["Opening Headcount by CC × Geo × Location × Role",""],"2T2":["Time Card Accuracy %",""],"2T3":["Daily Utilization Tracking",""],"2T4":["Standard Hours per FTE",""],"2T5":["New Joiners by Month",""],"2T6":["Daily Capacity vs. Demand Snapshot",""],"2T7":["Attrition % by Role",""],"2T8":["Average Cost by Designation",""],"2T9":["Bonus %, Gratuity & Leave %, COLA",""],"2T10":["Target Utilization %",""],"2T11":["Approved Project Hours & Lent Hours",""],"2T12":["Contractor HC × Hours × Rate per Hour (Vendor, Role)",""],"2T13":["Daily Timesheet Compliance",""],"2T14":["Recruitment Cost per Hire & Transport Rate per Head",""],"2T15":["Secondee & Borrowing Cost, One-Offs",""],"3S0":["Global Delivery Model Maturity Score","a"],"3S1":["Engagement Margin by Solution Line","p"],"3S2":["Delivery Center Cost Arbitrage Realized ($)","r"],"3S3":["Multi-Center Delivery Coverage %",""],"3S4":["Quality/Rework Rate by Solution",""],"3S5":["Client Satisfaction Score (Delivery)",""],"3S6":["Scalability Index (Capacity Headroom)",""],"3S7":["Standardized Delivery Playbook Adoption %",""],"3S8":["Center-of-Excellence Coverage by Solution",""],"3S9":["Delivery Risk Exposure Index",""],"3S10":["Engagement Profitability Trend (3-Yr)",""],"3S11":["Repeatable IP/Asset Reuse Rate","p"],"3S12":["Cross-Center Load-Balancing Capability",""],"3S13":["Time-to-Deploy New Delivery Center",""],"3S14":["Engagement NPS by Solution",""],"3S15":["Delivery Model Standardization Score",""],"3O0":["Capacity-to-Demand Balance (8 Centers)","p"],"3O1":["Engagement-Level P&L Visibility %",""],"3O2":["On-Time Delivery Rate",""],"3O3":["Rework/Scope Creep Cost ($)","r"],"3O4":["Solution-Level Margin Variance",""],"3O5":["Delivery Center Cost per FTE",""],"3O6":["Cross-Center Handoff Cycle Time",""],"3O7":["Quality Review Pass Rate",""],"3O8":["Engagement Budget-to-Actual Variance","p"],"3O9":["Utilization by Delivery Center (Monthly)",""],"3O10":["Scope Change Order Volume",""],"3O11":["Client Escalation Rate",""],"3O12":["Milestone Adherence Rate",""],"3O13":["Center Capacity Utilization %",""],"3O14":["Engagement Staffing Fill Rate",""],"3O15":["Delivery Center Onboarding Cycle Time",""],"3T0":["Daily Engagement Status Tracking",""],"3T1":["Weekly Milestone Completion",""],"3T2":["Daily Time Entry Compliance",""],"3T3":["Weekly Quality Checkpoint Completion",""],"3T4":["Daily Capacity Alerts by Center",""],"3T5":["Weekly Scope Change Requests",""],"3T6":["Daily Client Issue Log",""],"3T7":["Weekly Rework Hours Tracked ($)","r"],"3T8":["Daily Delivery Center Load Report",""],"3T9":["Weekly Status Report Submission Rate",""],"3T10":["Daily Escalation Response Time",""],"3T11":["Weekly Cross-Center Handoffs Completed",""],"3T12":["Daily Budget Burn Rate",""],"3T13":["Weekly Deliverable Acceptance Rate",""],"3T14":["Daily Team Standup Completion",""],"3T15":["Weekly Client Check-In Completion",""],"4S0":["Global Fee Realization Rate %","a"],"4S1":["Revenue per FTE ($)","p"],"4S2":["Value-Based Pricing Adoption %","p"],"4S3":["Blended Bill Rate Trend",""],"4S4":["Write-Off/Write-Down Rate ($)","r"],"4S5":["Pricing Mix: Hourly vs. Fixed vs. Outcome",""],"4S6":["Rate Card Competitiveness Index",""],"4S7":["Multi-Year Fee Growth Rate",""],"4S8":["AI-Adjusted Pricing Premium Capture",""],"4S9":["Realization Rate by Solution Line",""],"4S10":["Discount Leakage as % of Billings ($)","r"],"4S11":["Fee-per-Engagement Trend",""],"4S12":["Contract Renewal Rate Uplift",""],"4S13":["Margin-Preserving Price Increase Adoption",""],"4S14":["Cost-Plus Margin by Delivery Center","p"],"4S15":["Outcome-Based Contract Penetration",""],"4O0":["Realization Rate by Delivery Center","p"],"4O1":["WIP Days Outstanding",""],"4O2":["Billing Cycle Time",""],"4O3":["Write-Off Volume by Engagement ($)","r"],"4O4":["Rate Erosion vs. Cost-Rate Trend","p"],"4O5":["Invoice Basis by Member Firm","p"],"4O6":["Cost-Plus Markup & GDC Tax Provision","p"],"4O7":["Contribution Margin CM1 to CM3 by Solution","p"],"4O8":["AI Hours-Saved Repricing Capture ($)",""],"4O9":["Billing Rate vs. Standard Rate Compliance",""],"4O10":["Unbilled Time Aging",""],"4O11":["Change Order Billing Capture Rate",""],"4O12":["Chargeability Rate by Center",""],"4O13":["Credit Memo Volume ($)","r"],"4O14":["Monthly Solution Revenue (Any Method)","p"],"4O15":["Multi-Currency Billing Accuracy",""],"4T0":["Daily WIP Tracking",""],"4T1":["Fixed Monthly or Subscription Fee",""],"4T2":["Daily Time-Entry-to-Billing Lag",""],"4T3":["Weekly Write-Off Approvals ($)","r"],"4T4":["Daily Unbilled Hours Report",""],"4T5":["Discounts & Recovery %",""],"4T6":["Fixed-Fee Arrangements",""],"4T7":["Fully Loaded: FTE × Annual Rate",""],"4T8":["Pass-Through, Recoverables & Intercompany Adjustments",""],"4T9":["Weekly AR Aging Review",""],"4T10":["Daily Credit Memo Volume ($)","r"],"4T11":["Weekly Realization Snapshot by Engagement",""],"4T12":["Per Unit: Units × Price × Clients",""],"4T13":["Weekly Fee Leakage Alerts ($)","r"],"4T14":["T&M: Hours × Bill Rate by Band",""],"4T15":["Markup % by Geography (India 20%, Contracted 14%)",""],"5S0":["AI Adoption Score (Firmwide)","a"],"5S1":["Skill-Mix Transformation Index","p"],"5S2":["AI-Orchestration Skill Coverage %",""],"5S3":["Training Investment as % of Revenue",""],"5S4":["Leverage Ratio Shift (Junior:Senior)","p"],"5S5":["AI Performance-Review Compliance %",""],"5S6":["Productivity Gain from AI (Hours Saved)",""],"5S7":["Reskilling Completion Rate (Firmwide)",""],"5S8":["AI Tool Licensing Cost per FTE ($)","r"],"5S9":["Career Path Redesign Progress",""],"5S10":["AI Champion Network Coverage",""],"5S11":["Technology ROI on AI Investment",""],"5S12":["Talent Retention in AI-Critical Roles",""],"5S13":["AI Governance Maturity Score",""],"5S14":["Cross-Solution AI Use-Case Library Size",""],"5S15":["AI-Augmented Delivery Ratio %",""],"5O0":["AI Adoption per Performance Review","p"],"5O1":["Hours Saved per Engagement via AI ($)","r"],"5O2":["AI Tool Weekly Active Usage %",""],"5O3":["Training Hours Completed per FTE",""],"5O4":["AI-Assisted Deliverable Quality Score",""],"5O5":["Skill Certification Pass Rate",""],"5O6":["AI Prompt Library Utilization",""],"5O7":["Reskilling Program Enrollment Rate",""],"5O8":["Manager AI-Coaching Completion Rate",""],"5O9":["AI Tool Adoption Variance by Center","p"],"5O10":["Productivity Gain Realized vs. Target",""],"5O11":["AI Incident/Override Rate",""],"5O12":["Cross-Training Completion by Solution",""],"5O13":["AI Vendor Cost per Seat ($)","r"],"5O14":["Skill Gap Closure Rate",""],"5O15":["AI Use-Case Deployment Velocity",""],"5T0":["Daily AI Tool Login/Usage",""],"5T1":["Weekly AI-Assisted Hours Logged",""],"5T2":["Daily Training Module Completion",""],"5T3":["Weekly AI Objective Check-In",""],"5T4":["Daily AI Error/Override Log",""],"5T5":["Weekly Skill Assessment Completion",""],"5T6":["Daily Copilot Usage Rate",""],"5T7":["Weekly AI Champion Office Hours",""],"5T8":["Daily Productivity Log: Hours Saved ($)","r"],"5T9":["Weekly Certification Progress",""],"5T10":["Daily AI Prompt Reuse Rate",""],"5T11":["Weekly New AI Use Cases Logged",""],"5T12":["Daily Manager AI Review Completion",""],"5T13":["Training & Welfare Rate per Head",""],"5T14":["Daily AI Support Ticket Volume",""],"5T15":["Weekly AI Adoption Scorecard Review",""],"6S0":["Global Delivery Footprint Cost Efficiency","a"],"6S1":["Shared Services Cost as % of Revenue","p"],"6S2":["Corporate Overhead Allocation Accuracy %",""],"6S3":["Delivery Center Consolidation Progress",""],"6S4":["Solution-Level P&L Visibility Coverage %","p"],"6S5":["Center Rationalization Savings ($)","r"],"6S6":["Fabric/Data Platform Integration %",""],"6S7":["Multi-Currency Consolidation Accuracy",""],"6S8":["Cost-to-Serve by Delivery Center",""],"6S9":["Allocation Methodology Standardization %",""],"6S10":["Legacy System Decommission Progress",""],"6S11":["Corporate Function Cost Ratio",""],"6S12":["Adjusted Operating Income","p"],"6S13":["Cross-Center Cost Benchmarking Coverage",""],"6S14":["Overhead Absorption Rate by Solution",""],"6S15":["Long-Term Facilities Cost Trend",""],"6O0":["Cost Allocation Transparency by Center","p"],"6O1":["Allocated vs. Actual Shared Cost Variance ($)","r"],"6O2":["Two-Step Allocation: G&A to Management, Management to Business CCs","p"],"6O3":["Fabric Data Load Accuracy %",""],"6O4":["Monthly Close Cycle Time","p"],"6O5":["Management Allocation on Business CCs by Geo","p"],"6O6":["OpCo & Central Allocation Lines","p"],"6O7":["Power BI Dashboard Reuse Rate",""],"6O8":["Delivery Center P&L Roll-Up Time",""],"6O9":["Net Investment, New Services & Tier 2","p"],"6O10":["Overhead Cost Variance vs. Budget ($)","r"],"6O11":["Intercompany Allocation Accuracy",""],"6O12":["ERP-to-Fabric Reconciliation Rate",""],"6O13":["Cost Driver Refresh Cadence",""],"6O14":["USD at Actual vs. Constant; FX Impact","p"],"6O15":["Facility & IT Cost by Location","p"],"6T0":["Headcount or Revenue Share by Solution (Allocation Key)",""],"6T1":["Weekly Reconciliation Completion",""],"6T2":["Daily Fabric Data Sync Status",""],"6T3":["Weekly Allocation Variance Report ($)","r"],"6T4":["Daily Journal Entry Accuracy",""],"6T5":["Lease Renewals & Fit-Outs",""],"6T6":["IT Cost per User",""],"6T7":["Function & Business-Unit Headcount (Allocation Base)",""],"6T8":["FX Rate Policy: Jan to May Average or Single Month",""],"6T9":["Weekly Close Checklist Completion",""],"6T10":["Budget Rate & Monthly Actual Rate by Currency",""],"6T11":["OpCo Direct Entries: Management, PMO, QA, Legal",""],"6T12":["Project Schedules & Funding Source (KISL, Global Function)",""],"6T13":["Fixed-% Overrides for Named CCs (Codes 100 to 105)",""],"6T14":["Daily SLA Breach Alerts ($)","r"],"6T15":["Location Headcount × Cost per Seat",""]},"plan":{"2T1":["W","in"],"2T5":["W","in"],"2T7":["W","in"],"2T4":["W","in"],"2T10":["W","in"],"2T11":["W","ind"],"2O1":["W","out"],"2O8":["W","out"],"2T8":["PC","in"],"2T9":["PC","in"],"2T15":["PC","ind"],"2O7":["PC","out"],"2O14":["PC","out"],"2T12":["CT","in"],"2O10":["CT","out"],"2T14":["DFC","in"],"5T13":["DFC","in"],"2O12":["DFC","out"],"2O9":["DFC","out"],"2S6":["DFC","res"],"6T15":["FAC","in"],"6T6":["FAC","in"],"6T5":["FAC","ind"],"6O15":["FAC","out"],"6T7":["ALLOC","in"],"6T13":["ALLOC","ind"],"6O2":["ALLOC","out"],"6O5":["ALLOC","out"],"6S8":["ALLOC","res"],"4T15":["CP","in"],"4T6":["CP","ind"],"4O6":["CP","out"],"4O5":["CP","out"],"4S14":["CP","res"],"4T14":["REV","in"],"4T7":["REV","in"],"4T1":["REV","in"],"4T12":["REV","in"],"4T5":["REV","in"],"4T8":["REV","ind"],"4O14":["REV","out"],"4O7":["REV","res"],"1S7":["REV","out"],"6T0":["OH","in"],"6T11":["OH","ind"],"6O6":["OH","out"],"6S14":["OH","res"],"6T12":["FUND","ind"],"6O9":["FUND","out"],"6S12":["FUND","res"],"6T10":["FX","in"],"6T8":["FX","ind"],"6O14":["FX","out"],"6S7":["FX","res"]},"models":{"W":["Workforce: headcount and hours","Cost (volume)","India now; all centers on rollout",9],"PC":["Personnel cost","Cost","India; all centers",9],"CT":["Contractors","Cost","India; all centers",9],"DFC":["Per-head direct function costs","Cost","India; all centers",9],"FAC":["Facilities and IT overheads","Cost","India; all centers",10],"ALLOC":["Management and G&A allocation","Cost","India; all centers",10],"CP":["Cost-plus margin","Revenue (invoice basis)","Delivery centers; rule set by HQ",10],"REV":["OpCo revenue","Revenue","HQ, functional OpCos",11],"OH":["OpCo and Central overheads","Cost","HQ",11],"FUND":["Funding and investment","Both","HQ",11],"FX":["FX and constant currency","Both","HQ",11]},"edges":[["2T1","2O1","p",1,"Opening headcount is the starting balance for every cost center, geography, location and role."],["2T5","2O1","p",1,"Joiners are added in the month they start."],["2T7","2O1","p",1,"Attrition % produces monthly exits. Headcount less exits gives average FTE."],["2O1","2O8","p",1,"Average FTE times standard hours gives available hours by type."],["2T4","2O8","p",1,"Standard hours per FTE set the capacity of each head."],["2T10","2O8","p",1,"Target utilization splits available hours into utilized time and the rest."],["2T11","2O8","p",1,"Approved project hours and lent hours are entered directly. They are independent inputs, not calculated."],["2O1","2O7","p",2,"Headcount by designation is the volume that personnel cost is priced on."],["2T8","2O7","p",2,"Headcount times average cost by designation gives base compensation."],["2T9","2O7","p",2,"Bonus %, gratuity and leave %, other personnel % and COLA are applied on base compensation."],["2T15","2O7","p",2,"Secondee and borrowing cost and one-offs are entered directly."],["2O7","2O14","p",2,"Total personnel cost divided by average FTE gives cost per FTE by designation."],["2T12","2O10","p",3,"Contractor headcount times hours times cost per hour, by vendor and role. Vendor rate changes are entered as they happen."],["2O10","2O8","p",3,"Contractor hours count in utilization alongside employee hours."],["2T5","2O12","p",4,"Each new joiner carries a recruitment cost."],["2T14","2O12","p",4,"Recruitment cost per hire times joiners gives hiring cost."],["2T14","2O9","p",4,"Transport is a rate per head times headcount."],["5T13","2O9","p",4,"Training and welfare are rates per head times headcount. Travel and other DFC are entered directly."],["2O12","2O9","p",4,"Recruitment is one of the four per-head direct function cost lines."],["2O1","2O9","p",4,"Monthly headcount is the volume for every per-head rate."],["2O14","2S6","p",5,"Personnel cost per FTE is the largest part of direct cost per head."],["2O10","2S6","p",5,"Contractor cost is added to employee cost for the same center and role."],["2O9","2S6","p",5,"Per-head direct function costs complete the direct cost of a head."],["6T15","6O15","p",6,"Location headcount times cost per seat gives facility cost by location."],["6T6","6O15","p",6,"IT cost per user times users gives IT cost by location."],["6T5","6O15","p",6,"Lease renewals and fit-outs are entered directly when they are known."],["2O1","6O15","p",6,"The same monthly headcount from the workforce model drives seats and IT users. One headcount, used everywhere."],["6O15","6O2","p",7,"Facility and IT cost by location is allocated with the rest of the overhead pool."],["6T7","6O2","p",7,"Function and business-unit headcount is the allocation base."],["6T13","6O2","p",7,"Named cost centers (codes 100 to 105) carry a fixed % override instead of the headcount base."],["6O2","6O5","p",7,"Step one moves G&A to management. Step two moves management to the business cost centers."],["6O5","6S8","p",7,"The allocation lands on business cost centers by geography, which completes cost-to-serve."],["2S6","6S8","p",7,"Direct cost per head plus allocated overhead gives the fully allocated cost of a delivery center."],["6O5","4O6","p",8,"Fully allocated cost is the base that the markup is applied to."],["4T15","4O6","p",8,"Allocated cost times markup % by geography: India 20%, contracted centers 14%. HQ sets the rule."],["4T6","4O6","p",8,"Fixed-fee arrangements are entered directly and sit outside the markup rule."],["4O6","4O5","p",8,"Cost plus markup plus the GDC tax provision gives the invoice basis for each member firm."],["4O5","4S14","p",8,"Invoice basis less allocated cost is the cost-plus margin each center earns."],["4T14","4O14","p",9,"Time and materials: hours times bill rate by band. Rate cards are annual and OpCo-owned."],["4T7","4O14","p",9,"Fully loaded: FTEs times an annual rate."],["4T1","4O14","p",9,"Fixed monthly or subscription fee, entered per solution."],["4T12","4O14","p",9,"Per unit: units times price times clients."],["4T5","4O14","p",9,"Discounts and recovery % reduce gross revenue to what is actually billed."],["4T8","4O14","p",9,"Pass-through, recoverable expenses and intercompany adjustments are entered directly."],["2O8","4O14","p",9,"Hours for the revenue row come from the delivery-center workforce model. The cost side and the revenue side share one set of hours."],["4O14","4O7","p",9,"Solution revenue less direct cost gives CM1. Each further cost layer gives CM2 and CM3."],["4O5","4O7","p",9,"What a delivery center invoices is the OpCo cost of delivery, so the invoice basis sets contribution margin."],["4O14","1S7","p",9,"Monthly solution revenue is split into secured multi-year and resold."],["6T0","6O6","p",10,"Headcount or revenue share by solution is the allocation key."],["6T11","6O6","p",10,"OpCo management, PMO, QA and legal are entered directly by category."],["6O6","6S14","p",10,"OpCo and Central allocation lines show how much overhead each solution absorbs."],["6O6","4O7","p",10,"Allocated OpCo and Central overhead takes contribution margin down to CM3."],["6T12","6O9","p",11,"Project schedules by month and their funding source (KISL, Global Function). All inputs are independent."],["6O9","6S12","p",11,"Net investment, new services and Tier 2 are taken out to reach adjusted operating income."],["4O7","6S12","p",11,"Contribution margin by solution is the starting point for operating income."],["6S14","6S12","p",11,"Overhead absorbed by solution sits between contribution margin and operating income."],["6T10","6O14","p",12,"A budget rate per currency and a monthly actual rate translate every center into USD."],["6T8","6O14","p",12,"Rate policy decides the constant rate: a January to May average or a single month."],["6O14","6S7","p",12,"USD at actual and USD at constant are reported side by side, so consolidation ties out in every currency."],["6O14","6S12","p",12,"FX impact on revenue and cost is separated from operating performance."],["1T12","1O15","o",14,""],["1O15","1S3","o",14,""],["1S3","1S0","o",14,""],["1O15","2O0","o",14,""],["2T6","2O0","o",14,""],["2O0","2S2","o",14,""],["2S2","2S0","o",14,""],["2O0","2O15","o",14,""],["2O15","2S3","o",14,""],["2O10","2S3","o",14,""],["2O12","2S3","o",14,""],["2O3","2S3","o",14,""],["2O0","3O0","o",14,""],["3O0","3S2","o",14,""],["6O10","6S1","o",14,""],["2O1","2O0","b",14,"The driver-based headcount forecast is the monthly headcount model from slide 9. Accuracy is measured against it."],["2O1","2O15","b",14,"Planned monthly headcount is the budget that actual headcount is compared with."],["2O8","2O3","b",14,"Available hours less utilized time is bench time, priced at cost per FTE."],["2O8","3O0","b",14,"Utilized hours by center are the capacity side of the capacity-to-demand balance."],["2O7","2S3","b",14,"Personnel cost is the numerator of workforce cost as a % of revenue."],["2S6","3S2","b",14,"Direct cost per head by center is what makes cost arbitrage between centers measurable."],["6O15","6O10","b",14,"Facility and IT cost by location is the plan that overhead variance is measured against."],["2S2","5S4","o",15,""],["5O9","5S1","o",15,""],["5S1","5S4","o",15,""],["5O13","5S8","o",15,""],["5S8","5S4","o",15,""],["5S4","4S1","o",15,""],["5O1","4O8","o",15,""],["4O8","4S2","o",15,""],["4O4","4S2","o",15,""],["4S2","1S9","o",15,""],["1S9","1S0","o",15,""],["4O14","4S1","b",15,"Monthly solution revenue is the numerator of revenue per FTE."],["2O1","4S1","b",15,"Average FTE from the workforce model is the denominator of revenue per FTE."],["4T14","4O4","b",15,"Bill rate by band is one side of rate erosion."],["2O14","4O4","b",15,"Cost per FTE by designation is the cost rate on the other side of rate erosion."],["2O8","5O1","b",15,"Hours by type are the baseline that AI hours saved are measured against."],["4T13","4O3","m",16,""],["4T3","4O3","m",16,""],["4T13","4O0","m",16,""],["4T10","4O0","m",16,""],["4T10","4S10","m",16,""],["4O3","4S4","m",16,""],["4O0","4S0","m",16,""],["4S4","4S0","m",16,""],["4S10","4S0","m",16,""],["3T7","3O3","m",16,""],["3O3","3O8","m",16,""],["3O8","3S1","m",16,""],["4O0","5S4","m",16,""],["2T0","2O3","m",16,""],["2O3","5S4","m",16,""],["5T8","5O1","m",16,""],["5O1","5S4","m",16,""],["4T5","4S10","b",16,"Planned discounts and recovery % are the baseline that discount leakage is measured against."],["4O5","4O0","b",16,"Invoice basis by member firm against actual billing shows realization by delivery center."],["4O7","3S1","b",16,"Contribution margin by solution is the plan that engagement margin by solution line reports against."],["6T9","6O4","m",17,""],["6O4","6S4","m",17,""],["6O11","6S7","m",17,""],["6S7","6S4","m",17,""],["6S10","6S4","m",17,""],["6T3","6O1","m",17,""],["6O1","6S1","m",17,""],["6O0","6S4","m",17,""],["6O0","6S5","m",17,""],["6S1","6S0","m",17,""],["6S5","6S0","m",17,""],["6O2","6O0","b",17,"A two-step allocation that runs in the model, with an audit trail, is what makes allocation transparent by center."],["6O5","6O1","b",17,"Planned allocation by business cost center is compared with actual shared cost every month."],["6O6","6S4","b",17,"OpCo and Central allocation lines complete the P&L by solution."],["4O7","6S4","b",17,"Contribution margin CM1 to CM3 is the solution P&L that visibility coverage measures."],["6S8","6S0","b",17,"Cost-to-serve by center, on one basis, is how footprint cost efficiency is compared."]],"tags":{"6S10":["M1","Hyperion retired, one close across centers"],"6S4":["M2","P&L by solution, center and function"],"4S0":["M3","Global fee realization"],"3S1":["M4","Engagement margin by solution line"],"6S0":["M5","Footprint cost efficiency"],"5S4":["M6","Leverage ratio shift"],"1S3":["P1","Pipeline-to-capacity coverage"],"2S0":["P2","Global leverage ratio and AI-adjusted staffing"],"2S3":["P3","Workforce cost as % of revenue"],"3S2":["P4","Delivery center cost arbitrage"],"4S2":["P5","Value-based pricing"],"4S1":["P6","Revenue per FTE"]},"steps":[{"ch":"Frame","t":"The blueprint construct","src":"","hl":[],"body":"Six delivery functions across the top. Three layers down the side: strategic outcomes, operational levers, tactical signals. Every driver on this map sits at one intersection of a function and a layer.","roi":"Nothing is placed yet. The next clicks build the Jedox planning model onto this frame, one planning model at a time, in the order the rollout plan delivers it."},{"ch":"Slide 9 · Delivery center cost","t":"Workforce: headcount and hours","src":"Rollout plan, slide 9, row 1","hl":[],"body":"Opening headcount by cost center, geography, location and role. Add joiners, apply attrition %. Standard hours and target utilization turn heads into hours. The model returns monthly headcount, exits, average FTE, hours by type and utilized time.","roi":"This is the volume model behind every cost line that follows. It is validated against FY26 actuals before go-live."},{"ch":"Slide 9 · Delivery center cost","t":"Personnel cost","src":"Rollout plan, slide 9, row 2","hl":[],"body":"Headcount times average cost by designation, then bonus %, gratuity and leave %, other personnel % and COLA. Secondee and borrowing cost and one-offs are entered directly. The output is base compensation, bonus, gratuity, insurance and cost per FTE.","roi":"Personnel cost is the largest line in a delivery center. Change one assumption and every month and every role reprices."},{"ch":"Slide 9 · Delivery center cost","t":"Contractors","src":"Rollout plan, slide 9, row 3","hl":[],"body":"Contractor headcount times hours times cost per hour, by vendor and role. Contractor hours also count in utilization, so they flow back into the hours model.","roi":"Contractor spend against budget is already on the blueprint as a fee-leakage driver. It now has a driver-based plan behind it."},{"ch":"Slide 9 · Delivery center cost","t":"Per-head direct function costs","src":"Rollout plan, slide 9, row 4","hl":[],"body":"Headcount times a rate per head for training, welfare and transport. Recruitment is a cost per hire, driven by joiners. Travel and other DFC are entered directly.","roi":"These lines are small individually and are usually planned by hand in separate templates. Here they follow headcount automatically."},{"ch":"Slide 9 · Delivery center cost","t":"Outcome: direct cost per head","src":"Rollout plan, slide 9","hl":["2S6"],"body":"Personnel cost per FTE, plus contractors, plus per-head direct function costs, gives the direct cost of a head by center and role.","roi":"Phase 1A, about 60 days, India go-live 31 March 2027. This is the scope that replaces Hyperion and the 25 to 30 planning templates. Hyperion is switched off in April 2027 and the India finance charge under the SSA ends."},{"ch":"Slide 10 · Overheads and cost-plus","t":"Facilities and IT overheads","src":"Rollout plan, slide 10, row 1","hl":[],"body":"Location headcount times cost per seat, and IT cost per user. Lease renewals and fit-outs are entered directly. The same monthly headcount from slide 9 drives the seats and the users.","roi":"One headcount number now drives people cost and overhead. That removes the reconciliation between HR and finance versions of headcount."},{"ch":"Slide 10 · Overheads and cost-plus","t":"Management and G&A allocation","src":"Rollout plan, slide 10, row 2","hl":["6S8"],"body":"A two-step allocation on function and business-unit headcount. G&A goes to management, then management goes to the business cost centers by geography. Named cost centers (codes 100 to 105) keep a fixed % override.","roi":"Direct cost per head plus allocated overhead gives cost-to-serve by delivery center, calculated the same way in every center."},{"ch":"Slide 10 · Overheads and cost-plus","t":"Cost-plus margin","src":"Rollout plan, slide 10, row 3","hl":["4S14"],"body":"Allocated cost times a markup % by geography: India 20%, contracted centers 14%. The model returns the markup, the GDC tax provision and the invoice basis by member firm. Fixed-fee arrangements are entered directly.","roi":"This is where center cost becomes member-firm invoicing. Every other delivery center joins by mapping onto this model: Phase 1B and 1C, about 30 days, all centers live by July 2027."},{"ch":"Slide 11 · HQ","t":"OpCo revenue","src":"Rollout plan, slide 11, row 1","hl":[],"body":"Each solution picks its method: hours times bill rate by band, fully loaded FTE times annual rate, fixed monthly or subscription fee, or units times price times clients. Discounts and recovery % apply. Hours come from the delivery-center workforce model.","roi":"Monthly solution revenue whatever the method, split into secured multi-year and resold, with contribution margin CM1 to CM3. Phase 2, about 30 days, July to August 2027."},{"ch":"Slide 11 · HQ","t":"OpCo and Central overheads","src":"Rollout plan, slide 11, row 2","hl":[],"body":"Headcount or revenue share by solution allocates OpCo and Central cost. OpCo management, PMO, QA and legal are entered directly.","roi":"The allocation lines take each solution from CM1 down to CM3 and show how much overhead each solution absorbs."},{"ch":"Slide 11 · HQ","t":"Funding and investment","src":"Rollout plan, slide 11, row 3","hl":["6S12"],"body":"Project schedules by month and their funding source (KISL, Global Function). All inputs are independent. The output is net investment, new services, Tier 2 and adjusted operating income.","roi":"Adjusted operating income is the number HQ reports. It is now built from the same drivers as the center cost plan."},{"ch":"Slide 11 · HQ","t":"FX and constant currency","src":"Rollout plan, slide 11, row 4","hl":[],"body":"A budget rate per currency and a monthly actual rate. Rate policy sets the constant rate: a January to May average or a single month. The output is USD at actual, USD at constant and the FX impact on revenue and cost.","roi":"FX impact is separated from operating performance, and multi-currency consolidation ties out."},{"ch":"Slide 11 · HQ","t":"Checkpoint: the easy ROI","src":"Rollout plan, slides 9 to 13","hl":["2S6","6S8","4S14","4O7","6S12"],"body":"Eleven planning models, five outcomes: direct cost per head, cost-to-serve by center, cost-plus margin, contribution margin by solution and adjusted operating income. Everything on the map so far is in the rollout plan.","roi":"Cost side of the case: subscription of $100,620 a year (Professional Package $74,760 plus Enterprise Connectivity $25,860), 40 additional users at $99,662 a year from 1 June 2027, and about 90 days of implementation for Phase 1. Benefit side: the India finance charge under the SSA that ends when Hyperion is switched off, and the 25 to 30 templates retired."},{"ch":"Revenue per consultant and margin","t":"Capacity and workforce cost","src":"Blueprint value flow: budgeting, planning and forecasting (P1 to P4)","hl":[],"body":"The planning models now reach the drivers already circled on the blueprint. Pipeline is checked against capacity. The headcount forecast drives the AI-adjusted staffing model, bench time, headcount variance and workforce cost as % of revenue.","roi":"Dashed lines show where a slide 9, 10 or 11 planning driver feeds a blueprint driver. Outcomes: P1 pipeline-to-capacity coverage, P2 leverage ratio, P3 workforce cost as % of revenue, P4 delivery center cost arbitrage."},{"ch":"Revenue per consultant and margin","t":"Revenue per consultant","src":"Blueprint value flow: budgeting, planning and forecasting (P5, P6)","hl":["4S1"],"body":"Revenue per FTE is monthly solution revenue over average FTE, both from the planning models. AI hours saved are repriced instead of given away, rate erosion is tracked against cost rate, and value-based pricing protects pricing realization.","roi":"Outcomes: P5 value-based pricing adoption and P6 revenue per FTE. Phase 3 demand planning (about 30 days, September onward) closes the loop from member-firm demand to center capacity."},{"ch":"Revenue per consultant and margin","t":"Margin: realization and leakage","src":"Blueprint value flow: close, consolidation and management reporting (M3, M4, M6)","hl":["4S0","3S1"],"body":"Actuals reported on the same structure as the plan. Write-offs, credit memos and discount leakage roll up to global fee realization. Rework cost rolls up to engagement margin by solution line. Bench cost and AI hours saved show in the leverage ratio.","roi":"Outcomes: M3 global fee realization, M4 engagement margin by solution line, M6 leverage ratio shift."},{"ch":"Revenue per consultant and margin","t":"Margin: one close, solution P&L, footprint","src":"Blueprint value flow: close, consolidation and management reporting (M1, M2, M5)","hl":["6S4","6S0"],"body":"One monthly close across centers once Hyperion is retired. Transparent allocations and multi-currency consolidation give a P&L by solution, center and function. Shared-services cost and center rationalization savings show in footprint cost efficiency.","roi":"Outcomes: M1 Hyperion retired, M2 solution-level P&L visibility, M5 global delivery footprint cost efficiency. Every circled driver is now connected back to the slide 9, 10 and 11 planning models."},{"ch":"Full blueprint","t":"All 288 value drivers","src":"","hl":[],"body":"The remaining drivers take their places. The planning models and the two value flows touch a subset of the map. The rest is where connected planning can extend after Phase 3.","roi":"Click any driver or line for detail."}],"funcs":[["Business Development & Pipeline","#E67E22"],["Resource & Workforce Planning","#C0392B"],["Engagement Delivery & Utilization","#2471A3"],["Pricing, Billing & Fee Realization","#229954"],["Talent, Skills & AI Enablement","#7D3C98"],["Allocations, Overhead & Shared Services","#17A589"]]};
+const W=2592,H=1728,HDR=128,FH=118,FT=150,SB=62,COLW=(W-SB)/6,ROWH=(H-HDR-FH-FT)/3,PAD=8,GUT=4;
+const BW=(COLW-3-2*PAD-3*GUT)/4, BH=(ROWH-3-2*PAD-3*GUT)/4;
+const LAYERS=[['STRATEGIC','S','var(--p-navy)'],['OPERATIONAL','O','var(--p-navy2)'],['TACTICAL','T','var(--p-navy3)']];
+const LAYNAME={S:'Strategic',O:'Operational',T:'Tactical'};
+const TAGNAME={'':'Supporting driver',p:'Primary driver',a:'Anchor metric',r:'AI margin erosion and fee leakage'};
+const TAGCOL={'':'#FFFFFF',p:'#DCE6F5',a:'#FCEEC0',r:'#D7F0DA'};
+const KIND={p:['Planning model (rollout plan)','#5B3FD6'],b:['Planning driver feeding a blueprint driver','#5B3FD6'],m:['Close, consolidation and management reporting','#CC126B'],o:['Budgeting, planning and forecasting','#ED6B00']};
+const ROLE={in:'Driver input',out:'Calculated output',ind:'Independent input (entered directly)',res:'Outcome'};
+const LAST=D.steps.length-1;
+const stage=document.getElementById('stage'), view=document.getElementById('view');
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const el=(tag,cls,html)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e};
+const SVGNS='http://www.w3.org/2000/svg';
+const sv=(tag,attrs)=>{const e=document.createElementNS(SVGNS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);return e};
+
+/* ---------- derive when each driver, ring and line appears ---------- */
+const ns={}, ring={}, EDG=D.edges.map((e,i)=>({i,a:e[0],b:e[1],k:e[2],s:e[3],note:e[4]}));
+for(const k in D.drivers){ns[k]=LAST;ring[k]={}}
+for(const e of EDG){
+  for(const n of [e.a,e.b]){ ns[n]=Math.min(ns[n],e.s);
+    if(e.k==='m'||e.k==='o') ring[n][e.k]=Math.min(ring[n][e.k]??99,e.s); }
+}
+for(const k in D.plan) ring[k].p=ns[k];
+const ringOrder=k=>['p','m','o'].filter(x=>x in ring[k]);
+function pos(k){const f=+k[0]-1,l='SOT'.indexOf(k[1]),i=+k.slice(2),c=i%4,r=(i-c)/4;
+  const x=SB+f*COLW+3+PAD+c*(BW+GUT), y=HDR+FH+l*ROWH+3+PAD+r*(BH+GUT);return {x,y,cx:x+BW/2,cy:y+BH/2}}
+
+/* ---------- build the poster ---------- */
+stage.appendChild(el('div','p-hdr',
+ '<div><div class="k">KPMG DELIVERY NETWORK (KDN)</div><div class="t">Margin &amp; Growth Blueprint: What Drives Value at KDN?</div>'+
+ '<div class="s">6 Global Delivery Functions × 3 Layers × 288 Value Drivers · Jedox EPM Value Flows: Planning Models, Close &amp; Reporting, Budgeting &amp; Planning</div></div>'+
+ '<div class="r"><div class="o">STRATEGIC OBJECTIVES</div><div class="g">Protect &amp; Expand Delivery Margin as AI Resets Consulting Economics AND Grow Revenue per Consultant While Scaling the Global Delivery Footprint</div><span class="badge">TAX · AUDIT · ADVISORY</span></div>'));
+stage.appendChild(el('div','p-corner'));
+D.funcs.forEach((f,i)=>{const h=el('div','p-fh','<div class="n" style="color:'+f[1]+'">'+(i+1)+'</div><div class="nm">'+esc(f[0])+'</div>');
+  h.style.cssText='left:'+(SB+i*COLW)+'px;width:'+COLW+'px;background:'+f[1];stage.appendChild(h)});
+LAYERS.forEach((L,l)=>{const d=el('div','p-lay','<span>'+L[0]+'</span>');d.style.cssText='top:'+(HDR+FH+l*ROWH)+'px;height:'+ROWH+'px;background:'+L[2];stage.appendChild(d);
+  for(let f=0;f<6;f++){const c=el('div','p-cell');c.style.cssText='left:'+(SB+f*COLW)+'px;top:'+(HDR+FH+l*ROWH)+'px;width:'+COLW+'px;height:'+ROWH+'px';stage.appendChild(c)}});
+const box={};
+for(const k in D.drivers){const [lab,tag]=D.drivers[k],p=pos(k);
+  const b=el('div','drv'+(tag?' '+tag:''),'<span>'+esc(lab)+'</span>'+(D.plan[k]?'<i class="sl">'+D.models[D.plan[k][0]][3]+'</i>':''));
+  b.style.cssText='left:'+p.x+'px;top:'+p.y+'px;width:'+BW+'px;height:'+BH+'px';b.dataset.k=k;b.tabIndex=-1;b.setAttribute('role','button');
+  stage.appendChild(b);box[k]=b}
+const svgL=sv('svg',{id:'lines',viewBox:'0 0 '+W+' '+H});stage.appendChild(svgL);
+const svg=sv('svg',{id:'wires',viewBox:'0 0 '+W+' '+H});stage.appendChild(svg);
+const defs=sv('defs',{});svgL.appendChild(defs);
+for(const k of ['p','m','o']){const m=sv('marker',{id:'ah-'+k,markerUnits:'userSpaceOnUse',markerWidth:18,markerHeight:16,refX:15,refY:8,orient:'auto'});
+  m.appendChild(sv('path',{d:'M0,0 L18,8 L0,16 Z',fill:KIND[k][1]}));defs.appendChild(m)}
+const gE=sv('g',{}),gR=sv('g',{}),gH=sv('g',{}),gT=sv('g',{});svgL.append(gE,gH);svg.append(gR,gT);
+/* rings */
+const RX=BW/2+7, RY=BH/2+7, ringEl={};
+for(const k in ring){const p=pos(k);ringEl[k]={};ringOrder(k).forEach((x,j)=>{
+  const r=sv('ellipse',{class:'ring',cx:p.cx,cy:p.cy,rx:RX+j*7,ry:RY+j*7,stroke:KIND[x][1]});gR.appendChild(r);ringEl[k][x]=r})}
+const outer=k=>{const n=Math.max(1,ringOrder(k).length);return [RX+(n-1)*7+2,RY+(n-1)*7+2]};
+/* lines */
+function edgePath(e){const A=pos(e.a),B=pos(e.b);let dx=B.cx-A.cx,dy=B.cy-A.cy,len=Math.hypot(dx,dy)||1;
+  const nx=-dy/len,ny=dx/len,straight=Math.abs(dx)<6||Math.abs(dy)<6;
+  let off=straight?Math.max(46,len*.13):len*.07; if(len<BW*1.6&&!straight) off=0;
+  const sgn=(dx>=0?1:-1)*((e.i%2)?1:-1)*(straight?1:1);
+  const cx=(A.cx+B.cx)/2+nx*off*sgn, cy=(A.cy+B.cy)/2+ny*off*sgn;
+  const edgePt=(P,rx,ry,tx,ty,gap)=>{let ux=tx-P.cx,uy=ty-P.cy,l=Math.hypot(ux,uy)||1;ux/=l;uy/=l;const t=1/Math.sqrt((ux/rx)**2+(uy/ry)**2)+gap;return [P.cx+ux*t,P.cy+uy*t]};
+  const [ra,rb]=[outer(e.a),outer(e.b)];
+  const p1=edgePt(A,ra[0],ra[1],cx,cy,1), p2=edgePt(B,rb[0],rb[1],cx,cy,5);
+  return 'M'+p1[0].toFixed(1)+','+p1[1].toFixed(1)+' Q'+cx.toFixed(1)+','+cy.toFixed(1)+' '+p2[0].toFixed(1)+','+p2[1].toFixed(1)}
+for(const e of EDG){const d=edgePath(e),kc=e.k==='b'?'p':e.k;
+  e.el=sv('path',{class:'e',d,stroke:KIND[e.k][1],'marker-end':'url(#ah-'+kc+')'});gE.appendChild(e.el);
+  if(e.k==='b'){e.el.setAttribute('stroke-dasharray','12 9')}
+  else{const L=e.el.getTotalLength();e.L=L;e.el.setAttribute('stroke-dasharray',L);e.el.setAttribute('stroke-dashoffset',L)}
+  e.hit=sv('path',{class:'hit',d});e.hit.dataset.e=e.i;gH.appendChild(e.hit)}
+/* outcome tags */
+const tagEl={};
+for(const k in D.tags){const p=pos(k),o=outer(k),code=D.tags[k][0],w=code.length*10+18;
+  const g=sv('g',{class:'tag',transform:'translate('+p.cx+','+(p.cy+o[1]+1)+')'});
+  g.appendChild(sv('rect',{x:-w/2,y:-11,width:w,height:22,rx:11,fill:code[0]==='M'?KIND.m[1]:KIND.o[1]}));
+  const t=sv('text',{y:5});t.textContent=code;g.appendChild(t);gT.appendChild(g);tagEl[k]=g}
+/* footer */
+const oc=Object.values(D.tags).sort((a,b)=>a[0]<b[0]?-1:1).map(t=>'<span><b>'+t[0]+'</b> '+esc(t[1])+'</span>').join('');
+stage.appendChild(el('div','p-ft','<div class="row">'+
+ '<div><h6>LAYERS</h6><div class="lg"><div><b>Strategic</b>&nbsp;multi-year outcomes and positioning</div><div><b>Operational</b>&nbsp;monthly and quarterly performance levers</div><div><b>Tactical</b>&nbsp;daily and weekly execution signals and inputs</div></div></div>'+
+ '<div><h6>DRIVER TYPES</h6><div class="lg"><div><i style="background:#DCE6F5"></i>Primary driver</div><div><i style="background:#FCEEC0"></i>Anchor metric</div><div><i style="background:#D7F0DA"></i>AI margin erosion &amp; fee leakage ($)</div><div><i style="background:#FFFFFF"></i>Supporting driver</div></div></div>'+
+ '<div><h6>JEDOX VALUE FLOWS</h6><div class="lg"><div><u style="border-color:#5B3FD6"></u>Planning models from the rollout plan (badge = slide 9, 10 or 11)</div><div><u style="border-color:#5B3FD6;border-top-style:dashed"></u>Planning driver feeding a blueprint driver</div><div><u style="border-color:#CC126B"></u>Close, consolidation &amp; management reporting (M1 to M6)</div><div><u style="border-color:#ED6B00"></u>Budgeting, planning &amp; forecasting (P1 to P6)</div></div></div>'+
+ '<div><h6>OUTCOMES</h6><div class="oc">'+oc+'</div></div></div>'+
+ '<div class="cp">© 2026 SparkLabs.studio · KDN Margin &amp; Growth Blueprint · Jedox EPM Value Flows · 288 Value Drivers across 18 Intersections · Planning drivers from the KDN × Jedox Rollout and Implementation Plan (2 Nov 2026) · Built from KDN Discovery (Jul 2026) &amp; Industry AI-Disruption Research</div>'));
+
+/* fit label text inside each box */
+function fitText(){for(const k in box){const b=box[k];let fs=16;b.style.fontSize=fs+'px';
+  while(fs>9.5&&(b.scrollHeight>b.clientHeight+1||b.scrollWidth>b.clientWidth+1)){fs-=.5;b.style.fontSize=fs+'px'}}}
+fitText();
+
+/* ---------- state and render ---------- */
+let step=0, half=false, sel=null, splitMode=false, fitMode=true;
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const edgeOn=e=>e.s<step||(e.s===step&&!half);
+const nodeOn=k=>ns[k]<=step;
+function ringOn(k,x){const s=ring[k][x];return x==='p'?s<=step:(s<step||(s===step&&!half))}
+function render(){
+  for(const k in box){const on=nodeOn(k),b=box[k];b.classList.toggle('on',on);b.tabIndex=on?0:-1;
+    b.classList.toggle('fresh',on&&step>0&&((ns[k]===step&&step<LAST)||D.steps[step].hl.includes(k)));
+    b.classList.toggle('sel',!!sel&&((sel.t==='n'&&sel.k===k)||(sel.t==='e'&&(EDG[sel.i].a===k||EDG[sel.i].b===k))));
+    b.style.transitionDelay=(on&&ns[k]===step&&!reduce&&step<LAST)?(Math.random()*.25)+'s':'0s';
+    for(const x in ringEl[k]) ringEl[k][x].classList.toggle('on',ringOn(k,x));
+    if(tagEl[k]){const x=D.tags[k][0][0]==='M'?'m':'o';tagEl[k].classList.toggle('on',ringOn(k,x))}}
+  for(const e of EDG){const on=edgeOn(e);e.el.classList.toggle('on',on);e.hit.classList.toggle('on',on);
+    e.el.classList.toggle('fresh',on&&e.s===step);e.el.classList.toggle('old',on&&e.s<step&&step!==13&&step!==LAST);e.el.classList.toggle('rel',!!sel&&sel.t==='n'&&(e.a===sel.k||e.b===sel.k));e.el.classList.toggle('sel',!!sel&&sel.t==='e'&&sel.i===e.i);
+    if(e.L!=null) e.el.setAttribute('stroke-dashoffset',on?0:e.L)}
+  const clicks=splitMode?' (lines next)':'';
+  document.getElementById('count').textContent='Step '+step+' of '+LAST;
+  document.getElementById('back').disabled=step===0&&!half;
+  const nx=document.getElementById('next');nx.disabled=step===LAST&&!half;
+  nx.textContent=half?'Add lines':(step===LAST?'Done':'Next');
+  renderStep();renderDetail();renderList();
+}
+function renderStep(){const s=D.steps[step];
+  document.getElementById('stepcard').innerHTML='<div class="kick">'+esc(s.ch)+'</div><h2>'+esc(s.t)+'</h2>'+
+   '<p>'+esc(s.body)+'</p><div class="roi"><b>'+(step===0?'What happens next':'Why it matters')+'</b>'+esc(s.roi)+'</div>'+(s.src?'<p class="src" style="margin:8px 0 0">Source: '+esc(s.src)+'</p>':'')}
+function renderList(){const ol=document.getElementById('steps');let h='',ch='';
+  D.steps.forEach((s,i)=>{if(s.ch!==ch){ch=s.ch;h+='<li class="ch">'+esc(ch)+'</li>'}
+    h+='<li><button type="button" data-step="'+i+'" class="'+(i<step?'done':'')+'"'+(i===step?' aria-current="step"':'')+'><span class="n">'+i+'</span><span>'+esc(s.t)+'</span></button></li>'});
+  ol.innerHTML=h}
+function nodeLine(k){return esc(D.drivers[k][0])}
+function renderDetail(){const d=document.getElementById('detail');if(!sel){d.hidden=true;return}
+  d.hidden=false;let h='<button class="x" type="button" data-clear="1">Close</button>';
+  if(sel.t==='n'){const k=sel.k,[lab,tag]=D.drivers[k],f=D.funcs[+k[0]-1],pl=D.plan[k];
+    h+='<div class="kick">'+esc(f[0])+' · '+LAYNAME[k[1]]+'</div><h3>'+esc(lab)+'</h3><div class="chips"><span class="chip"><span class="sw" style="background:'+TAGCOL[tag]+'"></span>'+TAGNAME[tag]+'</span>';
+    for(const x of ringOrder(k)) if(ringOn(k,x)) h+='<span class="chip"><span class="dot" style="background:'+KIND[x][1]+'"></span>'+(x==='p'?'Planning model':x==='m'?'Close and reporting flow':'Planning and forecasting flow')+'</span>';
+    h+='</div>';
+    if(pl){const m=D.models[pl[0]];h+='<dl><dt>Planning model</dt><dd>'+esc(m[0])+'</dd><dt>Role</dt><dd>'+ROLE[pl[1]]+'</dd><dt>Type</dt><dd>'+esc(m[1])+'</dd><dt>Owner</dt><dd>'+esc(m[2])+'</dd><dt>Source</dt><dd>Rollout plan, slide '+m[3]+'</dd></dl>'}
+    if(D.tags[k]&&ringOn(k,D.tags[k][0][0]==='M'?'m':'o')) h+='<p><b>Outcome '+D.tags[k][0]+':</b> '+esc(D.tags[k][1])+'</p>';
+    const ins=EDG.filter(e=>e.b===k&&edgeOn(e)),outs=EDG.filter(e=>e.a===k&&edgeOn(e));
+    const li=(e,o)=>'<li><button type="button" data-edge="'+e.i+'"><span class="dot" style="background:'+KIND[e.k][1]+'"></span><span>'+nodeLine(o)+'</span></button></li>';
+    if(ins.length) h+='<div class="lh">Driven by</div><ul class="links">'+ins.map(e=>li(e,e.a)).join('')+'</ul>';
+    if(outs.length) h+='<div class="lh">Drives</div><ul class="links">'+outs.map(e=>li(e,e.b)).join('')+'</ul>';
+    if(!ins.length&&!outs.length) h+='<p class="src">'+(ns[k]===LAST&&!ringOrder(k).length?'Not yet connected to a planning model or value flow. A candidate for later phases.':'Connections appear as the build continues.')+'</p>';
+  }else{const e=EDG[sel.i];
+    let note=e.note;
+    if(!note) note=e.k==='m'?'Actuals for the first driver are closed and reported on the same structure as the second, so the roll-up is automatic and auditable.':'The first driver is a planning input to the second, so a change in one reforecasts the other.';
+    h+='<div class="kick">Connection</div><h3>'+nodeLine(e.a)+' <span style="color:'+KIND[e.k][1]+'">→</span> '+nodeLine(e.b)+'</h3>'+
+      '<div class="chips"><span class="chip"><span class="dot" style="background:'+KIND[e.k][1]+'"></span>'+KIND[e.k][0]+'</span></div><p>'+esc(note)+'</p>'+
+      (D.tags[e.b]&&e.k!=='p'&&e.k!=='b'?'<p><b>Outcome '+D.tags[e.b][0]+':</b> '+esc(D.tags[e.b][1])+'</p>':'')+
+      '<ul class="links"><li><button type="button" data-node="'+e.a+'"><span>From: '+nodeLine(e.a)+'</span></button></li><li><button type="button" data-node="'+e.b+'"><span>To: '+nodeLine(e.b)+'</span></button></li></ul>'}
+  d.innerHTML=h}
+function go(n,h){step=Math.max(0,Math.min(LAST,n));half=!!h;if(sel&&((sel.t==='n'&&!nodeOn(sel.k))||(sel.t==='e'&&!edgeOn(EDG[sel.i]))))sel=null;render();if(!fitMode)focusStep()}
+const hasEdges=s=>EDG.some(e=>e.s===s);
+function next(){if(half){go(step,false);return} if(step>=LAST)return; go(step+1,splitMode&&hasEdges(step+1))}
+function back(){if(half){go(step-1,false);return} if(step<=0)return; go(step-1,false)}
+document.getElementById('next').onclick=next;document.getElementById('back').onclick=back;
+document.getElementById('split').onchange=e=>{splitMode=e.target.checked;if(!splitMode&&half)go(step,false)};
+document.getElementById('steps').onclick=e=>{const b=e.target.closest('[data-step]');if(b)go(+b.dataset.step,false)};
+document.getElementById('detail').onclick=e=>{const b=e.target.closest('button');if(!b)return;
+  if(b.dataset.clear)sel=null;else if(b.dataset.edge)sel={t:'e',i:+b.dataset.edge};else if(b.dataset.node)sel={t:'n',k:b.dataset.node};render()};
+document.addEventListener('keydown',e=>{if(e.target.matches('input,textarea,select'))return;
+  if(e.key==='ArrowRight'||e.key==='PageDown'){next();e.preventDefault()}
+  else if(e.key==='ArrowLeft'||e.key==='PageUp'){back();e.preventDefault()}
+  else if(e.key==='Home'){go(0)}else if(e.key==='End'){go(LAST)}
+  else if(e.key==='Escape'){sel=null;render()}
+  else if((e.key==='Enter'||e.key===' ')&&e.target.classList&&e.target.classList.contains('drv')){sel={t:'n',k:e.target.dataset.k};render();e.preventDefault()}});
+
+/* ---------- zoom and pan ---------- */
+let Z={s:1,x:0,y:0};
+const apply=a=>{stage.classList.toggle('anim',!!a&&!reduce);stage.style.transform='translate('+Z.x+'px,'+Z.y+'px) scale('+Z.s+')';view.classList.toggle('pan',!fitMode)};
+function fit(a){const r=view.getBoundingClientRect();if(!r.width)return;const s=Math.min(r.width/W,r.height/H);Z={s,x:(r.width-W*s)/2,y:(r.height-H*s)/2};fitMode=true;apply(a)}
+function zoomAt(f,px,py){const r=view.getBoundingClientRect();px=px??r.width/2;py=py??r.height/2;const min=Math.min(r.width/W,r.height/H);
+  const s=Math.max(min,Math.min(2.2,Z.s*f));if(s<=min*1.001){fit(true);return}
+  Z.x=px-(px-Z.x)*s/Z.s;Z.y=py-(py-Z.y)*s/Z.s;Z.s=s;fitMode=false;apply(false)}
+function focusStep(){let ks=Object.keys(ns).filter(k=>ns[k]===step&&step<LAST);
+  const es=EDG.filter(e=>e.s===step);es.forEach(e=>ks.push(e.a,e.b));ks=ks.concat(D.steps[step].hl);
+  if(sel) ks=sel.t==='n'?[sel.k]:[EDG[sel.i].a,EDG[sel.i].b];
+  if(!ks.length){fit(true);return}
+  let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;ks.forEach(k=>{const p=pos(k);x0=Math.min(x0,p.x);y0=Math.min(y0,p.y);x1=Math.max(x1,p.x+BW);y1=Math.max(y1,p.y+BH)});
+  const m=90;x0-=m;y0-=m;x1+=m;y1+=m;const r=view.getBoundingClientRect(),min=Math.min(r.width/W,r.height/H);
+  const s=Math.max(min,Math.min(1.5,r.width/(x1-x0),r.height/(y1-y0)));if(s<=min*1.02){fit(true);return}
+  Z={s,x:r.width/2-(x0+x1)/2*s,y:r.height/2-(y0+y1)/2*s};fitMode=false;apply(true)}
+document.getElementById('fit').onclick=()=>fit(true);
+document.getElementById('zin').onclick=()=>zoomAt(1.3);document.getElementById('zout').onclick=()=>zoomAt(1/1.3);
+document.getElementById('focus').onclick=focusStep;
+view.addEventListener('wheel',e=>{if(!e.ctrlKey&&!e.metaKey&&fitMode&&e.deltaY>0)return;e.preventDefault();const r=view.getBoundingClientRect();zoomAt(e.deltaY<0?1.12:1/1.12,e.clientX-r.left,e.clientY-r.top)},{passive:false});
+let drag=null,moved=false;
+view.addEventListener('pointerdown',e=>{moved=false;if(fitMode||e.pointerType!=='mouse'||e.button!==0)return;drag={x:e.clientX,y:e.clientY,zx:Z.x,zy:Z.y}});
+window.addEventListener('pointermove',e=>{if(!drag)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;if(Math.abs(dx)+Math.abs(dy)>4){moved=true;view.classList.add('panning')}
+  if(moved){Z.x=drag.zx+dx;Z.y=drag.zy+dy;apply(false)}});
+window.addEventListener('pointerup',()=>{drag=null;view.classList.remove('panning')});
+view.addEventListener('click',e=>{if(moved){moved=false;return}
+  const b=e.target.closest('.drv'),h=e.target.closest('.hit');
+  if(b)sel={t:'n',k:b.dataset.k};else if(h)sel={t:'e',i:+h.dataset.e};else sel=null;render()});
+new ResizeObserver(()=>{if(fitMode)fit(false)}).observe(view);
+
+/* tooltip with the full label, for when the poster is small on screen */
+const tip=document.getElementById('tip');
+view.addEventListener('pointermove',e=>{if(e.pointerType!=='mouse'){tip.hidden=true;return}
+  const b=e.target.closest('.drv'),h=e.target.closest('.hit');let t='';
+  if(b)t=D.drivers[b.dataset.k][0];else if(h){const x=EDG[+h.dataset.e];t=D.drivers[x.a][0]+' → '+D.drivers[x.b][0]}
+  if(!t){tip.hidden=true;return}
+  tip.textContent=t;tip.hidden=false;const w=tip.offsetWidth;tip.style.left=Math.min(window.innerWidth-w-8,e.clientX+14)+'px';tip.style.top=(e.clientY+16)+'px'});
+view.addEventListener('pointerleave',()=>{tip.hidden=true});
+
+fit(false);render();
+window.__kdn={go,ns,EDG,box};
+</script>
+
+</body></html>
